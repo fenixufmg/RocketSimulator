@@ -14,5 +14,5 @@ class DragCoefficient:
         self.reynolds = reynolds
         return
 
-    def coeff(self) -> float:
+    def cd(self) -> float:
         return 0.1
