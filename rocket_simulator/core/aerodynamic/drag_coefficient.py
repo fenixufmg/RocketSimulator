@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.rocket_model import RocketModel
+from ui.models.rocket_model import RocketModel
 
 @dataclass
 class DragCoefficient:
