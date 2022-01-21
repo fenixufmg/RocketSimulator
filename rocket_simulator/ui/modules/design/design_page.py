@@ -9,6 +9,6 @@ class DesignPage(QWidget):
     
     def __initUI(self) -> None:
         layout = QLabel(self)
-        layout.setText('Design')
+        layout.setText('Design 123')
         self.show()
         return
