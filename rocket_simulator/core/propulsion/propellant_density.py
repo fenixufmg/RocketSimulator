@@ -1,5 +1,6 @@
-def propellant_density(mass, volume):
-  #mass = users' input
-  #volume = previously calculated
-  density = mass/volume
-  return density
+def propellant_density(mg, Vg):
+  #mg: propellant's mass (users' input)
+  #Vg: volume = previously calculated
+  #rop: propellant's density
+  rop = mg/Vg
+  return rop
