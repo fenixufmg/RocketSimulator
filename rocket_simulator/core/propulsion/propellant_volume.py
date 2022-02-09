@@ -1,4 +1,4 @@
-import math 
+from math import pi
 
 def propellant_volume(D, d, L, N):
   #D: external diameter (users' input)
