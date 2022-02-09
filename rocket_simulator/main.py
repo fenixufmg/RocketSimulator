@@ -1,11 +1,11 @@
 import sys
 from PyQt5.QtWidgets import *
 
-from ui.modules.design.design_page import DesignPage
-from ui.modules.engine.engine_page import EnginePage
-from ui.modules.recovery.recovery_page import RecoveryPage
-from ui.modules.simulation.simulation_page import SimulationPage
-from ui.modules.analysis.analysis_page import AnalysisPage
+from modules.design.design_page import DesignPage
+from modules.engine.engine_page import EnginePage
+from modules.recovery.recovery_page import RecoveryPage
+from modules.simulation.simulation_page import SimulationPage
+from modules.analysis.analysis_page import AnalysisPage
 
 class AppLayout(QWidget):
 
