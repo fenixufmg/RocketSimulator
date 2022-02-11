@@ -1,4 +1,5 @@
 {
     "name": "Aluminum",
-    "density": 2.7
+    "density": 2.7,
+    "yield_strength": 240000000
 }
