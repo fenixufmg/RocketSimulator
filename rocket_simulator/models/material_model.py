@@ -1,19 +1,12 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from enum import Enum
-
-class MaterialType(Enum):
-    none = 1
-    aluminum = 2
-    titanium = 3
+from typing import Dict
 
 @dataclass
 class MaterialModel:
-    type: MaterialType
+    name: str
+    density: float
 
-    def density(self) -> float:
-        if self.type == MaterialType.titanium:
-            return 1
-        elif self.type == MaterialType.aluminum:
-            return 1
-        else:
-            return None
+    @staticmethod
+    def from_json(dict: Dict) -> MaterialModel:
+        return MaterialModel(name=dict['name'], density=dict['density'])
