@@ -6,7 +6,7 @@
 
 from math import pi 
 
-def burn_area(d):
+def burn_area(d: float) -> float:
   '''burn_area 
     Args:
         d: intern diameter (user's input) 
