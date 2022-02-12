@@ -4,7 +4,7 @@
 @create date 2022-02-11 23:10:27
 """ 
 
-def chamber_pressure(Ab, rop, a, A_, k, R, T0, n):
+def chamber_pressure(Ab:float, rop:float, a:float, A_:float, k:float, R:float, T0:float, n:float)->float:
   '''chamber_pressure
     Args:
         Ab: burn area of the propellant grain
