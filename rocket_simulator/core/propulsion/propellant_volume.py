@@ -6,7 +6,7 @@
 
 from math import pi
 
-def propellant_volume(D, d, L, N):
+def propellant_volume(D:float, d:float, L:float, N:int)->float:
   '''propellant_volume 
     Args:
         D: external diameter (users' input)
