@@ -7,7 +7,7 @@
 from math import pi
 
 def combustion_chamber_volume(Dc, Lc):
-  '''burn_area 
+  '''combustion_chamber_volume
     Args:
         Dc: combustion chamber diameter 
         Lc: combustion chamber lenght
