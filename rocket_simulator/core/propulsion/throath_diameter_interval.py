@@ -5,7 +5,7 @@
 """ 
 from math import pi
 
-def throath_diameter_interval(Ap):
+def throath_diameter_interval(Ap:float)->float:
   '''throath_diameter_interval
     Args:
         Ap: area of combustion products flow
