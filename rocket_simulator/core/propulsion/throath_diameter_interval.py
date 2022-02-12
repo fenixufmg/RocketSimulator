@@ -13,6 +13,7 @@ def throath_diameter_interval(Ap):
     Intermidiary:
       d_max: maximum diameter 
       d_min: minimum diameter
+      
     Returns:
         d_: medium diameter
     '''    
