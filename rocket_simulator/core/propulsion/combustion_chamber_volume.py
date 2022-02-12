@@ -6,7 +6,7 @@
 
 from math import pi
 
-def combustion_chamber_volume(Dc, Lc):
+def combustion_chamber_volume(Dc:float, Lc:float)->float:
   '''combustion_chamber_volume
     Args:
         Dc: combustion chamber diameter 
