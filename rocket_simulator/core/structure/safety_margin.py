@@ -2,7 +2,7 @@
 @author [diego]
 @email [dmgp1302@gmail.com]
 @create date 2022-02-11 18:03:46
-@modify date 2022-02-11 18:37:17
+@modify date 2022-02-17 18:22:03
 """ 
 
 from rocket_simulator.models.material_model import MaterialModel
