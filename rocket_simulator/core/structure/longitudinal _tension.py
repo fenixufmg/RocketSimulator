@@ -1,6 +1,4 @@
 """
-    Breve explicação sobre a função
-
     Created on Mon Feb  7 17:43:30 2022
 
     @author: victo
