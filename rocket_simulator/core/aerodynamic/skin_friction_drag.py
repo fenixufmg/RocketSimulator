@@ -1,3 +1,13 @@
+"""
+/**
+ * @author João Lucas Gomes Alencar
+ * @email alencarj2021@mail.com
+ * @create date 2022-02-24 14:41:35
+ * @modify date 2022-02-24 14:41:35
+ * @desc Returns adjusted skin friction drag as functioin of mach number
+ */
+ """
+
 from numpy import log as ln
 
 def skin_friction_drag(reynolds_number: float, critical_reynolds_number: float, 

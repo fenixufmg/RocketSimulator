@@ -1,7 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb  8 19:04:30 2022
-@author: Alexandre L Barbosa
+"""/**
+ * @author João Lucas Gomes Alencar
+ * @email alencarj2021@mail.com
+ * @create date 2022-02-24 14:36:44
+ * @modify date 2022-02-24 14:36:44
+ * @desc Returns mach number
+ */
 """
 
 def mach_number(rocket_velocity: float, local_sound_speed:float) -> float:
