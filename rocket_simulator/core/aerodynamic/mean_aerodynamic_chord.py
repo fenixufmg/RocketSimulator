@@ -8,5 +8,7 @@
  */
  """
 
- def mean_aerodynamic_chord_length(spanwise: float, chord_length: float, fin_area: float):
-     
+def mean_aerodynamic_chord_length(spanwise: float, chord_length: float, fin_area: float):
+    
+
+
