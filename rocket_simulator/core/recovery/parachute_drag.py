@@ -1,0 +1,13 @@
+from math import pi
+import math
+
+"""
+\**
+
+* @author Caio Bertolato Pereira
+* @email bertolatopereiracaio@gmail.com
+* @desc returns the total drag force created by the parachute
+"""
+
+def drag_Force(drag_Coefficient:float, theta:float, payload_Speed:float, parachute_Area:float) ->float:
+    return (drag_Coefficient*theta*payload_Speed^2*parachute_Area)/2
