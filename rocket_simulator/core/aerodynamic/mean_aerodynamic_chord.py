@@ -10,6 +10,6 @@
 
 def mean_aerodynamic_chord_length(root_chord: float, tip_chord: float):
     return 2 * (root_chord + tip_chord - (root_chord * tip_chord) / (root_chord + tip_chord)) / 3
-    #Only for trapezoidal fins (Need to include for free form fins and elliptical fins)
+    #Only for trapezoidal fins (It is necessary to include for free form fins and elliptical fins)
 
 
