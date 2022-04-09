@@ -11,8 +11,6 @@ def total_skin_friction_drag_coefficient(adjust_cf: float, rocket_fineness_ratio
                                             fin_thickness: float, mean_aerodynamic_chord: float, a_wet_fins: float, 
                                             reference_area: float) -> float:
     """
-    This function returns the total skin friction drag coefficient
-
     Parameters:
         a_wet_fins: Area of both sides of the fins
         fin_thickness: Thickness of only one fin 

@@ -1,10 +1,10 @@
 """
 /**
- * @author [author]
- * @email [example@mail.com]
+ * @author João Lucas Gomes Alencar
+ * @email alencarj2021@mail.com
  * @create date 2022-02-24 14:56:52
  * @modify date 2022-04-01 21:35:19
- * @desc [description]
+ * @desc returns the mean aerodynamic chord of trapezoidal fin
  */
  """
 
