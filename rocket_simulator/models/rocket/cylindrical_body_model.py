@@ -1,25 +1,15 @@
 from dataclasses import dataclass
 
-from abstract_component import AbstractComponent
+from models.physics.rigid_body import RigidBody
 from material_model import MaterialModel
 
-@dataclass
-class CylindricalBodyModel(AbstractComponent):
-    index: int
-    position: float
-    height: float
-    diameter: float
-    thickness: float
-    material: MaterialModel
+class CylindricalBodyModel:
+    def __init__(self, height, diameter, thickness, material:MaterialModel):
+        self.__height = height
+        self.__diameter = diameter
+        self.__thickness = thickness
+        self.__material = material
+        self.__rigid_body = self.__createRigidBody()
 
-    # Override abstract method
-    def mass(self) -> float:
-        return 1
-
-    # Override abstract method
-    def cg(self) -> float:
-        return 1
-    
-    # Override abstract method
-    def cp(self) -> float:
-        return 1
+    def __createRigidBody():
+        pass

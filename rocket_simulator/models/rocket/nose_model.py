@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+from email.mime import base
 from enum import Enum
 
-from abstract_component import AbstractComponent
+from models.physics.rigid_body import RigidBody
 from material_model import MaterialModel
 
 class NoseType(Enum):
@@ -9,23 +10,14 @@ class NoseType(Enum):
     parabolic = 2
     cubic = 3
 
-@dataclass
-class NoseModel(AbstractComponent):
-    index: int
-    height: float
-    base_diameter: float
-    thickness: float
-    type: NoseType
-    material: MaterialModel
+class NoseModel:
+    def __init__(self, height, base_diameter, thickness, nose_type:NoseType, material:MaterialModel):
+        self.__height = height
+        self.__base_diameter = base_diameter
+        self.__thickness = thickness
+        self.__nose_type = nose_type
+        self.__material = material
+        self.__rigid_body = self.__createRigidBody()
 
-    # Override abstract method
-    def mass(self) -> float:
-        return 1
-
-    # Override abstract method
-    def cg(self) -> float:
-        return 1
-    
-    # Override abstract method
-    def cp(self) -> float:
-        return 1
+    def __createRigidBody():
+        pass

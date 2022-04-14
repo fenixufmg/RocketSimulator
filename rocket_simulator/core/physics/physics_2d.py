@@ -1,6 +1,6 @@
-from models.physics.point_2d import Point2d
-from models.physics.rigid_body_2d import RigidBody2d
-from models.physics.vector_2d import Vector2d
+from models.physics.point import Point
+from models.physics.rigid_body import RigidBody
+from models.physics.vector import Vector
 
 class Physics2d:
     def __init__(self):
@@ -13,17 +13,17 @@ class Physics2d:
 
         return delta_time_simulations 
 
-    def setRigidBody(self, rigid_body:RigidBody2d) -> None:
+    def setRigidBody(self, rigid_body:RigidBody) -> None:
         if rigid_body is not None:
             self.__rigid_body = rigid_body
 
-    def addConstantForce(self, force:Vector2d) -> None:
+    def addConstantForce(self, force:Vector) -> None:
         pass
 
     def addVariableForce(self, force_function, *args) -> None:
-        force:Vector2d = force_function(args)
+        force:Vector = force_function(args)
 
-    def __applyForce(self, force:Vector2d) -> None: # chamado a cada 1s (delta time)
+    def __applyForce(self, force:Vector) -> None: # chamado a cada 1s (delta time)
         pass
 
 

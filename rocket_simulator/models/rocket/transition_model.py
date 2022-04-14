@@ -1,26 +1,17 @@
 from dataclasses import dataclass
 
-from abstract_component import AbstractComponent
 from material_model import MaterialModel
+from models.physics.rigid_body import RigidBody
 
-@dataclass
-class TransitionModel(AbstractComponent):
-    index: int
-    position: float
-    height: float
-    bottom_diameter: float
-    top_diameter: float
-    thickness: float
-    material: MaterialModel
-
-    # Override abstract method
-    def mass(self) -> float:
-        return 1
-
-    # Override abstract method
-    def cg(self) -> float:
-        return 1
-    
-    # Override abstract method
-    def cp(self) -> float:
-        return 1
+class TransitionModel:
+    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material):
+        self.__position = position
+        self.__height = height
+        self.__bottom_diameter = bottom_diameter
+        self.__top_diameter = top_diameter
+        self.__thickness = thickness
+        self.__material = material
+        self.__rigid_body = self.__createRigidBody()
+        
+    def __createRigidBody():
+        pass
