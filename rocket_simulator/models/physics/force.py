@@ -18,6 +18,6 @@ class Force(Vector, ABC):
         return self.__application_point
 
     @abstractmethod
-    def calculate(self, last_simulation:DeltaTimeSimulation):
+    def calculate(self, current_state:DeltaTimeSimulation):
         pass
     

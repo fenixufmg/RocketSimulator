@@ -13,22 +13,22 @@ class Physics:
         self.__forces = [] 
 
     def simulate(self, time:int) -> dict:
-        delta_time_simulations = {0: DeltaTimeSimulation(self.__rigid_body)}
-        total_elapsed_time = 0
+        delta_time_simulations = dict()
 
-        for elapsed_time in range(1, time+1, self.__DELTA_TIME): # 1, 2, 3, 4, 5, ... , time
-            total_elapsed_time += elapsed_time
-            self.__applyForces(delta_time_simulations[-1])
+        for total_elapsed_time in range(0, time+1, self.__DELTA_TIME): # 0, 1, 2, 3, 4, 5, ... , time
             
+            current_state = DeltaTimeSimulation(self.__rigid_body)
+            self.__applyForces(current_state)
             current_simulation = DeltaTimeSimulation(self.__rigid_body)
+            
             delta_time_simulations[total_elapsed_time] = current_simulation
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 
 
-    def __applyForces(self, last_simulation):
+    def __applyForces(self, current_state):
         for force in self.__forces:
-            force.calculate(last_simulation) 
+            force.calculate(current_state) 
             self.__rigid_body.applyForce(force, self.__DELTA_TIME)
 
     def addForce(self, force:Force) -> None:
