@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 
 class Vector:
@@ -22,28 +23,31 @@ class Vector:
     def magnitude(self):
         return self.__magnitude
 
-    def unitVector(self):
-        x = self.__x / abs(self.__x)
-        y = self.__y / abs(self.__y)
-        z = self.__z / abs(self.__z)
+    def unitVector(self)-> Vector:
+        x = self.__x / abs(self.__x) if self.__x != 0 else 0
+        y = self.__y / abs(self.__y) if self.__y != 0 else 0
+        z = self.__z / abs(self.__z) if self.__z != 0 else 0
         return Vector(x,y,z)
+
+    def toString(self) -> str:
+        return [self.__x, self.__y, self.__z]
         
     @staticmethod
-    def sum(vector1, vector2):
+    def sum(vector1, vector2) -> Vector:
         x = vector1.x() + vector2.x()
         y = vector1.y() + vector2.y()
         z = vector1.z() + vector2.z()
         return Vector(x,y,z)
 
     @staticmethod
-    def subtraction(vector1, vector2):
+    def subtraction(vector1, vector2) -> Vector:
         x = vector1.x() - vector2.x()
         y = vector1.y() - vector2.y()
         z = vector1.z() - vector2.z()
         return Vector(x,y,z)
 
     @staticmethod
-    def scalarMultiplication(vector, scalar):
+    def scalarMultiplication(vector, scalar) -> Vector:
         x = vector.x() * scalar
         y = vector.y() * scalar
         z = vector.z() * scalar

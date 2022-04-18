@@ -17,9 +17,9 @@ class Physics:
 
         for total_elapsed_time in range(0, time+1, self.__DELTA_TIME): # 0, 1, 2, 3, 4, 5, ... , time
             
-            current_state = DeltaTimeSimulation(self.__rigid_body)
+            current_state = DeltaTimeSimulation(self.__rigid_body, total_elapsed_time)
             self.__applyForces(current_state)
-            current_simulation = DeltaTimeSimulation(self.__rigid_body)
+            current_simulation = DeltaTimeSimulation(self.__rigid_body, total_elapsed_time)
             
             delta_time_simulations[total_elapsed_time] = current_simulation
 

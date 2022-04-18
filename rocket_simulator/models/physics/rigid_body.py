@@ -21,13 +21,14 @@ class RigidBody:
         pass
 
     def __calculateMass(self):
-        return self.__material.density() * self.__volume
+        # return self.__material.density() * self.__volume
+        return 1
 
-    def __calculateCp(self):
-        pass
+    def __calculateCp(self) -> Vector: # mudar
+        return Vector(0,0,0)
 
-    def __calculateCg(self):
-        pass
+    def __calculateCg(self) -> Vector: # mudar
+        return Vector(0,0,0)
 
     def cg(self) -> float:
         return self.__cp
@@ -50,11 +51,31 @@ class RigidBody:
     def mass(self) ->float:
         return self.__mass
 
-    def move(self, destination:Point):
-        pass
+    def move(self, displacement:Vector):
+        self.__cg = Vector.sum(self.__cg, displacement)
+        self.__cp = Vector.sum(self.__cp, displacement)
 
-    def __applyForceOnCg(self, force:Force, duration:int): # chama o move()
-        pass
+        for index, delimitation_point in enumerate(self.__delimitation_points):
+            new_delimitation_point = Vector.sum(delimitation_point, displacement)
+            self.__delimitation_points[index] = new_delimitation_point
+
+    def __applyForceOnCg(self, force:Force, duration:int):
+        acceleration_magnitude = force.magnitude() / self.__mass
+        acceleration_direction = force.unitVector()
+
+        velocity_magnitude = self.__velocity.magnitude() + acceleration_magnitude * duration
+
+        if self.__velocity.magnitude() == 0: # starting simulation
+            velocity_direction = force.unitVector()
+        else:
+            velocity_direction = self.__velocity.unitVector()   
+
+        displacement_magnitude = (self.__velocity.magnitude() * duration) + (acceleration_magnitude * duration**2)/2 
+        displacement_direction = Vector.sum(velocity_direction, acceleration_direction).unitVector()
+
+        displacement = Vector.scalarMultiplication(displacement_direction, displacement_magnitude)
+        self.__velocity = Vector.scalarMultiplication(velocity_direction, velocity_magnitude)
+        self.move(displacement)
 
     def __applyForceOnCp(self, force:Force, duration:int): # chama o move()
         pass
