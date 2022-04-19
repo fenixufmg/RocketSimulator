@@ -3,8 +3,8 @@ from math import sin, radians
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com
  * @create date 2022-04-15 20:03:19
- * @modify date 2022-04-15 20:58:36
- * @desc Returns the normal force coefficient derivative for all the fins
+ * @modify date 2022-04-19 16:42:10
+ * @desc returns the normal force coefficient derivative for all the fins
  */
 """
 

@@ -15,7 +15,7 @@ def single_fin_normal_force_coefficient(s: float, Aref: float, M: float, Afin: f
         s: Spanwise length of one fin
         Aref: Reference area
         M: Mach number
-        Afin: Area of one side of a fin
+        Afin: Area of one side of the fin
         T: Midchord sweep angle
     Returns:
         CNa1: Normal force coefficient of one fin
