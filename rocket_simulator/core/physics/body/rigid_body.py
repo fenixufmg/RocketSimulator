@@ -4,6 +4,7 @@ from core.physics.forces.force import Force
 from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint
 from core.physics.body.body_coordinate_system import BodyCoordinateSystem
+import numpy as np
 
 class RigidBody:
     def __init__(self, delimitation_points, material):
@@ -63,37 +64,17 @@ class RigidBody:
             new_delimitation_point = Vector.sum(delimitation_point, displacement)
             self.__delimitation_points[index] = new_delimitation_point
 
-    # def __applyForceOnCg(self, force:Force, duration:int):
-    #     acceleration_magnitude = force.magnitude() / self.__mass
-    #     acceleration_direction = force.unitVector()
-
-    #     velocity_magnitude = self.__velocity.magnitude() + acceleration_magnitude * duration # velocidade inicial é a velocidade de um estado antes do atual
-    #     print(velocity_magnitude)
-    #     displacement_magnitude = (self.__velocity.magnitude() * duration) + (acceleration_magnitude * duration**2)/2 
-
-    #     if self.__velocity.magnitude() == 0: # quando começa a simulação
-    #         velocity_direction = force.unitVector()
-    #     else:
-    #         acceleration = Vector.scalarMultiplication(acceleration_direction, acceleration_magnitude)
-    #         velocity_direction = Vector.sum(self.__velocity, acceleration).unitVector()  # já iniciada
-
-
-    #     displacement_direction = Vector.sum(velocity_direction, acceleration_direction).unitVector()
-
-    #     displacement = Vector.scalarMultiplication(displacement_direction, displacement_magnitude) 
-    #     self.__velocity = Vector.scalarMultiplication(velocity_direction, velocity_magnitude) 
-     
-    #     self.move(displacement)
-
     def __applyForceOnCg(self, force:Force, duration:int):
         acceleration = Vector.scalarMultiplication(force, 1/self.__mass)
 
         velocity = Vector.sum(self.__velocity, Vector.scalarMultiplication(acceleration, duration)) # velocidade inicial é a velocidade de um estado antes do atual
-        displacement = Vector.scalarMultiplication(self.__velocity, duration)
-        displacement = Vector.sum(displacement, Vector.scalarMultiplication(Vector.scalarMultiplication(acceleration, duration**2), 1/2))
+        v0t = Vector.scalarMultiplication(self.__velocity, duration)
+
+        at2 = Vector.scalarMultiplication(acceleration, duration**2)
+        half_at2 = Vector.scalarMultiplication(at2, 1/2)
+        displacement =  Vector.sum(v0t, half_at2)
 
         self.__velocity = velocity
-        
         self.move(displacement)
 
     def __applyForceOnCp(self, force:Force, duration:int): # chama o move()
@@ -101,6 +82,22 @@ class RigidBody:
 
     def __applyForceOnPoint(self, force:Force ,duration:int): # chama o move()
         pass
+
+    def __rotateAroundCg(self, force:Force, lever:Vector):
+        # lever deve apontar para o ponto de aplicação
+        torque = Vector.crossProduct(force, lever)
+        ortho_basis = np.matrix([force.unitVector().toList(), lever.unitVector().toList(), torque.unitVector().toList()]).transpose()
+
+        b1 = force.unitVector()
+        b2 = lever.unitVector()
+        b3 = torque.unitVector()
+
+        x_b = Vector.dotProduct(self.__cg, b1)
+        y_b = Vector.dotProduct(self.__cg, b2)
+        z_b = Vector.dotProduct(self.__cg, b3)
+
+        x_b = Vector(x_b, y_b, z_b)
+
     
     def applyForce(self, force:Force, duration:int):
         if force.applicationPoint() == ApplicationPoint.CG:

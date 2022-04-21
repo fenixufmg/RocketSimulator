@@ -10,8 +10,8 @@ class TestForce(Force):
     def calculate(self, current_state:DeltaTimeSimulation):
         
         if current_state.time == 5:
+            pass
             self.setX(self.x()*-1)
-            self.setY(self.y()*-1)
-            self.setZ(self.z()*-1)
+            self.setY(0)
 
         # print(self.toString())
