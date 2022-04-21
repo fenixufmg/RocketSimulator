@@ -1,4 +1,4 @@
-from models.physics.vector import Vector
+from core.physics.vector import Vector
 
 class DeltaTimeSimulation:
     def __init__(self, rigid_body, time:int):

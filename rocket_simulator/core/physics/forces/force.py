@@ -1,6 +1,6 @@
-from models.physics.application_point import ApplicationPoint
-from models.physics.delta_time_simulation import DeltaTimeSimulation
-from models.physics.vector import Vector
+from core.physics.body.application_point import ApplicationPoint
+from core.physics.delta_time_simulation import DeltaTimeSimulation
+from core.physics.vector import Vector
 from abc import ABC, abstractmethod
 
 class Force(Vector, ABC):

@@ -13,20 +13,32 @@ class Vector:
 
     def x(self):
         return self.__x
+
+    def setX(self, x):
+        self.__x = x
     
     def y(self):
         return self.__y
 
+    def setY(self, y):
+        self.__y = y
+
     def z(self):
         return self.__z
 
+    def setZ(self, z):
+        self.__z = z
+
     def magnitude(self):
-        return self.__magnitude
+        return self.__calculateMagnitude()
 
     def unitVector(self)-> Vector:
-        x = self.__x / abs(self.__x) if self.__x != 0 else 0
-        y = self.__y / abs(self.__y) if self.__y != 0 else 0
-        z = self.__z / abs(self.__z) if self.__z != 0 else 0
+        if self.__magnitude == 0:
+            return Vector(0,0,0)
+
+        x = self.__x / self.__magnitude
+        y = self.__y / self.__magnitude
+        z = self.__z / self.__magnitude
         return Vector(x,y,z)
 
     def toString(self) -> str:
@@ -52,3 +64,7 @@ class Vector:
         y = vector.y() * scalar
         z = vector.z() * scalar
         return Vector(x,y,z)
+
+    @staticmethod
+    def scaleToMagnitude(vector, magnitude) -> Vector:
+        pass
