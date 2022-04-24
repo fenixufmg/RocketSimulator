@@ -3,7 +3,7 @@
 @email [marinasalesr@gmail.com]
 @create date 2022-02-11 22:36:47
 """ 
-
+import math
 from math import pi
 
 def propellant_volume(D:float, d:float, L:float, N:int)->float:
