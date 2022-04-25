@@ -12,12 +12,16 @@ class RigidBody:
         self.__material = material
         self.__volume = self.__calculateVolume()
         self.__mass = self.__calculateMass()
+        self.__moment_of_inertia = self.__calculateMomementOfInertia()
 
         self.__velocity = Vector(0,0,0)
-        self.__angular_velocity = Vector(0,0,0) # errado, corrigir
+        self.__angular_velocity = Vector(0,0,0)
 
         self.__cp = self.__calculateCp()
         self.__cg = self.__calculateCg()
+
+        self.__displacement = Vector(0,0,0)
+        self.__angular_displacement = Vector(0,0,0)
 
         self.__coordinate_system = BodyCoordinateSystem()
 
@@ -28,6 +32,9 @@ class RigidBody:
         # return self.__material.density() * self.__volume
         return 2
 
+    def __calculateMomementOfInertia(self):
+        return 1
+
     def __calculateCp(self) -> Vector: # mudar
         return Vector(0,0,0)
 
@@ -35,10 +42,12 @@ class RigidBody:
         return Vector(0,0,0)
 
     def cg(self) -> float:
-        return self.__cp
+        cg = Vector.rotateAroundAxis(self.__cg, self.__angular_displacement, self.__angular_displacement.magnitude())
+        return cg + self.__displacement
 
     def cp(self) -> float:
-        return self.__cg
+        cp = Vector.rotateAroundAxis(self.__cp, self.__angular_displacement, self.__angular_displacement.magnitude())
+        return cp + self.__displacement
 
     def velocity(self):
         return self.__velocity
@@ -55,27 +64,18 @@ class RigidBody:
     def mass(self) ->float:
         return self.__mass
 
-    def move(self, displacement:Vector):
-        self.__cg = Vector.sum(self.__cg, displacement)
-        self.__cp = Vector.sum(self.__cp, displacement)
+    def __move(self, displacement:Vector):
+        self.__displacement += displacement
         self.__coordinate_system.move(displacement)
 
-        for index, delimitation_point in enumerate(self.__delimitation_points):
-            new_delimitation_point = Vector.sum(delimitation_point, displacement)
-            self.__delimitation_points[index] = new_delimitation_point
-
     def __applyForceOnCg(self, force:Force, duration:int):
-        acceleration = Vector.scalarMultiplication(force, 1/self.__mass)
+        acceleration = force * (1/self.__mass)
 
-        velocity = Vector.sum(self.__velocity, Vector.scalarMultiplication(acceleration, duration)) # velocidade inicial é a velocidade de um estado antes do atual
-        v0t = Vector.scalarMultiplication(self.__velocity, duration)
-
-        at2 = Vector.scalarMultiplication(acceleration, duration**2)
-        half_at2 = Vector.scalarMultiplication(at2, 1/2)
-        displacement =  Vector.sum(v0t, half_at2)
+        velocity = self.__velocity + acceleration*duration # velocidade inicial é a velocidade de um estado antes do atual
+        displacement = self.__velocity*duration + (acceleration * duration**2)*0.5
 
         self.__velocity = velocity
-        self.move(displacement)
+        self.__move(displacement)
 
     def __applyForceOnCp(self, force:Force, duration:int): # chama o move()
         pass
@@ -83,20 +83,13 @@ class RigidBody:
     def __applyForceOnPoint(self, force:Force ,duration:int): # chama o move()
         pass
 
-    def __rotateAroundCg(self, force:Force, lever:Vector):
-        # lever deve apontar para o ponto de aplicação
+    def __rotateAroundCg(self, force:Force, duration:int, lever:Vector): # lever deve apontar para o ponto de aplicação
         torque = Vector.crossProduct(force, lever)
-        ortho_basis = np.matrix([force.unitVector().toList(), lever.unitVector().toList(), torque.unitVector().toList()]).transpose()
+        angular_acceleration = torque * (1/self.__moment_of_inertia)
+        angular_velocity = self.__angular_velocity + angular_acceleration * duration
+        angular_displacement = self.__angular_velocity * duration + (angular_acceleration * duration**2) * 0.5
 
-        b1 = force.unitVector()
-        b2 = lever.unitVector()
-        b3 = torque.unitVector()
 
-        x_b = Vector.dotProduct(self.__cg, b1)
-        y_b = Vector.dotProduct(self.__cg, b2)
-        z_b = Vector.dotProduct(self.__cg, b3)
-
-        x_b = Vector(x_b, y_b, z_b)
 
     
     def applyForce(self, force:Force, duration:int):

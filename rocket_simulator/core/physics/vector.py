@@ -1,5 +1,9 @@
 from __future__ import annotations
+from decimal import Decimal
 import math
+from math import cos, sin
+from multiprocessing.sharedctypes import Value
+from typing import Type
 import numpy as np
 
 class Vector:
@@ -48,51 +52,30 @@ class Vector:
     def toNumpyVector(self) -> np.matrix:
         return np.matrix([self.toList()]).transpose()
         
-    @staticmethod
-    def sum(vector1: Vector, vector2: Vector) -> Vector:
-        x = vector1.x() + vector2.x()
-        y = vector1.y() + vector2.y()
-        z = vector1.z() + vector2.z()
+    def __add__(self, vector:Vector) -> Vector:
+        x = self.x() + vector.x()
+        y = self.y() + vector.y()
+        z = self.z() + vector.z()
         return Vector(x,y,z)
 
-    @staticmethod
-    def subtraction(vector1: Vector, vector2: Vector) -> Vector:
-        x = vector1.x() - vector2.x()
-        y = vector1.y() - vector2.y()
-        z = vector1.z() - vector2.z()
+    def __sub__(self, vector: Vector) -> Vector:
+        x = self.x() - vector.x()
+        y = self.y() - vector.y()
+        z = self.z() - vector.z()
         return Vector(x,y,z)
 
-    @staticmethod
-    def scalarMultiplication(vector: Vector, scalar) -> Vector:
-        x = vector.x() * scalar
-        y = vector.y() * scalar
-        z = vector.z() * scalar
-        return Vector(x,y,z)
+    def __mul__(self, scalar:float) -> Vector: # Vector SEMPRE deve vir antes do escalar na multiplicação
+        if isinstance(scalar, self.__class__): # produto entre dois vetores
+            raise ValueError("Impossible matrix multiplication")
 
-    @staticmethod
-    def rotateAroundXAxis(vector:Vector, radians): # rotaciona no plano yz
-        x = vector.x()
-        y = vector.magnitude() * math.cos(radians)
-        z = vector.magnitude() * math.sin(radians)
-        
-        return Vector(x,y,z)
+        elif isinstance(scalar, float) or isinstance(scalar, int): # produto escalar
+            x = self.x() * scalar
+            y = self.y() * scalar
+            z = self.z() * scalar
+            return Vector(x,y,z)
 
-    @staticmethod
-    def rotateAroundYAxis(vector:Vector, radians): # rotaciona no plano xz
-        radians *= -1 # eixo y é positivo para dentro do monitor
-        x = vector.magnitude() * math.cos(radians)
-        y = vector.y()
-        z = vector.magnitude() * math.sin(radians)
-
-        return Vector(x,y,z)
-    
-    @staticmethod
-    def rotateAroundZAxis(vector: Vector, radians) -> Vector: # rotaciona no plano xy
-        x = vector.magnitude() * math.cos(radians)
-        y = vector.magnitude() * math.sin(radians)
-        z = vector.z()
-
-        return Vector(x,y,z)
+        else:
+            raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(scalar))
 
     @staticmethod
     def crossProduct(vector1: Vector, vector2: Vector) -> Vector:
@@ -103,6 +86,35 @@ class Vector:
         return np.dot(vector1.toList(), vector2.toList())
 
     @staticmethod
-    def rotate(vector:Vector): # completar argumentos
-        pass 
+    def rotateAroundAxis(vector:Vector, axis:Vector, theta:float): # theta em radianos
+        axis = axis.unitVector()
+        ux = axis.x()
+        uy = axis.y()
+        uz = axis.z()
+
+        cos_theta = cos(theta)
+        sin_theta = sin(theta)
+        one_minus_cos_theta = 1 - cos_theta
+
+        a11 = cos_theta + ux**2*one_minus_cos_theta
+        a12 = ux*uy*one_minus_cos_theta - uz*sin_theta
+        a13 = ux*uz*one_minus_cos_theta + uy*sin_theta
+
+        a21 = uy*ux*one_minus_cos_theta + uz*sin_theta
+        a22 = cos_theta + uy**2*one_minus_cos_theta
+        a23 = uy*uz*one_minus_cos_theta - ux*sin_theta
+
+        a31 = uz*ux*one_minus_cos_theta - uy*sin_theta
+        a32 = uz*uy*one_minus_cos_theta + ux*sin_theta
+        a33 = cos_theta + uz**2*one_minus_cos_theta
+
+        rotation_matriz = np.matrix([[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]])
+
+        rotated_vector = np.matmul(rotation_matriz, vector.toNumpyVector())
+        rotated_vector = Vector(rotated_vector[0,0], rotated_vector[1,0], rotated_vector[2,0])
+        return rotated_vector
+
+        
+
+
     

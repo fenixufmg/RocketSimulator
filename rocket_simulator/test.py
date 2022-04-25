@@ -11,9 +11,9 @@ import numpy as np
 
 def rotationTest():
     pi = 3.14
-    test_vector = Vector(1,0,0)
-    rotated_vector = Vector.rotateAroundZAxis(test_vector, 2*pi)
-    rotated_vector = Vector.rotateAroundXAxis(rotated_vector, 2*pi)
+    test_vector = Vector(1,1,0)
+    axis = Vector(1,0,0)
+    rotated_vector = Vector.rotateAroundAxis(test_vector, axis, pi/6)
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
@@ -26,6 +26,7 @@ def rotationTest():
     ax.scatter(0,0,-1, color="green")
 
     ax.scatter(test_vector.x(), test_vector.y(), test_vector.z(), color="blue")
+    ax.scatter(axis.x(), axis.y(), axis.z(), color="green")
     ax.scatter(rotated_vector.x(), rotated_vector.y(), rotated_vector.z(), color="red")
     plt.show()
 
@@ -53,12 +54,8 @@ physics = Physics(rigid_body)
 physics.addForce(test_force)
 simulations = physics.simulate(20)
 
+threeDTest()
 # rotationTest()
-v1 = [1,2,3]
-v2 = [0,1,0]
-v3 = [0,0,1]
-result = np.matrix([v1,v2,v3]).transpose()
-print(result)
-print(result[0])
+decimal.getcontext().prec = 4
 
 

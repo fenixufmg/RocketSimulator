@@ -13,5 +13,5 @@ class BodyCoordinateSystem():
     def rotate(self):
         pass
 
-    def move(self, displacement:Vector):
-        self.__origin = Vector.sum(self.__origin, displacement)
+    def move(self, displacement:Vector): # mudar?
+        self.__origin = self.__origin + displacement
