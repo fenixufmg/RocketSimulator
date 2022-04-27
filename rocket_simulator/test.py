@@ -30,18 +30,24 @@ def rotationTest():
     ax.scatter(rotated_vector.x(), rotated_vector.y(), rotated_vector.z(), color="red")
     plt.show()
 
+def rbRotationTest():
+    pass
+
 def threeDTest():
     x = []
     y = []
     z = []
     for time, simulation in simulations.items():
+        print(time)
+        print(f"v = {simulation.velocity.magnitude()}")
+        print(f"s = {simulation.position.magnitude()}")
         x.append(simulation.position.x()) 
         y.append(simulation.position.y()) 
         z.append(simulation.position.z())
 
-    print(x)
-    print(y)
-    print(z)
+    # print(x)
+    # print(y)
+    # print(z)
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.plot3D(x,y,z)
