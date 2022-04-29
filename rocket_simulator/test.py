@@ -1,5 +1,6 @@
 
-from core.physics.physics import Physics
+from tkinter import Y
+from core.physics.physics import Simulation
 from core.physics.forces.test_force import TestForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
@@ -8,6 +9,8 @@ from core.physics.body.application_point import ApplicationPoint
 import decimal
 from core.physics.vector import Vector
 import numpy as np
+
+from core.physics.forces.rotation_test_force import RotationTestForce
 
 def rotationTest():
     pi = 3.14
@@ -31,9 +34,48 @@ def rotationTest():
     plt.show()
 
 def rbRotationTest():
-    pass
+    rotation_test_force = RotationTestForce(2,0,0, ApplicationPoint.CP)
+    pi = 3.14
+
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    ax.scatter(0,0,0, color="green")
+    ax.scatter(1,0,0, color="green")
+    ax.scatter(-1,0,0, color="green")
+    ax.scatter(0,1,0, color="green")
+    ax.scatter(0,-1,0, color="green")
+    ax.scatter(0,0,1, color="green")
+    ax.scatter(0,0,-1, color="green")
+
+    rigid_body.test()
+
+    x = rigid_body.cg().x()
+    y = rigid_body.cg().y()
+    z = rigid_body.cg().z()
+    ax.scatter(x, y, z, color="red")
+
+    x = rigid_body.cp().x()
+    y = rigid_body.cp().y()
+    z = rigid_body.cp().z()
+    # print(rigid_body.cp().toList())
+
+    ax.scatter(x, y, z, color="blue")
+
+    rigid_body.rotateAroundCg(rotation_test_force, 1, rigid_body.getCpCgDistance())
+    x = rigid_body.cp().x()
+    y = rigid_body.cp().y()
+    z = rigid_body.cp().z()
+    # print(rigid_body.cp().toList())
+
+    ax.scatter(x, y, z, color="blue")
+    plt.show()
 
 def threeDTest():
+    test_force = TestForce(4,4,0,ApplicationPoint.CG)
+    simulation = Simulation(rigid_body)
+    simulation.addForce(test_force)
+    simulations = simulation.simulate(20)
+
     x = []
     y = []
     z = []
@@ -53,15 +95,12 @@ def threeDTest():
     ax.plot3D(x,y,z)
     plt.show()
 
-test_force = TestForce(4,4,0,ApplicationPoint.CG)
+
 rigid_body = RigidBody([], None)
 
-physics = Physics(rigid_body)
-physics.addForce(test_force)
-simulations = physics.simulate(20)
-
-threeDTest()
+# threeDTest()
+rbRotationTest()
 # rotationTest()
-decimal.getcontext().prec = 4
+# decimal.getcontext().prec = 4
 
 

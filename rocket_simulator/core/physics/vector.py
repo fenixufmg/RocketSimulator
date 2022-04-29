@@ -79,7 +79,8 @@ class Vector:
 
     @staticmethod
     def crossProduct(vector1: Vector, vector2: Vector) -> Vector:
-        return np.cross(vector1.toList(), vector2.toList())
+        result = np.cross(vector1.toList(), vector2.toList())
+        return Vector(result[0], result[1], result[2])
 
     @staticmethod
     def dotProduct(vector1: Vector, vector2: Vector):

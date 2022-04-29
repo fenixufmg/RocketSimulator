@@ -7,7 +7,7 @@ from core.physics.forces.force import Force
 from core.physics.delta_time_simulation import DeltaTimeSimulation
 import collections
 
-class Physics:
+class Simulation:
     def __init__(self, rigid_body:RigidBody):
         self.__DELTA_TIME = 1
         self.__rigid_body = rigid_body
