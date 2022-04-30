@@ -1,4 +1,4 @@
-from __future__ import annotations
+# from __future__ import annotations
 from decimal import Decimal
 import math
 from math import cos, sin
@@ -37,7 +37,7 @@ class Vector:
     def magnitude(self):
         return self.__calculateMagnitude()
 
-    def unitVector(self)-> Vector:
+    def unitVector(self)-> 'Vector':
         if self.__magnitude == 0:
             return Vector(0,0,0)
 
@@ -52,19 +52,19 @@ class Vector:
     def toNumpyVector(self) -> np.matrix:
         return np.matrix([self.toList()]).transpose()
         
-    def __add__(self, vector:Vector) -> Vector:
+    def __add__(self, vector:'Vector') -> 'Vector':
         x = self.x() + vector.x()
         y = self.y() + vector.y()
         z = self.z() + vector.z()
         return Vector(x,y,z)
 
-    def __sub__(self, vector: Vector) -> Vector:
+    def __sub__(self, vector: 'Vector') -> 'Vector':
         x = self.x() - vector.x()
         y = self.y() - vector.y()
         z = self.z() - vector.z()
         return Vector(x,y,z)
 
-    def __mul__(self, scalar:float) -> Vector: # Vector SEMPRE deve vir antes do escalar na multiplicação
+    def __mul__(self, scalar:float) -> 'Vector': # Vector SEMPRE deve vir antes do escalar na multiplicação
         if isinstance(scalar, self.__class__): # produto entre dois vetores
             raise ValueError("Impossible matrix multiplication")
 
@@ -78,15 +78,15 @@ class Vector:
             raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(scalar))
 
     @staticmethod
-    def crossProduct(vector1: Vector, vector2: Vector) -> Vector:
+    def crossProduct(vector1: 'Vector', vector2: 'Vector') -> 'Vector':
         return np.cross(vector1.toList(), vector2.toList())
 
     @staticmethod
-    def dotProduct(vector1: Vector, vector2: Vector):
+    def dotProduct(vector1: 'Vector', vector2: 'Vector'):
         return np.dot(vector1.toList(), vector2.toList())
 
     @staticmethod
-    def rotateAroundAxis(vector:Vector, axis:Vector, theta:float): # theta em radianos
+    def rotateAroundAxis(vector:'Vector', axis:'Vector', theta:float): # theta em radianos
         axis = axis.unitVector()
         ux = axis.x()
         uy = axis.y()

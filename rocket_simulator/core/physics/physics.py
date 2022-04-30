@@ -1,6 +1,5 @@
 from email.mime import application
 
-from scipy.fft import dct
 from core.physics.body.rigid_body import RigidBody
 from core.physics.vector import Vector
 from core.physics.forces.force import Force
