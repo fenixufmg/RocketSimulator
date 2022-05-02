@@ -7,7 +7,7 @@ class BodyCoordinateSystem():
         self.__z_axis = Vector(0,0,1)
 
     def getLookingDirection(self):
-        return self.__z_axis
+        return self.__z_axis # já é unitario
 
     def rotate(self, angular_displacement:Vector):
         self.__x_axis = Vector.rotateAroundAxis(self.__x_axis, angular_displacement, angular_displacement.magnitude())

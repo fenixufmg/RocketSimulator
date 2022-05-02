@@ -7,9 +7,8 @@ from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 import numpy as np
 
 class RigidBody:
-    def __init__(self, delimitation_points, material):
-        self.__delimitation_points = delimitation_points
-        self.__material = material
+    def __init__(self, delimitation_points):
+        self.__delimitation_points = delimitation_points # lista de vetores
         self.__volume = self.__calculateVolume()
         self.__mass = self.__calculateMass()
         self.__moment_of_inertia = self.__calculateMomementOfInertia()
@@ -41,10 +40,6 @@ class RigidBody:
     def __calculateCg(self) -> Vector: # mudar
         return Vector(0,0,0)
 
-    def __applyDisplacement(self, point:Vector): # desnecessario?
-        point = Vector.rotateAroundAxis(point, self.__total_angular_displacement, self.__total_angular_displacement.magnitude())
-        return point + self.__total_displacement
-
     def cg(self) -> Vector:
         # return self.__applyDisplacement(self.__cg)
         return self.__cg
@@ -73,7 +68,7 @@ class RigidBody:
         self.__cg += self.__total_displacement
         self.__cp += self.__total_displacement
 
-    def getCpCgDistance(self): # aponta para o cg
+    def getCpCgDistance(self) -> Vector: # aponta para o cg
         return self.__cg - self.__cp  
 
     def __applyForceOnCg(self, force:Force, duration:int):
@@ -85,11 +80,14 @@ class RigidBody:
         self.__velocity = velocity
         self.__total_displacement += displacement
 
+        # move os pontos
         self.__cg += displacement
         self.__cp += displacement
-        # mover os delimitation points tambem 
 
-    def rotateAroundCg(self, force:Force, duration:int, lever:Vector): # lever deve apontar para o cg
+        for index, delimitation_point in enumerate(self.__delimitation_points):
+            self.__delimitation_points[index] += displacement 
+
+    def __rotateAroundCg(self, force:Force, duration:int, lever:Vector): # lever deve apontar para o cg
         torque = Vector.crossProduct(force, lever)
         angular_acceleration = torque * (1/self.__moment_of_inertia)
 
@@ -97,23 +95,31 @@ class RigidBody:
         angular_velocity = self.__angular_velocity + angular_acceleration * duration
 
         self.__angular_velocity = angular_velocity
-        self.__total_angular_displacement = angular_displacement
+        self.__total_angular_displacement += angular_displacement # possivelmente inutil
         
-        print(angular_displacement.toList())
+        # rotaciona os pontos
         self.__coordinate_system.rotate(angular_displacement)
 
-        self.__cp -= self.__total_displacement # bring to origin to rotate 
+        self.__cp -= self.__total_displacement # translada para a origem para rotacionar
         self.__cp = Vector.rotateAroundAxis(self.__cp, angular_displacement, angular_displacement.magnitude())
-        self.__cp += self.__total_displacement # translate to original position after rotation
-        # mover os delimitation points tambem 
+        self.__cp += self.__total_displacement # translada para o ponto antes da rotação
+        
+        for index, delimitation_point in enumerate(self.__delimitation_points):
+            delimitation_point -= self.__total_displacement  # translada para a origem para rotacionar
+            delimitation_point = Vector.rotateAroundAxis(delimitation_point, angular_displacement, angular_displacement.magnitude())
+            delimitation_point += self.__total_displacement # translada para o ponto antes da rotação
 
+            self.__delimitation_points[index] = delimitation_point
+            
     def __applyForceOnCp(self, force:Force, duration:int): # chama o move()
         distance_to_cp = self.getCpCgDistance() # aponta para o cg
-        # self.__applyForceOnCg(force, duration)
+        self.__applyForceOnCg(force, duration)
         self.__rotateAroundCg(force, duration, distance_to_cp)
 
     def __applyForceOnPoint(self, force:Force ,duration:int): 
-        distance_to_application_point = self.__cg - force.applicationPoint() # aponta para o cg
+        cg_offset = self.getCpCgDistance().unitVector() * force.cgOffset() # transforma o cgoffset em vetor
+
+        distance_to_application_point = self.__cg - cg_offset 
         self.__applyForceOnCg(force, duration)
         self.__rotateAroundCg(force, duration, distance_to_application_point)
 
@@ -129,5 +135,8 @@ class RigidBody:
 
         else:
             raise ValueError("Invalid application point")
+
+    def getLookingDirection(self) -> Vector:
+        return self.__coordinate_system.getLookingDirection()
 
     
