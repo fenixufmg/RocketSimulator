@@ -3,7 +3,7 @@
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com
  * @create date 2022-04-19 16:09:31
- * @modify date 2022-04-19 16:19:54
+ * @modify date 2022-05-02 22:45:50
  * @desc returns the value of the final normal force coefficient derivative of the fins
 */
 """
