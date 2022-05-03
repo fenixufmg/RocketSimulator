@@ -3,7 +3,7 @@ from math import sin, radians
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com
  * @create date 2022-04-15 20:03:19
- * @modify date 2022-04-19 16:55:55
+ * @modify date 2022-05-03 13:23:00
  * @desc returns the normal force coefficient derivative for the rocket body components
  */
 """

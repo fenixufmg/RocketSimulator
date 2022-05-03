@@ -1,7 +1,7 @@
-import fin_body_interference as CNaTb
-import cp_of_one_fin as Xf
-import body_normal_force_coefficient_derivative as CNaB
-import cp_of_one_body_component as Xb
+from fin_body_interference import final_normal_force_coefficient_derivative as CNaTb
+from cp_of_one_fin import cp_of_one_fin as Xf
+from body_normal_force_coefficient_derivative import body_normal_force_coefficient_derivative as CNaB
+from cp_of_one_body_component import cp_of_one_body_component as Xb
 
 """/**
  * @author João Lucas Gomes Alencar
@@ -22,4 +22,6 @@ def center_of_pressure() -> float:
     Returns:
         X: Center of pressure of the rocket
     """
+
+
 

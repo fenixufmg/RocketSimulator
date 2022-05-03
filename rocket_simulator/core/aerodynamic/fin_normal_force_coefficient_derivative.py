@@ -1,9 +1,10 @@
 from math import sin, radians
+from single_fin_normal_force_coefficient import single_fin_normal_force_coefficient as CNa1
 """/**
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com
  * @create date 2022-04-15 20:03:19
- * @modify date 2022-04-19 16:42:10
+ * @modify date 2022-05-03 12:53:47
  * @desc returns the normal force coefficient derivative for all the fins
  */
 """
