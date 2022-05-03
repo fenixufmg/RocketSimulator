@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
-from material_model import MaterialModel
-from models.physics.rigid_body import RigidBody
+from other.material_model import MaterialModel
+from core.physics.body.rigid_body import RigidBody
+from models.structure.abstract_model import AbstractModel
 
-class TransitionModel:
+class TransitionModel(AbstractModel):
     def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material):
         self.__position = position
         self.__height = height

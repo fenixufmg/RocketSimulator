@@ -117,13 +117,13 @@ def threeDTest():
     plt.show()
 
 def trajectoryTest():
-    test_force = TestForce(3,0,20,ApplicationPoint.CG)
+    test_force = TestForce(10,0,50,ApplicationPoint.CG)
     weight = WeightForce()
 
     simulation = Simulation(rigid_body)
     simulation.addForce(test_force)
     simulation.addForce(weight)
-    simulations = simulation.simulate(25)
+    simulations = simulation.simulate(40)
 
     x = []
     y = []
@@ -142,7 +142,7 @@ def trajectoryTest():
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.plot3D(x,y,z)
-    ax.quiver() # plotar setas
+    # ax.quiver() # plotar setas
     plt.show()
 
 rigid_body = RigidBody([])

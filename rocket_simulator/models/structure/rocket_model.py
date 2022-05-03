@@ -3,11 +3,12 @@ from typing import List
 
 from nose_model import NoseModel
 from cylindrical_body_model import CylindricalBodyModel
-from models.physics.rigid_body import RigidBody
+from core.physics.body.rigid_body import RigidBody
 from transition_model import TransitionModel
 from fin_model import FinModel
+from models.structure.abstract_model import AbstractModel
 
-class RocketModel:
+class RocketModel(AbstractModel):
     def __init__(self, nose:NoseModel, cylindrical_bodies:List[CylindricalBodyModel], transitions:List[TransitionModel], fin:FinModel):
         self.__nose = nose
         self.__cylindrical_bodies = cylindrical_bodies
@@ -15,5 +16,5 @@ class RocketModel:
         self.__fin = fin
         self.__rigid_body = self.__createRigidBody()
 
-    def __createRigidBody():
+    def __createRigidBody(self) -> RigidBody:
         pass

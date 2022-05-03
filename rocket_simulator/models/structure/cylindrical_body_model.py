@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
-from models.physics.rigid_body import RigidBody
-from material_model import MaterialModel
+from core.physics.body.rigid_body import RigidBody
+from other.material_model import MaterialModel
+from models.structure.abstract_model import AbstractModel
 
-class CylindricalBodyModel:
+class CylindricalBodyModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material:MaterialModel):
         self.__height = height
         self.__diameter = diameter

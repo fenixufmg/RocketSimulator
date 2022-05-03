@@ -6,4 +6,5 @@ class DeltaTimeSimulation:
         self.velocity = rigid_body.velocity()
         self.angular_velocity = rigid_body.angularVelocity()
         self.mass = rigid_body.mass()
+        self.looking_direction = rigid_body.getLookingDirection()
         self.time = time

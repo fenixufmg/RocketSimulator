@@ -7,69 +7,28 @@ from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 import numpy as np
 
 class RigidBody:
-    def __init__(self, delimitation_points):
-        self.__delimitation_points = delimitation_points # lista de vetores
-        self.__volume = self.__calculateVolume()
-        self.__mass = self.__calculateMass()
-        self.__moment_of_inertia = self.__calculateMomementOfInertia()
+    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cp:Vector, cg:Vector):
+        # variaveis que são definidas fora do escopo do classe
+        self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo
+        self.__volume = volume
+        self.__mass = mass
+        self.__moment_of_inertia = moment_of_inertia
+        self.__cp = cp
+        self.__cg = cg
 
+        # variaveis de estado
         self.__velocity = Vector(0,0,0)
-        self.__angular_velocity = Vector(0,0,0)
-
-        self.__cp = self.__calculateCp()
-        self.__cg = self.__calculateCg()
-
         self.__total_displacement = Vector(0,0,0)
+        self.__angular_velocity = Vector(0,0,0)
         self.__total_angular_displacement = Vector(0,0,0)
 
+        # sistema de coordenadas local
         self.__coordinate_system = BodyCoordinateSystem()
-
-    def __calculateVolume(self):
-        pass
-
-    def __calculateMass(self):
-        # return self.__material.density() * self.__volume
-        return 2
-
-    def __calculateMomementOfInertia(self):
-        return 1
-
-    def __calculateCp(self) -> Vector: # mudar
-        return Vector(0,0,-1)
-
-    def __calculateCg(self) -> Vector: # mudar
-        return Vector(0,0,0)
-
-    def cg(self) -> Vector:
-        # return self.__applyDisplacement(self.__cg)
-        return self.__cg
-
-    def cp(self) -> Vector:
-        # return self.__applyDisplacement(self.__cp)
-        return self.__cp
-
-    def velocity(self) -> Vector:
-        return self.__velocity
-
-    def angularVelocity(self) -> Vector:
-        return self.__angular_velocity
-
-    def volume(self) -> float:
-        return self.__volume
-
-    def setMass(self, mass):
-        self.__mass = mass
-
-    def mass(self) ->float:
-        return self.__mass
 
     def test(self):
         self.__total_displacement += Vector(1,0,0)
         self.__cg += self.__total_displacement
         self.__cp += self.__total_displacement
-
-    def getCpCgDistance(self) -> Vector: # aponta para o cg
-        return self.__cg - self.__cp  
 
     def __applyForceOnCg(self, force:Force, duration:int):
         acceleration = force * (1/self.__mass)
@@ -136,7 +95,34 @@ class RigidBody:
         else:
             raise ValueError("Invalid application point")
 
+    # ========================= getters ========================= #
+    def cg(self) -> Vector:
+        return self.__cg
+
+    def cp(self) -> Vector:
+        return self.__cp
+
+    def velocity(self) -> Vector:
+        return self.__velocity
+
+    def angularVelocity(self) -> Vector:
+        return self.__angular_velocity
+
+    def volume(self) -> float:
+        return self.__volume
+
+    def mass(self) ->float:
+        return self.__mass
+
     def getLookingDirection(self) -> Vector:
         return self.__coordinate_system.getLookingDirection()
 
+    def getCpCgDistance(self) -> Vector: # aponta para o cg
+        return self.__cg - self.__cp  
+    # ========================= getters ========================= #
+
+    # ========================= setters ========================= #
+    def setMass(self, mass):
+        self.__mass = mass
+    # ========================= setters ========================= #
     

@@ -78,7 +78,7 @@ class Vector:
             raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(scalar))
 
     @staticmethod
-    def crossProduct(vector1: Vector, vector2: Vector) -> Vector:
+    def crossProduct(vector1: 'Vector', vector2: 'Vector') -> 'Vector':
         result = np.cross(vector1.toList(), vector2.toList())
         return Vector(result[0], result[1], result[2])
 
