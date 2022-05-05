@@ -12,7 +12,4 @@ class FinModel(AbstractModel):
         self.__max_thickness = max_thickness
         self.__sweep_angle = sweep_angle
         self.__material = material
-        self.__rigid_body = self.__createRigidBody()
-
-    def __createRigidBody():
-        pass
+        super().__init__()

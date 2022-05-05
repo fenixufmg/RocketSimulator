@@ -18,7 +18,3 @@ class NoseModel(AbstractModel):
         self.__thickness = thickness
         self.__nose_type = nose_type
         self.__material = material
-        self.__rigid_body = self.__createRigidBody()
-
-    def __createRigidBody():
-        pass

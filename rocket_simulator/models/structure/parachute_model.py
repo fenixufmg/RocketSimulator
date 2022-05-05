@@ -8,8 +8,8 @@ class ParachuteModel(AbstractModel):
     def __init__(self, name): # ???? definir parametros
         self.__name = name.lower().strip()
         self.__drag_coefficient = None
-        self.__rigid_body = self.__createRigidBody()
         self.__initialize()
+        super().__init__()
 
     def __initialize(self):
         parachutes_folder = Paths.PARACHUTES.value
@@ -18,6 +18,3 @@ class ParachuteModel(AbstractModel):
         parachutes_folder = json.loads(parachutes_folder)
 
         self.__drag_coefficient = parachutes_folder["drag_coefficient"]
-
-    def __createRigidBody():
-        pass

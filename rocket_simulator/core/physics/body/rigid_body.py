@@ -7,7 +7,7 @@ from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 import numpy as np
 
 class RigidBody:
-    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cp:Vector, cg:Vector):
+    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cg:Vector, cp:Vector):
         # variaveis que são definidas fora do escopo do classe
         self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo
         self.__volume = volume

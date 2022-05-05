@@ -14,7 +14,4 @@ class RocketModel(AbstractModel):
         self.__cylindrical_bodies = cylindrical_bodies
         self.__transitions = transitions
         self.__fin = fin
-        self.__rigid_body = self.__createRigidBody()
-
-    def __createRigidBody(self) -> RigidBody:
-        pass
+        super().__init__()

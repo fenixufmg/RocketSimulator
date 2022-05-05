@@ -12,7 +12,4 @@ class TransitionModel(AbstractModel):
         self.__top_diameter = top_diameter
         self.__thickness = thickness
         self.__material = material
-        self.__rigid_body = self.__createRigidBody()
-        
-    def __createRigidBody():
-        pass
+        super().__init__()

@@ -141,16 +141,21 @@ def trajectoryTest():
     # print(z)
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
+    ax.set_xlim(0, 5000)
+    ax.set_ylim(-2500, 2500)
+    ax.set_zlim(0, 5000)
     ax.plot3D(x,y,z)
     # ax.quiver() # plotar setas
     plt.show()
 
-rigid_body = RigidBody([])
+rigid_body = RigidBody([], 2, None, 1, Vector(0,0,0), Vector(0,0,-1))
 
 # threeDTest()
-trajectoryTest()
+# trajectoryTest()
 # rbRotationTest()
 # rotationTest()
 # decimal.getcontext().prec = 4
+
+
 
 

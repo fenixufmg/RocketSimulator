@@ -10,7 +10,4 @@ class CylindricalBodyModel(AbstractModel):
         self.__diameter = diameter
         self.__thickness = thickness
         self.__material = material
-        self.__rigid_body = self.__createRigidBody()
-
-    def __createRigidBody():
-        pass
+        super().__init__()

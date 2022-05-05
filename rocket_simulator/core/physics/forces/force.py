@@ -30,5 +30,5 @@ class Force(Vector, ABC):
 
     @abstractmethod
     def calculate(self, current_state:DeltaTimeSimulation):
-        pass
+        raise NotImplementedError("Function not implemented")
     
