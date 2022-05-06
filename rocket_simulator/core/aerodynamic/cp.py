@@ -22,6 +22,7 @@ def center_of_pressure() -> float:
     Returns:
         X: Center of pressure of the rocket
     """
+    
 
 
 
