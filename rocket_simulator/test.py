@@ -10,7 +10,6 @@ import decimal
 from core.physics.vector import Vector
 import numpy as np
 
-from core.physics.forces.rotation_test_force import RotationTestForce
 from core.physics.forces.weight_force import WeightForce
 
 def rotationTest():

@@ -1,5 +1,3 @@
-from multiprocessing.sharedctypes import Value
-from core.physics.point import Point
 from core.physics.forces.force import Force
 from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint

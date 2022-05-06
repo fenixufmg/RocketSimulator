@@ -22,8 +22,6 @@ class Simulation:
             delta_time_simulations[total_elapsed_time] = current_state # salva as informações do estado atual
 
             self.__applyForces(current_state) # atualiza o estado para o futuro
-            
-            
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 
