@@ -2,6 +2,7 @@
 from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
+import matplotlib
 from core.physics.physics import Simulation
 import numpy as np
 
@@ -22,14 +23,14 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, arrow
 
     velocities = []
     for time, simulation in simulations.items():
-        print(time)
-        print(f"v = {simulation.velocity.magnitude()}")
-        print(f"s = {simulation.position.magnitude()}")
+        # print(time)
+        # print(f"v = {simulation.velocity.magnitude()}")
+        # print(f"s = {simulation.cg.magnitude()}")
         velocities.append(simulation.velocity.magnitude())
-        x.append(simulation.position.x()) 
-        y.append(simulation.position.y()) 
-        z.append(simulation.position.z())
-        
+        x.append(simulation.cg.x()) 
+        y.append(simulation.cg.y()) 
+        z.append(simulation.cg.z())
+        # print(simulation.angular_velocity.magnitude())
         looking_direction = simulation.looking_direction * arrow_scale
 
         x_magnitudes.append(looking_direction.x())
@@ -52,32 +53,31 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, arrow
         rgb = [0,255,0]
         red_value = int((256*velocity/max_velocity)) - 1
         green_value = 255 - red_value
-        print(red_value)
 
         if velocity > last_velocity: # velocidade crescendo
-            rgb = [red_value, green_value, rgb[2]]
+            rgb = [red_value, green_value, rgb[2],1]
 
         elif velocity < last_velocity: # velocidade diminuindo
-            rgb = [red_value, green_value, rgb[2]]
+            rgb = [red_value, green_value, rgb[2],1]
 
         last_velocity = velocity
-        rgb = [rgb[0]/255, rgb[1]/255, rgb[2]/255]
+        rgb = [rgb[0]/255, rgb[1]/255, rgb[2]/255,1]
+
         colors.append(rgb)
+        # colors.append(rgb)
+        # colors.append(rgb)
     # ============ configurações do gráficos ============ #
 
     # ax.plot3D(x,y,z)
-    for rgb in colors:
-        print([rgb[0]*255, rgb[1]*255, rgb[2]*255])
     ax.scatter(x,y,z, c=colors)
-
-    X = [2000,3000]
-    Y = [0,0]
-    Z = [2000,3000]
-
-    U = [100, 100]
-    V = [100, 100]
-    W = [500, 500]
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
     # ax.quiver(x,y,z, x_magnitudes, y_magnitudes, z_magnitudes)
-    # ax.quiver(x,y,z, x_magnitudes, y_magnitudes, z_magnitudes, color=colors)
+    
+    normalizer = matplotlib.colors.Normalize(vmin=0, vmax=255)
+    # pcm = ax.pcolormesh(x, y, z, vmin=0, vmax=1, cmap='PuBu_r')
+    # print(pcm(colors))
+    # viridis = matplotlib.cm.get_cmap("viridis", 12)
+    # print(viridis(colors))
+
+    ax.quiver(x,y,z, x_magnitudes, y_magnitudes, z_magnitudes)
     plt.show()

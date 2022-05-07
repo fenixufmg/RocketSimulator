@@ -7,6 +7,7 @@ class RotationTestForce(Force):
         super().__init__(x, y, z, application_point, cg_offset)
 
     def calculate(self, current_state:DeltaTimeSimulation):
+        pass
         if current_state.time < 5:
             self.setX(0)
             self.setY(0)
@@ -21,4 +22,3 @@ class RotationTestForce(Force):
             self.setX(0)
             self.setY(0)
             self.setZ(0)
-        # print(self.toString())
