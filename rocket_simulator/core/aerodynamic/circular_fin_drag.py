@@ -1,13 +1,14 @@
 ##/**
-## * @author [author]
-## * @email [example@mail.com]
+## * @author [alexlb7]
+## * @email [alexandrelb.700@gmail.com]
 ## * @create date 2022-05-06 10:03:00
 ## * @modify date 2022-05-06 10:03:00
 ## * @desc [description]
 ## */
 
 ## condition: perpendicular air flow
-def fin_drag_coeficient(mach_number: float) -> float:
+def circular_fin_drag_coeficient(mach_number: float) -> float:
+    #only sub-sonic
     if(mach_number < 0.9):
         return pow((1 - (mach_number^2)), -0.417) - 1
     elif(mach_number < 1):
