@@ -7,7 +7,7 @@ import numpy as np
 
 from core.physics.vector import Vector
 
-def velocityTest(rigid_body:RigidBody, forces:list, simulation_time:int, axis:Vector=None):
+def accelerationTest(rigid_body:RigidBody, forces:list, simulation_time:int, axis:Vector=None):
     simulation = Simulation(rigid_body)
     for force in forces:
         simulation.addForce(force)
@@ -20,13 +20,13 @@ def velocityTest(rigid_body:RigidBody, forces:list, simulation_time:int, axis:Ve
         x.append(simulation.time) 
 
         if axis is None:
-            y.append(simulation.velocity.magnitude())
+            y.append(simulation.acceleration.magnitude())
         else:
-            y_value = Vector.projectVector(simulation.velocity, axis).magnitudeRelativeTo(axis)
+            y_value = Vector.projectVector(simulation.acceleration, axis).magnitudeRelativeTo(axis)
             y.append(y_value)
     
     plt.plot(x,y, color="red")
-    plt.ylabel("Velocidade (m/s)")
+    plt.ylabel("Aceleração (m/s^2)")
     plt.xlabel("Tempo decorrido (s)")
     plt.show()
 

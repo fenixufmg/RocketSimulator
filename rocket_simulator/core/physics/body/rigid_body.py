@@ -16,6 +16,7 @@ class RigidBody:
 
         # variaveis de estado
         self.__velocity = Vector(0,0,0)
+        self.__total_acceleration = Vector(0,0,0)
         self.__total_displacement = Vector(0,0,0)
         self.__angular_velocity = Vector(0,0,0)
         self.__total_angular_displacement = Vector(0,0,0)
@@ -30,6 +31,7 @@ class RigidBody:
 
     def __applyForceOnCg(self, force:Force, duration:int):
         acceleration = force * (1/self.__mass)
+        self.__total_acceleration += acceleration
 
         displacement = self.__velocity*duration + (acceleration * duration**2)*0.5
         velocity = self.__velocity + acceleration*duration # velocidade inicial é a velocidade de um estado antes do atual
@@ -93,6 +95,11 @@ class RigidBody:
         else:
             raise ValueError("Invalid application point")
 
+    def applyForces(self, forces:list, duration:int):
+        self.__total_acceleration = Vector(0,0,0) # reseta a aceleracão
+        for force in forces:
+            self.applyForce(force, duration)
+
     # ========================= getters ========================= #
     def cg(self) -> Vector:
         return self.__cg
@@ -102,6 +109,9 @@ class RigidBody:
 
     def velocity(self) -> Vector:
         return self.__velocity
+
+    def acceleration(self) -> Vector:
+        return self.__total_acceleration
 
     def angularVelocity(self) -> Vector:
         return self.__angular_velocity

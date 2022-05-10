@@ -29,7 +29,8 @@ class Simulation:
     def __applyForces(self, current_state):
         for force in self.__forces:
             force.calculate(current_state) 
-            self.__rigid_body.applyForce(force, self.__DELTA_TIME)
+            
+        self.__rigid_body.applyForces(self.__forces, self.__DELTA_TIME)
 
     def addForce(self, force:Force) -> None:
         self.__forces.append(force)

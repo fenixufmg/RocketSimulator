@@ -37,6 +37,16 @@ class Vector:
     def magnitude(self):
         return self.__calculateMagnitude()
 
+    def magnitudeRelativeTo(self, root:'Vector'):
+        magnitude = self.magnitude()
+        dot_product = Vector.dotProduct(self, root)
+        if dot_product == 0:
+            return 0
+            
+        magnitude *=  dot_product / abs(dot_product)
+        return magnitude
+
+
     def unitVector(self)-> 'Vector':
         if self.__magnitude == 0:
             return Vector(0,0,0)
@@ -115,6 +125,10 @@ class Vector:
         rotated_vector = Vector(rotated_vector[0,0], rotated_vector[1,0], rotated_vector[2,0])
         return rotated_vector
 
+    @staticmethod
+    def projectVector(vector:'Vector', root:'Vector'):
+        scalar = Vector.dotProduct(vector, root)/(root.magnitude()**2)
+        return root * scalar
         
 
 
