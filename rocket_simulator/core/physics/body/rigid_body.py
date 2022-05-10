@@ -2,17 +2,16 @@ from core.physics.forces.force import Force
 from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint
 from core.physics.body.body_coordinate_system import BodyCoordinateSystem
-import numpy as np
 
 class RigidBody:
-    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cg:Vector, cp:Vector):
+    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cp:Vector):
         # variaveis que são definidas fora do escopo do classe
-        self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo
+        self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
         self.__volume = volume
         self.__mass = mass
         self.__moment_of_inertia = moment_of_inertia
         self.__cp = cp
-        self.__cg = cg
+        self.__cg = Vector(0,0,0) # centrado no cg
 
         # variaveis de estado
         self.__velocity = Vector(0,0,0)
@@ -23,6 +22,15 @@ class RigidBody:
 
         # sistema de coordenadas local
         self.__coordinate_system = BodyCoordinateSystem()
+        self.__validate()
+
+    def __validate(self):
+        if len(self.__delimitation_points) != 2:
+            raise ValueError("2 delimitation points should be specified") 
+        if self.__delimitation_points[0].magnitudeRelativeTo(Vector(0,0,1)) < 0:
+            raise ValueError("Top delimitation point and bottom are inverted")
+        if self.__delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
+            raise ValueError("Top delimitation point and bottom are inverted")
 
     def test(self):
         self.__total_displacement += Vector(1,0,0)
@@ -77,10 +85,25 @@ class RigidBody:
 
     def __applyForceOnPoint(self, force:Force ,duration:int): 
         cg_offset = self.getCpCgDistance().unitVector() * force.cgOffset() # transforma o cgoffset em vetor
+        cg_offset += self.__total_displacement
 
         distance_to_application_point = self.__cg - cg_offset 
         self.__applyForceOnCg(force, duration)
         self.__rotateAroundCg(force, duration, distance_to_application_point)
+
+    def __isForceInsideBody(self, force:Force):
+        length_up = (self.__delimitation_points[0] - self.__cg).magnitude()
+        length_up = round(length_up, 5)
+
+        length_down = (self.__delimitation_points[1] - self.__cg).magnitude()
+        length_down = round(length_down, 5)
+        
+        cg_offset = force.cgOffset()
+
+        if(cg_offset < 0 and abs(cg_offset) > length_down):
+            raise ValueError(f"Force applied bellow body, cg_offset: {force.cgOffset()}, length down: {length_down}")
+        if(cg_offset > 0 and abs(cg_offset) > length_up):
+            raise ValueError(f"Force applied above body, cg_offset: {force.cgOffset()}, length up: {length_up}")
 
     def applyForce(self, force:Force, duration:int):
         if force.applicationPoint() == ApplicationPoint.CG:
@@ -90,6 +113,7 @@ class RigidBody:
             self.__applyForceOnCp(force, duration)
         
         elif force.applicationPoint() == ApplicationPoint.CUSTOM:
+            self.__isForceInsideBody(force)
             self.__applyForceOnPoint(force, duration)
 
         else:
