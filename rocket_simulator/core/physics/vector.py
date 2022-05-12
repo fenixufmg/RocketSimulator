@@ -5,13 +5,14 @@ from math import cos, sin
 from multiprocessing.sharedctypes import Value
 from typing import Type
 import numpy as np
+from numpy import ndarray
+
 
 class Vector:
     def __init__(self, x, y, z):
         self.__x = x
         self.__y = y
         self.__z = z
-        self.__magnitude = self.__calculateMagnitude()
 
     def __calculateMagnitude(self) -> float: 
         return math.sqrt(self.__x**2 + self.__y**2 + self.__z**2)
@@ -48,18 +49,18 @@ class Vector:
 
 
     def unitVector(self)-> 'Vector':
-        if self.__magnitude == 0:
+        if self.__calculateMagnitude() == 0:
             return Vector(0,0,0)
 
-        x = self.__x / self.__magnitude
-        y = self.__y / self.__magnitude
-        z = self.__z / self.__magnitude
+        x = self.__x / self.__calculateMagnitude()
+        y = self.__y / self.__calculateMagnitude()
+        z = self.__z / self.__calculateMagnitude()
         return Vector(x,y,z)
 
-    def toList(self) -> str:
+    def toList(self) -> list:
         return [self.__x, self.__y, self.__z]
 
-    def toNumpyVector(self) -> np.matrix:
+    def toNumpyVector(self) -> ndarray:
         return np.matrix([self.toList()]).transpose()
         
     def __add__(self, vector:'Vector') -> 'Vector':
@@ -85,7 +86,7 @@ class Vector:
             return Vector(x,y,z)
 
         else:
-            raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(scalar))
+            raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'".format(self.__class__, type(scalar)))
 
     def __str__(self):
         result = self.toList()
