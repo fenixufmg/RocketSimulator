@@ -1,6 +1,6 @@
 
 from tkinter import Y
-from core.physics.physics import Simulation
+from core.physics.simulation import Simulation
 from core.physics.forces.test_force import TestForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt

@@ -2,7 +2,7 @@ from multiprocessing.sharedctypes import Value
 from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
-from core.physics.physics import Simulation
+from core.physics.simulation import Simulation
 import numpy as np
 
 from core.physics.vector import Vector
