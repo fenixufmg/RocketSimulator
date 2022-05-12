@@ -8,14 +8,12 @@ class TranslationTestForce(Force):
         super().__init__(x, y, z, application_point, cg_offset)
 
     def calculate(self, current_state:DeltaTimeSimulation):
-        if current_state.time == 10:
+        if current_state.time >= 10:
             self.setX(0)
             self.setY(0)
             self.setZ(0)
         
-        if current_state.time == 29:
+        if current_state.time >= 29:
             self.setX(0)
             self.setY(0)
             self.setZ(current_state.mass * -Constants.GRAVITY.value)
-
-        # print(self.toString())
