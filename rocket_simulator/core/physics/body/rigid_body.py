@@ -8,10 +8,10 @@ class RigidBody:
         # variaveis que são definidas fora do escopo do classe
         self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
         self.__volume = volume
-        self.__mass = mass
-        self.__moment_of_inertia = moment_of_inertia
-        self.__cp = cp
-        self.__cg = Vector(0,0,0) # centrado no cg
+        self.__mass = mass # também é variável de estado
+        self.__moment_of_inertia = moment_of_inertia # também é variável de estado
+        self.__cp = cp # também é variável de estado, mas tem tratamento diferente (estruturas)
+        self.__cg = Vector(0,0,0) # também é variável de estado, mas tem tratamento diferente (estruturas)
 
         # variaveis de estado
         self.__velocity = Vector(0,0,0)
