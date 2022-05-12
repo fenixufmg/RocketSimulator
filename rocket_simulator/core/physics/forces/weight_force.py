@@ -10,4 +10,5 @@ class WeightForce(Force):
     def calculate(self, current_state: DeltaTimeSimulation):
         weight_magnitude = current_state.mass * Constants.GRAVITY.value
         self.setZ(weight_magnitude)
-        
+        self.setX(0)
+        self.setY(0)
