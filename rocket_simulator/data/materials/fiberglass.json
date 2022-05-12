@@ -1,5 +1,6 @@
 {
     "name": "Fiberglass",
     "density": 1.85,
-    "yield_strength": 206000000
+    "yield_strength": 206000000,
+    "surface_roughness": 0.000005
 }

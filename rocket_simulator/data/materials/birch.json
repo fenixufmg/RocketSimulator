@@ -1,5 +1,6 @@
 {
     "name": "Birch",
     "density": 0.67,
-    "yield_strength": 31700000
+    "yield_strength": 31700000,
+    "surface_roughness": -1
 }

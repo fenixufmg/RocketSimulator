@@ -1,5 +1,6 @@
 {
     "name": "Balsa",
     "density": 0.17,
-    "yield_strength": ????
+    "yield_strength": ????,
+    "surface_roughness": -1
 }

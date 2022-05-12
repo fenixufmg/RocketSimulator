@@ -1,5 +1,6 @@
 {
     "name":"Acrylic",
     "density": 1.19,
-    "yield_strength": 69000000
+    "yield_strength": 69000000,
+    "surface_roughness": 0.0000005
 }

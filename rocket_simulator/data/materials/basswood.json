@@ -1,5 +1,6 @@
 {
     "name": "Basswood",
     "density": 0.5,
-    "yield_strength": 40700000
+    "yield_strength": 40700000,
+    "surface_roughness": -1
 }

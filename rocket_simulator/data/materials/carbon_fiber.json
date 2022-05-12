@@ -1,5 +1,6 @@
 {
     "name": "Carbon fiber",
     "density": 1.78,
-    "yield_strength": 2500000000
+    "yield_strength": 2500000000,
+    "surface_roughness": 0.000004
 }

@@ -1,5 +1,6 @@
 {
     "name": "Brass",
     "density": 8.6,
-    "yield_strength": 140000000
+    "yield_strength": 140000000,
+    "surface_roughness": -1
 }
