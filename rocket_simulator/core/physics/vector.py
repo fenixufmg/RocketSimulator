@@ -7,7 +7,6 @@ from typing import Type
 import numpy as np
 from numpy import ndarray
 
-
 class Vector:
     def __init__(self, x, y, z):
         """Representa um vetor.
