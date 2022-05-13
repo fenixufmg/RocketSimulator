@@ -2,6 +2,37 @@ from core.physics.vector import Vector
 
 class DeltaTimeSimulation:
     def __init__(self, rigid_body, time:int):
+        """ Representa o estado do rigid body em determinado instante de tempo.
+
+        Args:
+            rigid_body (_type_): Corpo rígido do qual serão retiradas as informações.
+            time (int): Instante de tempo.
+
+        Fields:
+            cg (Vector):
+                Centro de gravidade do corpo
+
+            cp (Vector):
+                Centro de pressão do corpo
+
+            velocity (Vector):
+                Velocidade do corpo
+
+            acceleration (Vector):
+                Aceleração do corpo
+
+            angular_velocity (Vector):
+                Velocidade angular do corpo
+
+            mass (float):
+                Massa do corpo
+
+            looking_direction (Vector):
+                Vetor que representa a orientação do corpo
+
+            time (float):
+                Instante de tempo
+        """
         self.cg = rigid_body.cg()
         self.cp = rigid_body.cp()
         self.velocity = rigid_body.velocity()

@@ -5,6 +5,24 @@ from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 
 class RigidBody:
     def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cp:Vector):
+        """Classse que representa um corpo rígido, seu estado é alterável.
+
+        Args:
+            delimitation_points (list): Lista que contem o ponto que limita o corpo superiormente e o ponto que limita
+            o corpo inferiormente (nessa ordem).
+            mass (float): Massa do corpo.
+            volume (float): Volume do corpo.
+            moment_of_inertia (float): Momento de inércia do corpo.
+            cp (Vector): Centro de pressão do corpo.
+
+        Fields:
+            __cg (Vector): Centro de massa do corpo, o valor inicial é sempre na origem.
+            __velocity (Vector): Velocidade de translação do corpo.
+            __total_displacement (Vector): Posição do corpo em relação a origem.
+            __total_acceleration (Vector): Aceleração resultante.
+            __angular_velocity (Vector): Velocidade angular.
+            __cordinate_system (BodyCoordinateSystem): Sistema de coordenadas relativo (do corpo).
+        """
         # variaveis que são definidas fora do escopo do classe
         self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
         self.__volume = volume
@@ -25,6 +43,11 @@ class RigidBody:
         self.__validate()
 
     def __validate(self):
+        """Valida as entradas do construtor.
+
+        Raises:
+            ValueError: Levantado se os pontos estão na ordem errada ou se estão em número errado.
+        """
         if len(self.__delimitation_points) != 2:
             raise ValueError("2 delimitation points should be specified") 
         if self.__delimitation_points[0].magnitudeRelativeTo(Vector(0,0,1)) < 0:
