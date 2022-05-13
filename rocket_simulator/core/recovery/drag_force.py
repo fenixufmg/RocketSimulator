@@ -5,5 +5,5 @@ from math import *
 *@ the drag force is calculated with the use of many variables such as the drag coefficient
 """
 
-def Drag_force(Drag_force, air_density, Transversal_section_area, Drag_coefficient, Velocity ):
-    return (1 / 2*air_density * Velocity ^ 2 * Transversal_section_area  * Drag_coefficient)
+def drag_force(drag_force, air_density, transversal_section_area, drag_coefficient, velocity ):
+    return (1 / 2*air_density * velocity ^ 2 * transversal_section_area  * drag_coefficient)
