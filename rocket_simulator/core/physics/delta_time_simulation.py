@@ -9,29 +9,14 @@ class DeltaTimeSimulation:
             time (int): Instante de tempo.
 
         Fields:
-            cg (Vector):
-                Centro de gravidade do corpo
-
-            cp (Vector):
-                Centro de pressão do corpo
-
-            velocity (Vector):
-                Velocidade do corpo
-
-            acceleration (Vector):
-                Aceleração do corpo
-
-            angular_velocity (Vector):
-                Velocidade angular do corpo
-
-            mass (float):
-                Massa do corpo
-
-            looking_direction (Vector):
-                Vetor que representa a orientação do corpo
-
-            time (float):
-                Instante de tempo
+            cg (Vector): Centro de gravidade do corpo
+            cp (Vector): Centro de pressão do corpo
+            velocity (Vector): Velocidade do corpo
+            acceleration (Vector): Aceleração do corpo
+            angular_velocity (Vector): Velocidade angular do corpo
+            mass (float): Massa do corpo
+            looking_direction (Vector): Vetor que representa a orientação do corpo
+            time (float): Instante de tempo
         """
         self.cg = rigid_body.cg()
         self.cp = rigid_body.cp()

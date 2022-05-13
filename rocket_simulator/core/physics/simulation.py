@@ -15,9 +15,7 @@ class Simulation:
 
         Fields:
             __DELTA_TIME (float): Tamanho do intervalo de tempo entre duas simulações, quanto menor mais próximo da realidade.
-
-            __forces (List[Force]):
-                Lista que contem as forças que serão usadas ao longo de toda a simulação.
+            __forces (List[Force]): Lista que contem as forças que serão usadas ao longo de toda a simulação.
         """
         self.__DELTA_TIME = 1
         self.__rigid_body = rigid_body
