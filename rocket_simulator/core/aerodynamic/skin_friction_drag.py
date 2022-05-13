@@ -22,6 +22,6 @@ def skin_friction_drag(reynolds_number: float, critical_reynolds_number: float,
     elif reynolds_number > critical_reynolds_number:
         cf = 0.032 * (material_roughness / rocket_length) ** 0.2
 
-    #adjust_skin_friction_drag_coefficient according to the mach number
+    #adjust skin friction drag coefficient according to the mach number
     adjust_cf = cf * (1 - 0.1 * mach_number ** 2)
     return adjust_cf

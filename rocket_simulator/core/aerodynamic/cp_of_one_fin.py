@@ -7,9 +7,14 @@
  */
 """
 
-def cp_of_one_fin(c: float, XmacLe: float, XleY: float, cY: float, Afin: float) -> float:
+def cp_of_one_fin(fin_geometry: str, xt: float, rc: float, rt: float):
     """
     Args:
+        xt: position x of the fin tip measured from the (0,0) point
+        rc: root_chord
+        rt: tip_chord
+        fin_geometry: Geometry of the fin
+        
         c: Mean aerodynamic chord length
         XmacLe: Effective leading edge location
         XleY: Leading edge position at spanwise position Y
@@ -18,5 +23,7 @@ def cp_of_one_fin(c: float, XmacLe: float, XleY: float, cY: float, Afin: float) 
     Returns:
         Xf: Center os pressure position of the fin 
     """
-    return XmacLe + 0.25 * c
-    #OBS: obter XmacLe
+    if fin_geometry == "trapezoidal":
+        return xt / 3 * (rc + 2 * rt) / (rc + rt) + (rc**2 + rt**2 + rc * rt) / (6 * rc + rt)
+
+

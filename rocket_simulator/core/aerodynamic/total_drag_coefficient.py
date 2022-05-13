@@ -9,7 +9,7 @@ import component_drag_coefficient as CDc
  */
 """
 
-def total_drag_coefficient(components_number: float,CDc: float, CDf: float) -> float:
+def total_drag_coefficient(components_number: float, CDc: float, CDf: float) -> float:
     return CDc + CDf
     """
     Parameters:

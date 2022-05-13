@@ -8,15 +8,21 @@
  */
  """
 
-def mean_aerodynamic_chord_length(rc: float, rt: float):
+def mean_aerodynamic_chord_length(fin_geometry: str, rc: float, rt: float):
     """
     Args:
+        fin_geometry: Geometry of the fin
         rc: root_chord
         rt: tip_chord
     Returns:
         C: Mean aerodynamic chord
     """
-    return 2 * (rc + rt - (rc * rt) / (rc + rt)) / 3
-    #Only for trapezoidal fins (It is necessary to include for free form fins and elliptical fins)
+    if fin_geometry == "trapezoidal":
+        return 2 * (rc + rt - (rc * rt) / (rc + rt)) / 3
+
+    elif fin_geometry == "elliptical":
+        return rc * 0.85
+
+    
 
 
