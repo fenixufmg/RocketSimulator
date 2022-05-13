@@ -5,5 +5,5 @@ from math import *
 *@ the velocity is the velocity on the vertical axis
 """
 
-def V(V, V0, at):
-    return (V0 + at)
+def Velocity(Velocity, Velocity0, accelerationtime):
+    return (Velocity0 + accelerationtime)
