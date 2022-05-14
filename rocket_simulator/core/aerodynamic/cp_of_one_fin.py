@@ -25,5 +25,8 @@ def cp_of_one_fin(fin_geometry: str, xt: float, rc: float, rt: float):
     """
     if fin_geometry == "trapezoidal":
         return xt / 3 * (rc + 2 * rt) / (rc + rt) + (rc**2 + rt**2 + rc * rt) / (6 * rc + rt)
+    
+    if fin_geometry == "elliptical":
+        return rc * 0.288
 
 

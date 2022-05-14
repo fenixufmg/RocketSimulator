@@ -44,4 +44,3 @@ def normal_force_coefficient_derivative(CNa1: float, D: float, N: int, Ntot: int
     elif Ntot > 8:
         return CNan * 0.750
 
-print(normal_force_coefficient_derivative(4, 90, 5, 40))
