@@ -13,3 +13,12 @@ class FinModel(AbstractModel):
         self.__sweep_angle = sweep_angle
         self.__material = material
         super().__init__()
+
+    def calculateVolume(self) -> float:
+        area = (self.__span*(self.__tip_chord+self.__root_chord))/2
+        volume = area*self.__max_thickness
+        return volume
+    
+    def calculateMass(self)-> float:
+        mass = self.__material.density*self.calculateVolume
+        return mass
