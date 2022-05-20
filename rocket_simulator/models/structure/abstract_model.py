@@ -9,7 +9,7 @@ class AbstractModel(ABC):
         self.moment_of_inertia = self.calculateMomentOfInertia()
         self.cg = self.calculateCg()
         self.cp = self.calculateCp()
-        self.delimitation_points = self.createDelimitationPoints()
+        # self.delimitation_points = self.createDelimitationPoints()
         self.rigid_body = self.createRigidBody()
 
     @abstractmethod
