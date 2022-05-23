@@ -4,7 +4,7 @@ from core.physics.body.application_point import ApplicationPoint
 from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 
 class RigidBody:
-    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cp:Vector):
+    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cg:Vector, cp:Vector):
         """Classse que representa um corpo rígido, seu estado é alterável. O corpo é entendido como o conjunto de pontos
         que o representa, que no caso são o CG, CP, o ponto de limitação superior e o ponto de limitação inferior
 
@@ -15,6 +15,7 @@ class RigidBody:
             volume (float): Volume do corpo.
             moment_of_inertia (float): Momento de inércia do corpo.
             cp (Vector): Centro de pressão do corpo.
+            cg (Vector): Centro de massa do corpo.
 
         Fields:
             __cg (Vector): Centro de massa do corpo, o valor inicial é sempre na origem.
@@ -30,7 +31,7 @@ class RigidBody:
         self.__mass = mass # também é variável de estado
         self.__moment_of_inertia = moment_of_inertia # também é variável de estado
         self.__cp = cp # também é variável de estado, mas tem tratamento diferente (estruturas)
-        self.__cg = Vector(0,0,0) # também é variável de estado, mas tem tratamento diferente (estruturas)
+        self.__cg = cg # também é variável de estado, mas tem tratamento diferente (estruturas)
 
         # variaveis de estado
         self.__velocity = Vector(0,0,0)
@@ -273,5 +274,22 @@ class RigidBody:
              mass (float): Novo valor de massa.
         """
         self.__mass = mass
+
+    def setCp(self, cp:Vector) -> None:
+        """Iguala o Cp ao novo valor do parâmetro.
+
+        Args:
+             cp (Vector): Novo valor do Cp.
+        """
+        self.__cp = cp
+
+    def setCg(self, cg:Vector) -> None:
+        """Iguala o Cg ao novo valor do parâmetro.
+
+        Args:
+             cg (Vector): Novo valor do Cg.
+        """
+        self.__cp = cg
+        
     # ========================= setters ========================= #
     
