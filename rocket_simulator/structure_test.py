@@ -10,7 +10,7 @@ from rb_test.angular_velocity_test import angularVelocityTest
 from core.physics.forces.weight_force import WeightForce
 from rb_test.acceleration_test import accelerationTest
 
-rigid_body = RigidBody([Vector(0,0,2), Vector(0,0,-2)], 2, None, 1, Vector(0,0,-1))
+rigid_body = RigidBody([Vector(0,0,2), Vector(0,0,-2)], 2, None, 1, Vector(0,0,0) , Vector(0,0,-1))
 
 translation_force = TranslationTestForce(10,0,50,ApplicationPoint.CG)
 weight = WeightForce()

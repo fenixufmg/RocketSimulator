@@ -18,29 +18,29 @@ class RigidBody:
             cg (Vector): Centro de massa do corpo.
 
         Fields:
-            __cg (Vector): Centro de massa do corpo, o valor inicial é sempre na origem.
-            __velocity (Vector): Velocidade de translação do corpo.
-            __total_displacement (Vector): Posição do corpo em relação a origem.
-            __total_acceleration (Vector): Aceleração resultante.
-            __angular_velocity (Vector): Velocidade angular.
-            __cordinate_system (BodyCoordinateSystem): Sistema de coordenadas relativo (do corpo).
+            cg (Vector): Centro de massa do corpo, o valor inicial é sempre na origem.
+            velocity (Vector): Velocidade de translação do corpo.
+            total_displacement (Vector): Posição do corpo em relação a origem.
+            total_acceleration (Vector): Aceleração resultante.
+            angular_velocity (Vector): Velocidade angular.
+            cordinate_system (BodyCoordinateSystem): Sistema de coordenadas relativo (do corpo).
         """
         # variaveis que são definidas fora do escopo do classe
-        self.__delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
-        self.__volume = volume
-        self.__mass = mass # também é variável de estado
-        self.__moment_of_inertia = moment_of_inertia # também é variável de estado
-        self.__cp = cp # também é variável de estado, mas tem tratamento diferente (estruturas)
-        self.__cg = cg # também é variável de estado, mas tem tratamento diferente (estruturas)
+        self.delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
+        self.volume = volume
+        self.mass = mass # também é variável de estado
+        self.moment_of_inertia = moment_of_inertia # também é variável de estado
+        self.cp = cp # também é variável de estado, mas tem tratamento diferente (estruturas)
+        self.cg = cg # também é variável de estado, mas tem tratamento diferente (estruturas)
 
         # variaveis de estado
-        self.__velocity = Vector(0,0,0)
-        self.__total_acceleration = Vector(0,0,0)
-        self.__total_displacement = Vector(0,0,0)
-        self.__angular_velocity = Vector(0,0,0)
+        self.velocity = Vector(0,0,0)
+        self.total_acceleration = Vector(0,0,0)
+        self.total_displacement = Vector(0,0,0)
+        self.angular_velocity = Vector(0,0,0)
 
         # sistema de coordenadas local
-        self.__coordinate_system = BodyCoordinateSystem()
+        self.cordinate_system = BodyCoordinateSystem()
         self.__validate()
 
     def __validate(self) -> None:
@@ -49,11 +49,11 @@ class RigidBody:
         Raises:
             ValueError: Levantado se os pontos estão na ordem errada ou se estão em número errado.
         """
-        if len(self.__delimitation_points) != 2:
+        if len(self.delimitation_points) != 2:
             raise ValueError("2 delimitation points should be specified") 
-        if self.__delimitation_points[0].magnitudeRelativeTo(Vector(0,0,1)) < 0:
+        if self.delimitation_points[0].magnitudeRelativeTo(Vector(0,0,1)) < 0:
             raise ValueError("Top delimitation point and bottom are inverted")
-        if self.__delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
+        if self.delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
             raise ValueError("Top delimitation point and bottom are inverted")
 
     def __applyForceOnCg(self, force:Force, duration:float) -> None:
@@ -63,21 +63,21 @@ class RigidBody:
             force (Force): Força que será aplicada.
             duration (float): Duração de tempo no qual a força será aplicada.
         """
-        acceleration = force * (1/self.__mass)
-        self.__total_acceleration += acceleration
+        acceleration = force * (1/self.mass)
+        self.total_acceleration += acceleration
 
-        displacement = self.__velocity*duration + (acceleration * duration**2)*0.5
-        velocity = self.__velocity + acceleration*duration # velocidade inicial é a velocidade de um estado antes do atual
+        displacement = self.velocity*duration + (acceleration * duration**2)*0.5
+        velocity = self.velocity + acceleration*duration # velocidade inicial é a velocidade de um estado antes do atual
 
-        self.__velocity = velocity
-        self.__total_displacement += displacement
+        self.velocity = velocity
+        self.total_displacement += displacement
 
         # move os pontos
-        self.__cg += displacement
-        self.__cp += displacement
+        self.cg += displacement
+        self.cp += displacement
 
-        for index, delimitation_point in enumerate(self.__delimitation_points):
-            self.__delimitation_points[index] += displacement 
+        for index, delimitation_point in enumerate(self.delimitation_points):
+            self.delimitation_points[index] += displacement 
 
     def __rotateAroundCg(self, force:Force, duration:float, lever:Vector) -> None:
         """Rotaciona o corpo em torno do CG.
@@ -89,26 +89,26 @@ class RigidBody:
 
         """
         torque = Vector.crossProduct(force, lever)
-        angular_acceleration = torque * (1/self.__moment_of_inertia)
+        angular_acceleration = torque * (1/self.moment_of_inertia)
 
-        angular_displacement = self.__angular_velocity * duration + (angular_acceleration * duration**2) * 0.5
-        angular_velocity = self.__angular_velocity + angular_acceleration * duration
+        angular_displacement = self.angular_velocity * duration + (angular_acceleration * duration**2) * 0.5
+        angular_velocity = self.angular_velocity + angular_acceleration * duration
 
-        self.__angular_velocity = angular_velocity
+        self.angular_velocity = angular_velocity
 
         # rotaciona os pontos
-        self.__coordinate_system.rotate(angular_displacement)
+        self.cordinate_system.rotate(angular_displacement)
 
-        self.__cp -= self.__total_displacement # translada para a origem para rotacionar
-        self.__cp = Vector.rotateAroundAxis(self.__cp, angular_displacement, angular_displacement.magnitude())
-        self.__cp += self.__total_displacement # translada para o ponto antes da rotação
+        self.cp -= self.total_displacement # translada para a origem para rotacionar
+        self.cp = Vector.rotateAroundAxis(self.cp, angular_displacement, angular_displacement.magnitude())
+        self.cp += self.total_displacement # translada para o ponto antes da rotação
         
-        for index, delimitation_point in enumerate(self.__delimitation_points):
-            delimitation_point -= self.__total_displacement  # translada para a origem para rotacionar
+        for index, delimitation_point in enumerate(self.delimitation_points):
+            delimitation_point -= self.total_displacement  # translada para a origem para rotacionar
             delimitation_point = Vector.rotateAroundAxis(delimitation_point, angular_displacement, angular_displacement.magnitude())
-            delimitation_point += self.__total_displacement # translada para o ponto antes da rotação
+            delimitation_point += self.total_displacement # translada para o ponto antes da rotação
 
-            self.__delimitation_points[index] = delimitation_point
+            self.delimitation_points[index] = delimitation_point
             
     def __applyForceOnCp(self, force:Force, duration:float) -> None:
         """Aplica uma força no CP durante uma determinada duração, oque resulta em uma translação e em uma rotação.
@@ -129,9 +129,9 @@ class RigidBody:
             duration (float): Duração de aplicação da força.
         """
         cg_offset = self.getCpCgDistance().unitVector() * force.cgOffset() # transforma o cgoffset em vetor
-        cg_offset += self.__total_displacement
+        cg_offset += self.total_displacement
 
-        distance_to_application_point = self.__cg - cg_offset 
+        distance_to_application_point = self.cg - cg_offset 
         self.__applyForceOnCg(force, duration)
         self.__rotateAroundCg(force, duration, distance_to_application_point)
 
@@ -144,10 +144,10 @@ class RigidBody:
         Raises:
             ValueError: Levantado se o ponto de aplicação estiver fora do corpo.
         """
-        length_up = (self.__delimitation_points[0] - self.__cg).magnitude()
+        length_up = (self.delimitation_points[0] - self.cg).magnitude()
         length_up = round(length_up, 5)
 
-        length_down = (self.__delimitation_points[1] - self.__cg).magnitude()
+        length_down = (self.delimitation_points[1] - self.cg).magnitude()
         length_down = round(length_down, 5)
         
         cg_offset = force.cgOffset()
@@ -188,74 +188,18 @@ class RigidBody:
             forces (list[Force]): Lista que contém as forças que serão aplicadas.
             duration (float): Duração de aplicação da força.
         """
-        self.__total_acceleration = Vector(0,0,0) # reseta a aceleracão resultante
+        self.total_acceleration = Vector(0,0,0) # reseta a aceleracão resultante
         for force in forces:
             self.applyForce(force, duration)
 
     # ========================= getters ========================= #
-    def cg(self) -> Vector:
-        """Retorna o CG.
-
-        Returns:
-             Vector: CG.
-        """
-        return self.__cg
-
-    def cp(self) -> Vector:
-        """Retorna o CP.
-
-        Returns:
-             Vector: CP.
-        """
-        return self.__cp
-
-    def velocity(self) -> Vector:
-        """Retorna a velocidade.
-
-        Returns:
-             Vector: Velocidade.
-        """
-        return self.__velocity
-
-    def acceleration(self) -> Vector:
-        """Retorna a aceleração.
-
-        Returns:
-             Vector: Aceleração.
-        """
-        return self.__total_acceleration
-
-    def angularVelocity(self) -> Vector:
-        """Retorna a velocidade angular.
-
-        Returns:
-             Vector: Velocidade angular.
-        """
-        return self.__angular_velocity
-
-    def volume(self) -> float:
-        """Retorna o volume.
-
-        Returns:
-             float: Volume.
-        """
-        return self.__volume
-
-    def mass(self) -> float:
-        """Retorna a massa.
-
-        Returns:
-             float: Massa.
-        """
-        return self.__mass
-
     def getLookingDirection(self) -> Vector:
         """Retorna o vetor que representa a orientação do foguete.
 
         Returns:
              Vector: Orientação do foguete.
         """
-        return self.__coordinate_system.getLookingDirection()
+        return self.cordinate_system.getLookingDirection()
 
     def getCpCgDistance(self) -> Vector:
         """Retorna o vetor que representa a distância entre o CP e o CG (apontando para o CG)
@@ -263,25 +207,33 @@ class RigidBody:
         Returns:
              Vector: Distância entre CP e CG.
         """
-        return self.__cg - self.__cp  
+        return self.cg - self.cp  
+
+    def getTipDistanceToCp(self) -> Vector:
+        """Retorna o vetor que representa a distância entre a ponta do foguete e o CP (apontando para o CP)
+
+        Returns:
+             Vector: Distância entre a ponta do foguete e o CP.
+        """
+        return self.cp - self.delimitation_points[0]
+
+    def getTipDistanceToCg(self) -> Vector:
+        """Retorna o vetor que representa a distância entre a ponta do foguete e o CG (apontando para o CG)
+
+        Returns:
+             Vector: Distância entre a ponta do foguete e o CG.
+        """
+        return self.cg - self.delimitation_points[0]
     # ========================= getters ========================= #
 
     # ========================= setters ========================= #
-    def setMass(self, mass:float)-> None:
-        """Iguala a massa ao novo valor do parâmetro.
-
-        Args:
-             mass (float): Novo valor de massa.
-        """
-        self.__mass = mass
-
     def setCp(self, cp:Vector) -> None:
         """Iguala o Cp ao novo valor do parâmetro.
 
         Args:
              cp (Vector): Novo valor do Cp.
         """
-        self.__cp = cp
+        self.cp = cp
 
     def setCg(self, cg:Vector) -> None:
         """Iguala o Cg ao novo valor do parâmetro.
@@ -289,7 +241,7 @@ class RigidBody:
         Args:
              cg (Vector): Novo valor do Cg.
         """
-        self.__cp = cg
+        self.cp = cg
         
     # ========================= setters ========================= #
     

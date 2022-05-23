@@ -18,11 +18,12 @@ class DeltaTimeSimulation:
             looking_direction (Vector): Vetor que representa a orientação do corpo
             time (float): Instante de tempo
         """
-        self.cg = rigid_body.cg()
-        self.cp = rigid_body.cp()
-        self.velocity = rigid_body.velocity()
-        self.acceleration = rigid_body.acceleration()
-        self.angular_velocity = rigid_body.angularVelocity()
-        self.mass = rigid_body.mass()
+        self.cg = rigid_body.cg
+        self.cp = rigid_body.cp
+        self.position = rigid_body.total_displacement
+        self.velocity = rigid_body.velocity
+        self.acceleration = rigid_body.total_acceleration
+        self.angular_velocity = rigid_body.angular_velocity
+        self.mass = rigid_body.mass
         self.looking_direction = rigid_body.getLookingDirection()
         self.time = time

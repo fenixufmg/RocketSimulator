@@ -18,3 +18,4 @@ class NoseModel(AbstractModel):
         self.__thickness = thickness
         self.__nose_type = nose_type
         self.__material = material
+        super().__init__()
