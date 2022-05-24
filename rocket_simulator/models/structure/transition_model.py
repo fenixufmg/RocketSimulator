@@ -6,7 +6,10 @@ from core.physics.body.rigid_body import RigidBody
 from models.structure.abstract_model import AbstractModel
 
 class TransitionModel(AbstractModel):
-    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material):
+    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material:MaterialModel):
+        
+        self.__verify(bottom_diameter,top_diameter,thickness)
+
         self.__position = position
         self.__height = height
         self.__bottom_diameter = bottom_diameter
@@ -15,6 +18,15 @@ class TransitionModel(AbstractModel):
         self.__material = material
         super().__init__()
 
+    def __verify(bottom_diameter,top_diameter,thickness):
+        if bottom_diameter<top_diameter: # bottom part is thinner
+            if thickness>=bottom_diameter/2: 
+                raise ValueError("Value of thickness is bigger than half of bottom outer diameter")
+        else:
+            if thickness>=top_diameter/2:
+                raise ValueError("Value of thickness is bigger than half of top outer diameter")
+
+ 
     def calculateVolume(self) -> float:
         top_inner_diameter = self.__top_diameter -2*self.__thickness
         bottom_inner_diameter = self.__bottom_diameter -2*self.__thickness
