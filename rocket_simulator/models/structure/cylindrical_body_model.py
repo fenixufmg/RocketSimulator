@@ -1,17 +1,26 @@
 from dataclasses import dataclass
 
 from math import pi
+from core.physics.vector import Vector
 from core.physics.body.rigid_body import RigidBody
 from other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
 
 class CylindricalBodyModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material:MaterialModel):
+        
+        self.__verify(diameter,thickness)
+
         self.__height = height
-        self.__diameter = diameter
+        self.__diameter = diameter # Outer diameter
         self.__thickness = thickness
         self.__material = material
         super().__init__()
+
+    def __verify(diameter,thickness):
+        if thickness>=diameter/2:
+            raise ValueError("Value of thickness is bigger than half of outer diameter")
+
 
     def calculateVolume(self) -> float:
         inner_diameter = self.__diameter -2*self.__thickness
@@ -22,3 +31,11 @@ class CylindricalBodyModel(AbstractModel):
         mass = self.__material.density*self.calculateVolume
         return mass
 
+    def calculateMomentOfInertia(self) -> float:
+        raise NotImplementedError("Function not implemented") # IMPLEMENTAR ESTA FUNÇÃO FUTURAMENTE
+
+    def calculateCg(self) -> Vector:
+        raise NotImplementedError("Function not implemented") # Tô esperando o Vitu fazer o raciocínio dele
+        # Cg = Vector(0,0,self.__height/2)
+        # return Cg
+    
