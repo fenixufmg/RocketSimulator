@@ -42,3 +42,6 @@ class AbstractModel(ABC, RigidBody):
         self.moment_of_inertia = self.calculateMomentOfInertia()
         self.cg = self.calculateCg()
         self.cp = self.calculateCp()
+
+    def toGroundCoordinates(self, local_coordinates:Vector) -> Vector:
+        return self.getTip() + local_coordinates

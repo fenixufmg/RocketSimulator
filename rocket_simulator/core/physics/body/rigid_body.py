@@ -194,15 +194,16 @@ class RigidBody:
 
     # ========================= getters ========================= #
     def getLookingDirection(self) -> Vector:
-        """Retorna o vetor que representa a orientação do foguete.
+        """Retorna o vetor que representa a orientação do corpo.
 
         Returns:
-             Vector: Orientação do foguete.
+             Vector: Orientação do corpo.
         """
         return self.cordinate_system.getLookingDirection()
 
     def getCpCgDistance(self) -> Vector:
-        """Retorna o vetor que representa a distância entre o CP e o CG (apontando para o CG)
+        """Retorna o vetor que representa a distância entre o CP e o CG (apontando para o CG), 
+        sua direção acompanha a direção (orientação) do corpo.
 
         Returns:
              Vector: Distância entre CP e CG.
@@ -210,20 +211,47 @@ class RigidBody:
         return self.cg - self.cp  
 
     def getTipDistanceToCp(self) -> Vector:
-        """Retorna o vetor que representa a distância entre a ponta do foguete e o CP (apontando para o CP)
+        """Retorna o vetor que representa a distância entre a ponta superior e o CP (apontando para o CP), 
+        sua direção acompanha a direção (orientação) do corpo.
 
         Returns:
-             Vector: Distância entre a ponta do foguete e o CP.
+             Vector: Distância entre a ponta superior e o CP.
         """
         return self.cp - self.delimitation_points[0]
 
     def getTipDistanceToCg(self) -> Vector:
-        """Retorna o vetor que representa a distância entre a ponta do foguete e o CG (apontando para o CG)
+        """Retorna o vetor que representa a distância entre a ponta superior e o CG (apontando para o CG),
+         sua direção acompanha a direção (orientação) do corpo.
 
         Returns:
-             Vector: Distância entre a ponta do foguete e o CG.
+             Vector: Distância entre a ponta superior e o CG.
         """
         return self.cg - self.delimitation_points[0]
+
+    def getTipToBaseDistance(self) -> Vector:
+        """Retorna o vetor que representa a distância entre a ponta superior e a ponta inferior (apontando
+         para a ponta inferior), sua direção acompanha a direção (orientação) do corpo.
+
+        Returns:
+            Vector: Distância entre a ponta superior e a ponta inferior.
+        """
+        return self.delimitation_points[1] - self.delimitation_points[0]
+
+    def getTip(self) -> Vector:
+        """Retorna o vetor posição da ponta do corpo.
+
+        Returns:
+            Vector: Vetor posição.
+        """
+        return self.delimitation_points[0]
+
+    def getBase(self) -> Vector:
+        """Retorna o vetor posição da base do corpo.
+
+        Returns:
+            Vector: Vetor posição.
+        """
+        return self.delimitation_points[1]
     # ========================= getters ========================= #
 
     # ========================= setters ========================= #

@@ -34,8 +34,11 @@ class CylindricalBodyModel(AbstractModel):
     def calculateMomentOfInertia(self) -> float:
         raise NotImplementedError("Function not implemented") # IMPLEMENTAR ESTA FUNÇÃO FUTURAMENTE
 
-    def calculateCg(self) -> Vector:
-        raise NotImplementedError("Function not implemented") # Tô esperando o Vitu fazer o raciocínio dele
-        # Cg = Vector(0,0,self.__height/2)
-        # return Cg
+    def calculateCg(self) -> Vector: # Feito amigo
+        # Primeiro pega o vetor de altura da peça, sua direção varia com a orientação do foguete mas o módulo é constante.
+        # getTipToBaseDistance() retorna o vetor que sai da ponta superior e vai até a ponta inferior
+        height = self.getTipToBaseDistance()
+        cg_local = height * 0.5 # produto por escalar
+        return self.toGroundCoordinates(cg_local)
+        
     
