@@ -4,13 +4,13 @@ from rocket_simulator.core.physics.vector import Vector
 
 class AbstractModel(ABC, RigidBody):
     def __init__(self) -> None:
+        self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         mass = self.calculateMass()
         moment_of_inertia = self.calculateMomentOfInertia()
         cg = self.calculateCg()
         cp = self.calculateCp()
-        delimitation_points = self.createDelimitationPoints()
-        super().__init__(delimitation_points, mass, volume, moment_of_inertia, cg, cp)
+        super().__init__(self.delimitation_points, mass, volume, moment_of_inertia, cg, cp)
     
     @abstractmethod
     def calculateVolume(self) -> float:

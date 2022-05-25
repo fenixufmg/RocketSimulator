@@ -5,11 +5,13 @@ from enum import Enum
 from core.physics.body.rigid_body import RigidBody
 from other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
+from core.physics.vector import Vector
+from utils.constants import Constants
 
 class NoseType(Enum):
-    none = 1
-    parabolic = 2
-    cubic = 3
+    CONICAL = 1
+    OGIVE = 2
+    PARABOLIC = 3
 
 class NoseModel(AbstractModel):
     def __init__(self, height, base_diameter, thickness, nose_type:NoseType, material:MaterialModel):
@@ -19,3 +21,48 @@ class NoseModel(AbstractModel):
         self.__nose_type = nose_type
         self.__material = material
         super().__init__()
+
+    def calculateVolume(self) -> float: # https://www.grc.nasa.gov/www/k-12/airplane/volume.html
+        if self.__nose_type == NoseType.CONICAL:
+            return (Constants.PI * self.__base_diameter**2 * self.__height) / (12)
+
+        elif self.__nose_type == NoseType.OGIVE:
+            return (2 * Constants.PI * self.__base_diameter**2 * self.__height) / (15) 
+
+        elif self.__nose_type == NoseType.PARABOLIC:
+            return (Constants.PI * self.__base_diameter**2 * self.__height) / (6) 
+        else:
+            raise ValueError(f"Nose type {self.__nose_type} is not available.")
+
+
+    def calculateMass(self)-> float:
+        return self.volume * self.__material.density
+
+    def calculateMomentOfInertia(self) -> float:
+        pass
+
+    def calculateCg(self) -> Vector:
+        pass
+
+    def calculateCp(self) -> Vector:
+        cp = None
+        if self.__nose_type == NoseType.CONICAL:
+            cp = self.getTipToBaseDistance() * (2/3)
+
+        elif self.__nose_type == NoseType.OGIVE:
+            cp = self.getTipToBaseDistance() * (0.466)
+
+        elif self.__nose_type == NoseType.PARABOLIC:
+            cp = self.getTipToBaseDistance() * (1/2)
+
+        else:
+            raise ValueError(f"Nose type {self.__nose_type} is not available.")
+
+        return self.toGroundCoordinates(cp)
+
+    def createDelimitationPoints(self) -> list:
+        upper_delimitation = Vector(0, 0, self.__height)
+        lower_delimitation = Vector(0, 0, 0)
+        return [upper_delimitation, lower_delimitation]
+
+    
