@@ -9,12 +9,12 @@ from models.structure.abstract_model import AbstractModel
 class CylindricalBodyModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material:MaterialModel):
         self.__verify(diameter,thickness)
-        super().__init__()
 
         self.__height = height
         self.__diameter = diameter # Outer diameter
         self.__thickness = thickness
         self.__material = material
+        super().__init__()
         
 
     def __verify(diameter,thickness):
