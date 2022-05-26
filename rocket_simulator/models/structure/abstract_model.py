@@ -29,7 +29,7 @@ class AbstractModel(ABC, RigidBody):
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
-    def calculateCp(self) -> Vector:
+    def calculateCp(self) -> Vector: # http://ftp.demec.ufpr.br/foguete/bibliografia/TIR-33%20Calculating%20the%20Center%20of%20Pressure%20of%20a%20Model%20Rocket.pdf
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
