@@ -5,5 +5,5 @@ from math import *
 *@ the time is defined by the remaining time until the rocket touches the ground
 """
 
-def time(time, intitial_vertical_position, max_speed):
+def time (initial_vertical_position, max_speed):
     return (initial_vertical_position / max_speed)

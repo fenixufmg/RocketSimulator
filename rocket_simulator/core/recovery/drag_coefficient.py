@@ -26,13 +26,6 @@ parachutes_map = {
     'cross' : parachute5
 }
 
-print(parachutes_map['conical'])
-
-class drag_coefficient:
-    def parachute_type(self, parachute_Name, drag_Coefficient):
-        for item in self.parachutes:
-            if item == parachute_Name:
-                return drag_Coefficient
 
 
 
