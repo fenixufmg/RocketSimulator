@@ -41,8 +41,17 @@ class NoseModel(AbstractModel):
     def calculateMomentOfInertia(self) -> float:
         pass
 
-    def calculateCg(self) -> Vector:
-        pass
+    def calculateCg(self) -> Vector: # https://en-gb.facebook.com/engineerprofph/photos/pcb.286878569591821/286874736258871/?type=3&theater
+        if self.__nose_type == NoseType.CONICAL:
+            return self.__height - self.__height/4 
+
+        elif self.__nose_type == NoseType.OGIVE: # estimativa
+            return self.__height - self.__height/4 
+
+        elif self.__nose_type == NoseType.PARABOLIC:
+            return self.__height - self.__height/3
+        else:
+            raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
     def calculateCp(self) -> Vector:
         cp = None
