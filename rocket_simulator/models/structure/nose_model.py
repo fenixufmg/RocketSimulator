@@ -45,8 +45,8 @@ class NoseModel(AbstractModel):
         if self.__nose_type == NoseType.CONICAL:
             return self.__height - self.__height/4 
 
-        elif self.__nose_type == NoseType.OGIVE: # estimativa
-            return self.__height - self.__height/4 
+        # elif self.__nose_type == NoseType.OGIVE: # estimativa
+        #     return self.__height - self.__height/4 
 
         elif self.__nose_type == NoseType.PARABOLIC:
             return self.__height - self.__height/3

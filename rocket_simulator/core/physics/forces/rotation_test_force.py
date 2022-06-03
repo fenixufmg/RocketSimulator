@@ -15,7 +15,7 @@ class RotationTestForce(Force):
             
         if current_state.time >= 5:
             self.setX(0)
-            self.setY(0.2)
+            self.setY(0.1)
             self.setZ(0)
 
         if current_state.time >= 6:
