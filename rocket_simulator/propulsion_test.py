@@ -19,7 +19,7 @@ rotation_force = RotationTestForce(0,0.1,0,ApplicationPoint.CP)
 thrust_test = ThrustTest()
 rotation_force = RotationTestForce(0,0.1,0,ApplicationPoint.CUSTOM, cg_offset=1.8)
 
-# trajectoryTest(rigid_body, [thrust_test , weight], 40, arrow_scale=400, has_arrows=True)
+trajectoryTest(rigid_body, [thrust_test, rotation_force , weight], 40, arrow_scale=400, has_arrows=True)
 # velocityTest(rigid_body ,[translation_force, rotation_force, weight], 40, axis=Vector(0,0,1))
 # accelerationTest(rigid_body ,[translation_force, rotation_force, weight], 40, axis=Vector(0,0,1))
 # angularVelocityTest(rigid_body,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
