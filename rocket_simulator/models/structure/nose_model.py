@@ -14,11 +14,13 @@ class NoseType(Enum):
     PARABOLIC = 3
 
 class NoseModel(AbstractModel):
-    def __init__(self, height, base_diameter, thickness, nose_type:NoseType, material:MaterialModel):
-        self.__height = height
+    def __init__(self, cylinder_height:float ,base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float ,material:MaterialModel):
+        self.__cylinder_height = cylinder_height
         self.__base_diameter = base_diameter
-        self.__thickness = thickness
+        self.__base_radius = base_diameter / 2
+        self.__thickness = thickness # implementar nariz oco
         self.__nose_type = nose_type
+        self.__thinness_factor = thinness_factor
         self.__material = material
         super().__init__()
 
@@ -27,10 +29,17 @@ class NoseModel(AbstractModel):
             return (Constants.PI * self.__base_diameter**2 * self.__height) / (12)
 
         elif self.__nose_type == NoseType.OGIVE:
-            return (2 * Constants.PI * self.__base_diameter**2 * self.__height) / (15) 
+            # return (2 * Constants.PI * self.__base_diameter**2 * self.__height) / (15) 
+            raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
         elif self.__nose_type == NoseType.PARABOLIC:
-            return (Constants.PI * self.__base_diameter**2 * self.__height) / (6) 
+            h = self.__cylinder_height
+            r = self.__base_radius
+            pi = Constants.PI
+            k = self.__thinness_factor
+
+            return pi*((h + k*r**2)*(r**2) - (k*r**4)/2)
+            
         else:
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
@@ -45,11 +54,11 @@ class NoseModel(AbstractModel):
         if self.__nose_type == NoseType.CONICAL:
             return self.__height - self.__height/4 
 
-        # elif self.__nose_type == NoseType.OGIVE: # estimativa
-        #     return self.__height - self.__height/4 
+        elif self.__nose_type == NoseType.OGIVE:
+            raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
         elif self.__nose_type == NoseType.PARABOLIC:
-            return self.__height - self.__height/3
+            return self.__height - self.__height/3 
         else:
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
 

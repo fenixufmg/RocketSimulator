@@ -4,7 +4,7 @@ from core.physics.body.application_point import ApplicationPoint
 from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 
 class RigidBody:
-    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia:float, cg:Vector, cp:Vector):
+    def __init__(self, delimitation_points:list, mass:float, volume:float, moment_of_inertia_function, cg:Vector, cp:Vector):
         """Classse que representa um corpo rígido, seu estado é alterável. O corpo é entendido como o conjunto de pontos
         que o representa, que no caso são o CG, CP, o ponto de limitação superior e o ponto de limitação inferior
 
@@ -13,7 +13,7 @@ class RigidBody:
             o corpo inferiormente (nessa ordem).
             mass (float): Massa do corpo.
             volume (float): Volume do corpo.
-            moment_of_inertia (float): Momento de inércia do corpo.
+            moment_of_inertia_function (function): Função que calcula o momento de inércia do corpo.
             cp (Vector): Centro de pressão do corpo.
             cg (Vector): Centro de massa do corpo.
 
@@ -29,7 +29,8 @@ class RigidBody:
         self.delimitation_points = delimitation_points # lista de vetores que limitam o corpo (apenas 2, topo e base)
         self.volume = volume
         self.mass = mass # também é variável de estado
-        self.moment_of_inertia = moment_of_inertia # também é variável de estado
+        self.moment_of_inertia = None # também é variável de estado
+        self.moment_of_inertia_function = moment_of_inertia_function
         self.cp = cp # também é variável de estado, mas tem tratamento diferente (estruturas)
         self.cg = cg # também é variável de estado, mas tem tratamento diferente (estruturas)
 
@@ -168,13 +169,17 @@ class RigidBody:
         Raises:
             ValueError: Levantado se o ponto de aplicação não for um dos campos do Enum ApplicationPoint.
         """
+        
         if force.applicationPoint() == ApplicationPoint.CG:
+            self.moment_of_inertia = self.moment_of_inertia_function(0)
             self.__applyForceOnCg(force, duration)
         
         elif force.applicationPoint() == ApplicationPoint.CP:
+            self.moment_of_inertia = self.moment_of_inertia_function(self.getCpCgDistance().magnitude())
             self.__applyForceOnCp(force, duration)
         
         elif force.applicationPoint() == ApplicationPoint.CUSTOM:
+            self.moment_of_inertia = self.moment_of_inertia_function(abs(force.cgOffset()))
             self.__isForceInsideBody(force)
             self.__applyForceOnPoint(force, duration)
 

@@ -7,7 +7,7 @@ class AbstractModel(ABC, RigidBody):
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         mass = self.calculateMass()
-        moment_of_inertia = self.calculateMomentOfInertia()
+        moment_of_inertia = self.calculateMomentOfInertia
         cg = self.calculateCg()
         cp = self.calculateCp()
         super().__init__(self.delimitation_points, mass, volume, moment_of_inertia, cg, cp)
@@ -21,7 +21,7 @@ class AbstractModel(ABC, RigidBody):
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
-    def calculateMomentOfInertia(self) -> float:
+    def calculateMomentOfInertia(self, cg_distance:float) -> float:
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
@@ -39,7 +39,7 @@ class AbstractModel(ABC, RigidBody):
     def updateState(self) -> None:
         self.volume = self.calculateVolume()
         self.mass = self.calculateMass()
-        self.moment_of_inertia = self.calculateMomentOfInertia()
+        # self.moment_of_inertia = self.calculateMomentOfInertia()
         self.cg = self.calculateCg()
         self.cp = self.calculateCp()
 
