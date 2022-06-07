@@ -14,14 +14,11 @@ class NoseType(Enum):
     PARABOLIC = 3
 
 class NoseModel(AbstractModel):
-    def __init__(self, cylinder_height:float ,base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float ,material:MaterialModel):
+    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, material:MaterialModel):
         self.__base_diameter = base_diameter
         self.__base_radius = base_diameter / 2
         self.__thinness_factor = thinness_factor
-
-        self.__total_height = cylinder_height + thinness_factor*self.__base_radius**2
-        self.__cylinder_height = cylinder_height
-        self.__cone_height = self.__total_height - self.__cylinder_height
+        self.__height = thinness_factor*self.__base_radius**2
 
         self.__thickness = thickness # implementar nariz oco
         self.__nose_type = nose_type
@@ -37,12 +34,11 @@ class NoseModel(AbstractModel):
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
         elif self.__nose_type == NoseType.PARABOLIC:
-            h = self.__cylinder_height
             r = self.__base_radius
             pi = Constants.PI.value
             k = self.__thinness_factor
 
-            return pi*((h + k*r**2)*(r**2) - (k*r**4)/2)
+            return pi*((0 + k*r**2)*(r**2) - (k*r**4)/2)
             
         else:
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
@@ -50,8 +46,8 @@ class NoseModel(AbstractModel):
     def calculateMass(self)-> float:
         return self.volume * self.__material.density
 
-    def calculateMomentOfInertia(self, distance_to_cg:float) -> float:
-        inertia_around_cg = self.mass * ((3*self.__base_radius**2)/20 + (3*self.__cone_height**2)/80)
+    def calculateMomentOfInertia(self, distance_to_cg:float) -> float: # aproximação usando cone
+        inertia_around_cg = self.mass * ((3*self.__base_radius**2)/20 + (3*self.__height**2)/80)
         return inertia_around_cg + self.mass * distance_to_cg**2
 
     def calculateCg(self) -> Vector: # https://en-gb.facebook.com/engineerprofph/photos/pcb.286878569591821/286874736258871/?type=3&theater
