@@ -21,7 +21,7 @@ class AbstractModel(ABC, RigidBody):
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
-    def calculateMomentOfInertia(self, cg_distance:float) -> float:
+    def calculateMomentOfInertia(self, distance_to_cg:float) -> float:
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod

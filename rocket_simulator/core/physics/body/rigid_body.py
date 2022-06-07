@@ -180,7 +180,7 @@ class RigidBody:
         
         elif force.applicationPoint() == ApplicationPoint.CUSTOM:
             self.moment_of_inertia = self.moment_of_inertia_function(abs(force.cgOffset()))
-            self.__isForceInsideBody(force)
+            # self.__isForceInsideBody(force)
             self.__applyForceOnPoint(force, duration)
 
         else:
