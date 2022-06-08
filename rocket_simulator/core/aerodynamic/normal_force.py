@@ -11,4 +11,5 @@
 def normal_force(normal_force_coefficient: float, air_density: float, 
                     rocket_velocity: float, reference_area: float, 
                     attack_angle: float) -> float:
+    # The normal_force_coefficient is the sum of the normal force coefficient of all the components               
     return (rocket_velocity ** 2) * normal_force_coefficient * air_density * reference_area * attack_angle / 2 
