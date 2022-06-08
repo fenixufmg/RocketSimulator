@@ -36,9 +36,6 @@ class RocketModel(AbstractModel):
     def createDelimitationPoints(self) -> list:
         raise NotImplementedError("Function not implemented")
 
-    def __refresh(self):
-        pass
-
     def addPart(self, part:AbstractModel):
         pass
     
