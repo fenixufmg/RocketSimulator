@@ -1,15 +1,17 @@
 from abc import ABC, abstractmethod
 from core.physics.body.rigid_body import RigidBody
-from rocket_simulator.core.physics.vector import Vector
+from core.physics.vector import Vector
+from utils.rocket_parts import RocketParts
 
 class AbstractModel(ABC, RigidBody):
-    def __init__(self) -> None:
+    def __init__(self, part_type: RocketParts) -> None:
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         mass = self.calculateMass()
         moment_of_inertia = self.calculateMomentOfInertia
         cg = self.calculateCg()
         cp = self.calculateCp()
+        self.__part_type = part_type
         super().__init__(self.delimitation_points, mass, volume, moment_of_inertia, cg, cp)
     
     @abstractmethod
@@ -35,6 +37,9 @@ class AbstractModel(ABC, RigidBody):
     @abstractmethod
     def createDelimitationPoints(self) -> list:
         raise NotImplementedError("Function not implemented")
+
+    def getPartType(self):
+        return self.__part_type
 
     def updateState(self) -> None:
         self.volume = self.calculateVolume()

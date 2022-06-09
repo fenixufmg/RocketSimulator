@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from utils.rocket_parts import RocketParts
 from email.mime import base
 from enum import Enum
 
@@ -23,7 +23,18 @@ class NoseModel(AbstractModel):
         self.__thickness = thickness # implementar nariz oco
         self.__nose_type = nose_type
         self.__material = material
-        super().__init__()
+        self.__verify()
+        super().__init__(RocketParts.NOSE)
+
+    def __verify(self):
+        if self.__base_diameter <= 0:
+            raise ValueError("Base diameter <= 0 not allowed")
+        if self.__thickness <= 0:
+            raise ValueError("Thickness <= 0 not allowed")
+        if self.__thickness > self.__base_radius:
+            raise ValueError("Thickness greater than radius")
+        if self.__thinness_factor <= 0:
+            raise ValueError("Thinness factor <= 0 not allowed")
 
     def calculateVolume(self) -> float: # https://www.grc.nasa.gov/www/k-12/airplane/volume.html
         if self.__nose_type == NoseType.CONICAL:
@@ -53,16 +64,17 @@ class NoseModel(AbstractModel):
     def calculateCg(self) -> Vector: # https://en-gb.facebook.com/engineerprofph/photos/pcb.286878569591821/286874736258871/?type=3&theater
         cg = None
         if self.__nose_type == NoseType.CONICAL:
-            cg = self.__height - self.__height/4 
+            cg = self.__height - self.__height/4 # escalar
 
         elif self.__nose_type == NoseType.OGIVE:
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
         elif self.__nose_type == NoseType.PARABOLIC:
-            cg = self.__height - self.__height/3 
+            cg = self.__height - self.__height/3 # escalar
         else:
             raise ValueError(f"Nose type {self.__nose_type} is not available.")
 
+        cg = self.getTipToBaseDistance().unitVector() * cg
         return self.toGroundCoordinates(cg)
 
     def calculateCp(self) -> Vector:

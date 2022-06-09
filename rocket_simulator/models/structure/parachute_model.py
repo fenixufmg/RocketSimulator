@@ -9,7 +9,7 @@ class ParachuteModel(AbstractModel):
         self.__name = name.lower().strip()
         self.__drag_coefficient = None
         self.__initialize()
-        super().__init__()
+        # super().__init__()
 
     def __initialize(self):
         parachutes_folder = Paths.PARACHUTES.value
