@@ -8,7 +8,7 @@ from models.structure.abstract_model import AbstractModel
 
 
 class CylindricalBodyModel(AbstractModel):
-    def __init__(self, height, diameter, thickness, material: MaterialModel):
+    def __init__(self, height, diameter, thickness, material: MaterialModel, position_order: int):
         self.__verify(diameter, thickness)
 
         self.__height = height
@@ -16,7 +16,7 @@ class CylindricalBodyModel(AbstractModel):
         self.__thickness = thickness
         self.__material = material
 
-        super().__init__(RocketParts.CYLINDRICAL_BODY)
+        super().__init__(RocketParts.CYLINDRICAL_BODY, position_order)
 
     def __verify(self, diameter, thickness):
         if thickness >= diameter / 2:

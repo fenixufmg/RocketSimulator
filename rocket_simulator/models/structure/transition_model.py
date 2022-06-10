@@ -6,7 +6,7 @@ from models.structure.abstract_model import AbstractModel
 
 
 class TransitionModel(AbstractModel):
-    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material: MaterialModel):
+    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
         self.__verify(bottom_diameter, top_diameter, thickness)
 
         self.__position = position
@@ -15,7 +15,7 @@ class TransitionModel(AbstractModel):
         self.__top_diameter = top_diameter
         self.__thickness = thickness
         self.__material = material
-        super().__init__(RocketParts.TRANSITION)
+        super().__init__(RocketParts.TRANSITION, position_order)
 
     def __verify(self, bottom_diameter, top_diameter, thickness):
         if bottom_diameter < top_diameter:  # bottom part is thinner

@@ -14,7 +14,7 @@ class NoseType(Enum):
     PARABOLIC = 3
 
 class NoseModel(AbstractModel):
-    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, material:MaterialModel):
+    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, material:MaterialModel, position_order: int):
         self.__base_diameter = base_diameter
         self.__base_radius = base_diameter / 2
         self.__thinness_factor = thinness_factor
@@ -24,7 +24,7 @@ class NoseModel(AbstractModel):
         self.__nose_type = nose_type
         self.__material = material
         self.__verify()
-        super().__init__(RocketParts.NOSE)
+        super().__init__(RocketParts.NOSE, position_order)
 
     def __verify(self):
         if self.__base_diameter <= 0:
@@ -57,7 +57,7 @@ class NoseModel(AbstractModel):
     def calculateMass(self)-> float:
         return self.volume * self.__material.density
 
-    def calculateMomentOfInertia(self, distance_to_cg:float) -> float: # aproximação usando cone
+    def calculateMomentOfInertia(self, distance_to_cg:float) -> float:  # aproximação usando cone
         inertia_around_cg = self.mass * ((3*self.__base_radius**2)/20 + (3*self.__height**2)/80)
         return inertia_around_cg + self.mass * distance_to_cg**2
 

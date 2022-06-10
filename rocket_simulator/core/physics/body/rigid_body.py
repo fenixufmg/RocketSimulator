@@ -57,6 +57,18 @@ class RigidBody:
         if self.delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
             raise ValueError("Top delimitation point and bottom are inverted")
 
+    def move(self, displacement: float):
+        """" Move todos os pontos que representam um corpo com base em um deslocamento.
+
+        Args:
+            displacement (float): deslocamento
+        """
+        self.cg += displacement
+        self.cp += displacement
+
+        for index, delimitation_point in enumerate(self.delimitation_points):
+            self.delimitation_points[index] += displacement
+
     def __applyForceOnCg(self, force:Force, duration:float) -> None:
         """Aplica uma força no cg durante uma determinada duração, oque resulta em um translação do corpo.
 
@@ -74,11 +86,7 @@ class RigidBody:
         self.total_displacement += displacement
 
         # move os pontos
-        self.cg += displacement
-        self.cp += displacement
-
-        for index, delimitation_point in enumerate(self.delimitation_points):
-            self.delimitation_points[index] += displacement 
+        self.move(displacement)
 
     def __rotateAroundCg(self, force:Force, duration:float, lever:Vector) -> None:
         """Rotaciona o corpo em torno do CG.

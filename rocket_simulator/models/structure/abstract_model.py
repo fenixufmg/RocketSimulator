@@ -4,14 +4,16 @@ from core.physics.vector import Vector
 from utils.rocket_parts import RocketParts
 
 class AbstractModel(ABC, RigidBody):
-    def __init__(self, part_type: RocketParts) -> None:
+    def __init__(self, part_type: RocketParts, position_order: int) -> None:
+        self.__part_type = part_type
+        self.__position_order = position_order
+
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         mass = self.calculateMass()
         moment_of_inertia = self.calculateMomentOfInertia
         cg = self.calculateCg()
         cp = self.calculateCp()
-        self.__part_type = part_type
         super().__init__(self.delimitation_points, mass, volume, moment_of_inertia, cg, cp)
     
     @abstractmethod
@@ -19,7 +21,7 @@ class AbstractModel(ABC, RigidBody):
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
-    def calculateMass(self)-> float:
+    def calculateMass(self) -> float:
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
@@ -40,6 +42,9 @@ class AbstractModel(ABC, RigidBody):
 
     def getPartType(self):
         return self.__part_type
+
+    def getPartPositionOrder(self):
+        return self.__position_order
 
     def updateState(self) -> None:
         self.volume = self.calculateVolume()

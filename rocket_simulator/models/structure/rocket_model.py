@@ -17,16 +17,89 @@ class RocketModel(AbstractModel):
         self.__parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
                         RocketParts.FIN: None, RocketParts.MOTOR: None}
 
-        super().__init__(RocketParts.ROCKET)
+        self.__initialize()
+        super().__init__(RocketParts.ROCKET, -1)
+
+    def __orderAvailablePartsByPosition(self) -> List[AbstractModel]:
+        ordered_parts = []
+        i = -1
+        while True:
+            i += 1
+            i_found = []
+            for part in self.__getAvailableParts():
+                if part.getPartPositionOrder() == i:
+                    ordered_parts.append(part)
+                    i_found.append(True)
+                else:
+                    i_found.append(False)
+
+            i_found = [found == False for found in i_found]  # inverte os bools para usar o all() do jeito certo
+            if all(i_found):  # para se todas as peças já foram ordenadas
+                break
+
+        return ordered_parts
+
+    def __getPreviousPart(self, part):
+        position_order = part.getPartPositionOrder()
+        previous_position_order = position_order - 1 if position_order - 1 >= 0 else None
+        previous_part = None
+
+    def __movePartsToPositions(self):
+            ordered_parts = self.__orderAvailablePartsByPosition()
+            for part in ordered_parts:
+                previous_part = self.__getPreviousPart(part)
+
+                if part.getPartType() == RocketParts.FIN:
+                    pass
+                    continue
+
+    def __initialize(self):
+        self.__movePartsToPositions()
+
+    def __getAvailableParts(self) -> List[AbstractModel]:
+        available_parts = []
+        for key, value in self.__parts.items():
+            if value is None:
+                continue
+
+            if type(value) == list:
+                for part in value:
+                    available_parts.append(part)
+                continue
+
+            available_parts.append(value)
+
+        return available_parts
 
     def calculateVolume(self) -> float:
-        raise NotImplementedError("Function not implemented")
+        available_parts = self.__getAvailableParts()
+        total_volume = 0
+
+        for part in available_parts:
+            total_volume += part.volume
+
+        return total_volume
 
     def calculateMass(self) -> float:
-        raise NotImplementedError("Function not implemented")
+        available_parts = self.__getAvailableParts()
+        total_mass = 0
 
-    def calculateMomentOfInertia(self, distance_to_cg: float) -> float:
-        raise NotImplementedError("Function not implemented")
+        for part in available_parts:
+            total_mass += part.mass
+
+        return total_mass
+
+    def calculateMomentOfInertia(self, axis_offset_to_cg: float) -> float:  # axis_offset_to_cg pode ser negativo
+        axis_offset_to_cg *= -1  # inverter para o sentido da simulação
+        available_parts = self.__getAvailableParts()
+        total_moment_of_inertia = 0
+
+        for part in available_parts:
+            part_distance_to_cg = self.cg - part.cg
+            part_distance_to_axis = part_distance_to_cg.magnitude() + axis_offset_to_cg
+            total_moment_of_inertia += part.calculateMomentOfInertia(part_distance_to_axis)
+
+        return total_moment_of_inertia
 
     def calculateCg(self) -> Vector:
         raise NotImplementedError("Function not implemented")
@@ -65,6 +138,8 @@ class RocketModel(AbstractModel):
             self.__parts[part.getPartType()] = None  # remove parte única
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
+
+
 
 
 
