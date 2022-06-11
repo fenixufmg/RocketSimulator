@@ -3,8 +3,8 @@
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com
  * @create date 2022-04-09 14:36:50
- * @modify date 2022-04-09 14:52:03
- * @desc [description]
+ * @modify date 2022-06-10 22:18:18
+ * @desc returns the normal force over the entire rocket
  */
  """
 
