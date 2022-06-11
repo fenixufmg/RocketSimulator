@@ -5,5 +5,5 @@ from math import pi
 *@ Nominal diameter is the diameter that a circle would be if it had the transversal section area that we are going to use
 """
 
-def nominal_Diameter (transversal_section_area):
+def nominal_Diameter (transversal_section_area:float) ->float:
     return 2*((transversal_section_area)/pi)**(1/2)

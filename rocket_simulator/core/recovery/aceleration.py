@@ -5,5 +5,5 @@ from math import *
 *@ the acceleration that affects the rocket is described by the Second Newton's Law 
 """
 
-def acceleration(acceleration, Weight_force, Drag_force, mass):
-    return (Weight_force - Drag_force / mass)
+def acceleration(acceleration, Weight_force,F,mass):
+    return (Weight_force-F/mass)

@@ -1,6 +1,11 @@
 from cmath import sqrt
 import cmath
 
+"""
+*@author Caio Bertolato Pereira
+
+"""
+
 class Parachute:
     def __init__(self, name, drag_coefficient):
         self.name = name
@@ -12,5 +17,5 @@ class Parachute:
     def getdrag_coefficient(self):
         return self.drag_coefficient
 
-def transversal_section_area(parachute_diameter,):
+def transversal_section_area(parachute_diameter:float) ->float:
     return ((parachute_diameter/2)^2)*5.099

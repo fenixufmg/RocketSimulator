@@ -9,5 +9,5 @@ from math import *
 *@ nominal diameter is designed by the diameter of the canopy (4So/pi)^1/2 or the equivalent diameter in case of non hemispherical parachutes
 """
 
-def inflation_time ( filling_time, stretch_speed, nominal_diameter)-> float:
-    return (filling_time*stretch_speed) / nominal_diameter
+def inflation_time ( tfill, stretch_speed, Do)-> float:
+    return (tfill*stretch_speed)/Do
