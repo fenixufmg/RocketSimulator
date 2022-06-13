@@ -42,12 +42,22 @@ class RocketModel(AbstractModel):
     def __getPreviousPart(self, part):
         position_order = part.getPartPositionOrder()
         previous_position_order = position_order - 1 if position_order - 1 >= 0 else None
-        previous_part = None
+
+        for part in self.__getAvailableParts():
+            if part.getPartPositionOrder() == previous_position_order:
+                return part
 
     def __movePartsToPositions(self):
             ordered_parts = self.__orderAvailablePartsByPosition()
             for part in ordered_parts:
+                part.centerOnOrigin()
+
                 previous_part = self.__getPreviousPart(part)
+                displacement = part.getTipDistanceToCg().magnitude() * -1
+                if previous_part is not None:  # não é a primeira parte
+                    displacement -= previous_part.getHeight()
+
+                part.move(displacement) ## ERRADO trocar para vetor
 
                 if part.getPartType() == RocketParts.FIN:
                     pass

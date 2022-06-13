@@ -57,11 +57,11 @@ class RigidBody:
         if self.delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
             raise ValueError("Top delimitation point and bottom are inverted")
 
-    def move(self, displacement: float):
+    def move(self, displacement: Vector):
         """" Move todos os pontos que representam um corpo com base em um deslocamento.
 
         Args:
-            displacement (float): deslocamento
+            displacement (Vector): vetor deslocamento
         """
         self.cg += displacement
         self.cp += displacement
