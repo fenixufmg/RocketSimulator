@@ -46,7 +46,7 @@ class AbstractModel(ABC, RigidBody):
     def getPartPositionOrder(self):
         return self.__position_order
 
-    def getHeight(self):
+    def getHeight(self) -> float:
         raise NotImplementedError("Function not implemented")
 
     def updateState(self) -> None:
@@ -60,6 +60,7 @@ class AbstractModel(ABC, RigidBody):
         return self.getTip() + local_coordinates
 
     def centerOnOrigin(self):
-        displacement = self.cg.magnitudeRelativeTo(Vector(0, 0, 1)) * -1
+        # displacement = self.cg.magnitudeRelativeTo(Vector(0, 0, 1)) * -1
+        displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
         self.move(displacement)
 

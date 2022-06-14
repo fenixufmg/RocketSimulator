@@ -9,6 +9,7 @@ from transition_model import TransitionModel
 from fin_model import FinModel
 from motor_model import MotorModel
 from models.structure.abstract_model import AbstractModel
+from utils.constants import Constants
 from utils.rocket_parts import RocketParts
 
 
@@ -48,20 +49,33 @@ class RocketModel(AbstractModel):
                 return part
 
     def __movePartsToPositions(self):
-            ordered_parts = self.__orderAvailablePartsByPosition()
-            for part in ordered_parts:
-                part.centerOnOrigin()
+        ordered_parts = self.__orderAvailablePartsByPosition()
+        total_height = Vector(0, 0, 0)
+        for part in ordered_parts:
+            part.centerOnOrigin()
 
-                previous_part = self.__getPreviousPart(part)
-                displacement = part.getTipDistanceToCg().magnitude() * -1
-                if previous_part is not None:  # não é a primeira parte
-                    displacement -= previous_part.getHeight()
+            previous_part = self.__getPreviousPart(part)
+            displacement = part.getTipDistanceToCg().magnitude() * -1  # move a própria altura
+            displacement = Vector(0, 0, displacement)
 
-                part.move(displacement) ## ERRADO trocar para vetor
+            if previous_part is not None:  # não é a primeira parte
+                previous_part_height = Vector(0, 0, previous_part.getHeight())
+                total_height -= previous_part_height
+                displacement -= total_height  # move a altura das peças anteriores
 
-                if part.getPartType() == RocketParts.FIN:
-                    pass
-                    continue
+            part.move(displacement)
+            if part.getPartType() == RocketParts.FIN:
+                part: FinModel = part  # só para tirar o erro do INTELLIJ
+                distance_from_center = Vector(part.getDistanceFromCenter(), 0, 0)
+
+                for degrees in range(0, 361, 360 // part.getNumberOfFins()):  # rotaciona as aletas
+                    if degrees == 0:
+                        continue
+                    radians = degrees / 180
+                    radians *= Constants.PI
+                    z_axis = Vector(0, 0, 1)
+                    displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
+                    part.move(displacement)
 
     def __initialize(self):
         self.__movePartsToPositions()
@@ -148,8 +162,3 @@ class RocketModel(AbstractModel):
             self.__parts[part.getPartType()] = None  # remove parte única
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
-
-
-
-
-
