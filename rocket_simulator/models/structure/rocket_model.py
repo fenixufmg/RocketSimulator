@@ -18,6 +18,7 @@ class RocketModel(AbstractModel):
         self.__parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
                         RocketParts.FIN: None, RocketParts.MOTOR: None}
 
+        self.__rocket_height:Vector = Vector(0, 0, 0)
         self.__initialize()
         super().__init__(RocketParts.ROCKET, -1)
 
@@ -48,9 +49,13 @@ class RocketModel(AbstractModel):
             if part.getPartPositionOrder() == previous_position_order:
                 return part
 
+    def __putRocketOnGround(self, ):
+        for part in self.__getAvailableParts():
+            part.move(self.__rocket_height)
+
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
-        total_height = Vector(0, 0, 0)
+        self.__rocket_height = Vector(0, 0, 0)
         for part in ordered_parts:
             part.centerOnOrigin()
 
@@ -60,8 +65,8 @@ class RocketModel(AbstractModel):
 
             if previous_part is not None:  # não é a primeira parte
                 previous_part_height = Vector(0, 0, previous_part.getHeight())
-                total_height -= previous_part_height
-                displacement -= total_height  # move a altura das peças anteriores
+                self.__rocket_height -= previous_part_height
+                displacement -= self.__rocket_height  # move a altura das peças anteriores
 
             part.move(displacement)
             if part.getPartType() == RocketParts.FIN:
@@ -76,6 +81,8 @@ class RocketModel(AbstractModel):
                     z_axis = Vector(0, 0, 1)
                     displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
                     part.move(displacement)
+
+        self.__putRocketOnGround()
 
     def __initialize(self):
         self.__movePartsToPositions()
@@ -126,7 +133,14 @@ class RocketModel(AbstractModel):
         return total_moment_of_inertia
 
     def calculateCg(self) -> Vector:
-        raise NotImplementedError("Function not implemented")
+        total_mass = 0
+        cg = Vector(0, 0, 0)
+        for part in self.__getAvailableParts():
+            total_mass += part.mass
+            cg += part.cg * part.mass
+
+        cg = cg * (1/total_mass)
+        return cg
 
     def calculateCp(self) -> Vector:
         raise NotImplementedError("Function not implemented")
