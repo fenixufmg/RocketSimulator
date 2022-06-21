@@ -11,10 +11,10 @@ class CylindricalBodyModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material: MaterialModel, position_order: int):
         self.__verify(diameter, thickness)
 
-        self.__height = height
-        self.__diameter = diameter  # Outer diameter
-        self.__thickness = thickness
-        self.__material = material
+        self.height = height
+        self.diameter = diameter  # Outer diameter
+        self.thickness = thickness
+        self.material = material
 
         super().__init__(RocketParts.CYLINDRICAL_BODY, position_order)
 
@@ -23,12 +23,12 @@ class CylindricalBodyModel(AbstractModel):
             raise ValueError("Value of thickness is bigger than half of outer diameter")
 
     def calculateVolume(self) -> float:
-        inner_diameter = self.__diameter - 2 * self.__thickness
-        volume = pi * self.__height * ((self.__diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
+        inner_diameter = self.diameter - 2 * self.thickness
+        volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
         return volume
 
     def calculateMass(self) -> float:
-        mass = self.__material.density * self.calculateVolume
+        mass = self.material.density * self.calculateVolume
         return mass
 
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float:

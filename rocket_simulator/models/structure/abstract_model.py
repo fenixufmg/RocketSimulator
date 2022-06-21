@@ -4,9 +4,10 @@ from core.physics.vector import Vector
 from utils.rocket_parts import RocketParts
 
 class AbstractModel(ABC, RigidBody):
-    def __init__(self, part_type: RocketParts, position_order: int) -> None:
-        self.__part_type = part_type
-        self.__position_order = position_order
+    def __init__(self, part_type: RocketParts, position_order: int, shape_coefficient:float) -> None:
+        self.part_type = part_type
+        self.position_order = position_order
+        self.shape_coefficient = shape_coefficient
 
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
@@ -40,11 +41,6 @@ class AbstractModel(ABC, RigidBody):
     def createDelimitationPoints(self) -> list:
         raise NotImplementedError("Function not implemented")
 
-    def getPartType(self):
-        return self.__part_type
-
-    def getPartPositionOrder(self):
-        return self.__position_order
 
     def getHeight(self) -> float:
         raise NotImplementedError("Function not implemented")

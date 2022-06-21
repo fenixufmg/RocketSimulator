@@ -15,10 +15,10 @@ from utils.rocket_parts import RocketParts
 
 class RocketModel(AbstractModel):
     def __init__(self):
-        self.__parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
+        self.parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
                         RocketParts.FIN: None, RocketParts.MOTOR: None}
 
-        self.__rocket_height:Vector = Vector(0, 0, 0)
+        self.rocket_height:Vector = Vector(0, 0, 0)
         self.__initialize()
         super().__init__(RocketParts.ROCKET, -1)
 
@@ -29,7 +29,7 @@ class RocketModel(AbstractModel):
             i += 1
             i_found = []
             for part in self.__getAvailableParts():
-                if part.getPartPositionOrder() == i:
+                if part.position_order == i:
                     ordered_parts.append(part)
                     i_found.append(True)
                 else:
@@ -42,20 +42,20 @@ class RocketModel(AbstractModel):
         return ordered_parts
 
     def __getPreviousPart(self, part):
-        position_order = part.getPartPositionOrder()
+        position_order = part.position_order
         previous_position_order = position_order - 1 if position_order - 1 >= 0 else None
 
         for part in self.__getAvailableParts():
-            if part.getPartPositionOrder() == previous_position_order:
+            if part.position_order == previous_position_order:
                 return part
 
     def __putRocketOnGround(self, ):
         for part in self.__getAvailableParts():
-            part.move(self.__rocket_height)
+            part.move(self.rocket_height)
 
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
-        self.__rocket_height = Vector(0, 0, 0)
+        self.rocket_height = Vector(0, 0, 0)
         for part in ordered_parts:
             part.centerOnOrigin()
 
@@ -65,11 +65,11 @@ class RocketModel(AbstractModel):
 
             if previous_part is not None:  # não é a primeira parte
                 previous_part_height = Vector(0, 0, previous_part.getHeight())
-                self.__rocket_height -= previous_part_height
-                displacement -= self.__rocket_height  # move a altura das peças anteriores
+                self.rocket_height -= previous_part_height
+                displacement -= self.rocket_height  # move a altura das peças anteriores
 
             part.move(displacement)
-            if part.getPartType() == RocketParts.FIN:
+            if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
                 distance_from_center = Vector(part.getDistanceFromCenter(), 0, 0)
 
@@ -89,7 +89,7 @@ class RocketModel(AbstractModel):
 
     def __getAvailableParts(self) -> List[AbstractModel]:
         available_parts = []
-        for key, value in self.__parts.items():
+        for key, value in self.parts.items():
             if value is None:
                 continue
 
@@ -143,36 +143,48 @@ class RocketModel(AbstractModel):
         return cg
 
     def calculateCp(self) -> Vector:
-        raise NotImplementedError("Function not implemented")
+        total_shape_coefficient = 0
+        cp = Vector(0, 0, 0)
+        for part in self.__getAvailableParts():
+            cp += part.cp * part.shape_coefficient
+            total_shape_coefficient += part.shape_coefficient
+
+        cp = cp * (1/total_shape_coefficient)
+        return cp
 
     def createDelimitationPoints(self) -> list:
-        raise NotImplementedError("Function not implemented")
+        ordered_parts = self.__orderAvailablePartsByPosition()
+        first_part:AbstractModel = ordered_parts[0]
+        last_part:AbstractModel = ordered_parts[-1]
+
+        delimitation_points = [first_part.delimitation_points[0], last_part.delimitation_points[1]]
+        return delimitation_points
 
     def addPart(self, part: AbstractModel):  # adiciona instâncias
-        if part.getPartType() == RocketParts.CYLINDRICAL_BODY or part.getPartType() == RocketParts.TRANSITION:  #
+        if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
             # adiciona na lista
-            part_list = self.__parts[part.getPartType()]
+            part_list = self.parts[part.part_type]
             part_list.append(part)
-            self.__parts[part.getPartType()] = part_list
+            self.parts[part.part_type] = part_list
             return
 
-        if self.__parts[part.getPartType()] is not None:  # parte já existe
-            raise ValueError(f"Cant have two parts of type {part.getPartType()}")
+        if self.parts[part.part_type] is not None:  # parte já existe
+            raise ValueError(f"Cant have two parts of type {part.part_type}")
 
-        self.__parts[part.getPartType()] = part  # adiciona parte única
+        self.parts[part.part_type] = part  # adiciona parte única
 
     def removePart(self, part: AbstractModel):  # remove instâncias
-        if part.getPartType() == RocketParts.CYLINDRICAL_BODY or part.getPartType() == RocketParts.TRANSITION:  #
+        if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
             # remove da lista
-            part_list = self.__parts[part.getPartType()]
+            part_list = self.parts[part.part_type]
             part_list.remove(part)
-            self.__parts[part.getPartType()] = part_list
+            self.parts[part.part_type] = part_list
             return
 
-        if self.__parts[part.getPartType()] is None:  # parte não existe
-            raise ValueError(f"Part type {part.getPartType()} doesnt exist")
+        if self.parts[part.part_type] is None:  # parte não existe
+            raise ValueError(f"Part type {part.part_type} doesnt exist")
 
-        if self.__parts[part.getPartType()] == part:  # condicionado pela INSTÂNCIA
-            self.__parts[part.getPartType()] = None  # remove parte única
+        if self.parts[part.part_type] == part:  # condicionado pela INSTÂNCIA
+            self.parts[part.part_type] = None  # remove parte única
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
