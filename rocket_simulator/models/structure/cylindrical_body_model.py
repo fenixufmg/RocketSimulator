@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from typing import List
 from utils.rocket_parts import RocketParts
 from math import pi
 from core.physics.vector import Vector
 from core.physics.body.rigid_body import RigidBody
-from other.material_model import MaterialModel
+from models.other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
 
 
@@ -16,7 +17,7 @@ class CylindricalBodyModel(AbstractModel):
         self.thickness = thickness
         self.material = material
 
-        super().__init__(RocketParts.CYLINDRICAL_BODY, position_order)
+        super().__init__(RocketParts.CYLINDRICAL_BODY, position_order, 0)
 
     def __verify(self, diameter, thickness):
         if thickness >= diameter / 2:
@@ -40,3 +41,9 @@ class CylindricalBodyModel(AbstractModel):
         height = self.getTipToBaseDistance()
         cg_local = height * 0.5  # produto por escalar
         return self.toGroundCoordinates(cg_local)
+
+    def calculateCp(self) -> Vector:
+        raise NotImplementedError("Function not implemented")  # IMPLEMENTAR ESTA FUNÇÃO FUTURAMENTE
+
+    def createDelimitationPoints(self) -> List[Vector]:
+        raise NotImplementedError("Function not implemented")  # IMPLEMENTAR ESTA FUNÇÃO FUTURAMENTE

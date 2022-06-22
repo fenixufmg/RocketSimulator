@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 from core.physics.body.rigid_body import RigidBody
 from core.physics.vector import Vector
 from utils.rocket_parts import RocketParts
@@ -11,6 +12,8 @@ class AbstractModel(ABC, RigidBody):
 
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
+        self.volume = volume
+
         mass = self.calculateMass()
         moment_of_inertia = self.calculateMomentOfInertia
         cg = self.calculateCg()
@@ -38,7 +41,7 @@ class AbstractModel(ABC, RigidBody):
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
-    def createDelimitationPoints(self) -> list:
+    def createDelimitationPoints(self) -> List[Vector]:
         raise NotImplementedError("Function not implemented")
 
 

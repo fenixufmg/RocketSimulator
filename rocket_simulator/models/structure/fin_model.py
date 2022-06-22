@@ -1,6 +1,6 @@
 from utils.rocket_parts import RocketParts
 from core.physics.body.rigid_body import RigidBody
-from other.material_model import MaterialModel
+from models.other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
 
 

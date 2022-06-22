@@ -60,7 +60,7 @@ class RocketModel(AbstractModel):
             part.centerOnOrigin()
 
             previous_part = self.__getPreviousPart(part)
-            displacement = part.getTipDistanceToCg().magnitude() * -1  # move a própria altura
+            displacement = part.getTipDistanceToCg().magnitude() * -1  # move a própria altura acima do cg
             displacement = Vector(0, 0, displacement)
 
             if previous_part is not None:  # não é a primeira parte

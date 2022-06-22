@@ -3,7 +3,7 @@ from email.mime import base
 from enum import Enum
 
 from core.physics.body.rigid_body import RigidBody
-from other.material_model import MaterialModel
+from models.other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
 from core.physics.vector import Vector
 from utils.constants import Constants
