@@ -46,10 +46,9 @@ class CylindricalBodyModel(AbstractModel):
 
     def calculateCp(self) -> Vector: # CONFERIR DEPOIS
         height = self.getTipToBaseDistance()
-        cg_local = height * 0.5  # produto por escalar
-        cp_local = cg_local
+        cg_local = height * 0.5  
+        cp_local = cg_local # Assuming same position as cp
         return self.toGroundCoordinates(cp_local)
-
 
     def createDelimitationPoints(self) -> List[Vector]:
         upper_delimitation = Vector(0, 0, self.height)
