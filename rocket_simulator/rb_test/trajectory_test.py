@@ -20,7 +20,7 @@ def __mapColors(values):
     color_mapper = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lime", "green" ,"olivedrab","orange","chocolate","red"])
     return (normalizer, color_mapper, color_mapper(normalizer(colors)))
 
-def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit=5000, arrow_scale=150, has_arrows=True):
+def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit=5000, arrow_scale=150, has_arrows=True, debug=True):
     simulation = Simulation(rigid_body)
     for force in forces:
         simulation.addForce(force)
@@ -44,6 +44,11 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
         x_magnitudes.append(looking_direction.x())
         y_magnitudes.append(looking_direction.y())
         z_magnitudes.append(looking_direction.z())
+        print(f"Time: {time}")
+        print(f"Velocity: {simulation.velocity}")
+        print(f"Acceleration: {simulation.acceleration}")
+        print(f"Cg position: {simulation.cg}")
+        print("="*40)
 
     # ============ configurações do gráficos ============ #
     fig = plt.figure(figsize=(8,5))

@@ -20,8 +20,9 @@ class DragForceTest(Force):
         airDensity = Constants.AIR_DENSITY.value
 
         # velocity = Vector.__calculateMagnitude(current_state.velocity)  # original
+        print(current_state.velocity)
         velocity = current_state.velocity.magnitude()  # certo
-
+        
         dragForce = 0.5 * airDensity * dragCoefficient * referenceArea * velocity ** 2
 
         self.setX(0)

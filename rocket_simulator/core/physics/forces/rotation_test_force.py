@@ -13,17 +13,17 @@ class RotationTestForce(Force):
             self.setY(0)
             self.setZ(0)
             
-        if current_state.time >= 5:
-            self.setX(0)
-            self.setY(0.25)
-            self.setZ(0)
-
-        if current_state.time >= 6:
-            self.setX(0)
-            self.setY(-0.25)
-            self.setZ(0)
-
         if current_state.time >= 7:
+            self.setX(0.25)
+            self.setY(0)
+            self.setZ(0)
+
+        if current_state.time >= 8:
+            self.setX(-0.25)
+            self.setY(0)
+            self.setZ(0)
+
+        if current_state.time >= 9:
             self.setX(0)
             self.setY(0)
             self.setZ(0)

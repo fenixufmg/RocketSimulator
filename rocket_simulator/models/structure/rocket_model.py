@@ -206,4 +206,4 @@ class RocketModel(AbstractModel):
             if part.part_type == part_type:
                 return part
 
-        print(f"Part type {part_type.value} doesnt exist")
+        # print(f"Part type {part_type.value} doesnt exist")
