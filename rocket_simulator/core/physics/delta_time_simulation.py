@@ -1,11 +1,15 @@
+from typing import List
+
 from core.physics.vector import Vector
+from utils.rocket_parts import RocketParts
+
 
 class DeltaTimeSimulation:
-    def __init__(self, rigid_body, time:int):
-        """ Representa o estado do rigid body em determinado instante de tempo.
+    def __init__(self, rocket, time: int):
+        """ Representa o estado do foguete em determinado instante de tempo.
 
         Args:
-            rigid_body (_type_): Corpo rígido do qual serão retiradas as informações.
+            rocket (RocketModel): Foguete do qual serão retiradas as informações.
             time (int): Instante de tempo.
 
         Fields:
@@ -18,12 +22,19 @@ class DeltaTimeSimulation:
             looking_direction (Vector): Vetor que representa a orientação do corpo
             time (float): Instante de tempo
         """
-        self.cg = rigid_body.cg
-        self.cp = rigid_body.cp
-        self.position = rigid_body.total_displacement
-        self.velocity = rigid_body.velocity
-        self.acceleration = rigid_body.total_acceleration
-        self.angular_velocity = rigid_body.angular_velocity
-        self.mass = rigid_body.mass
-        self.looking_direction = rigid_body.getLookingDirection()
-        self.time = time
+        self.cg: Vector = rocket.cg
+        self.cp: Vector = rocket.cp
+        self.position: Vector = rocket.total_displacement
+        self.velocity: Vector = rocket.velocity
+        self.acceleration: Vector = rocket.total_acceleration
+        self.angular_velocity: Vector = rocket.angular_velocity
+        self.mass: float = rocket.mass
+        self.looking_direction: Vector = rocket.getLookingDirection()
+        self.time: float = time
+
+        # peças
+        self.nose = rocket.getPart(RocketParts.NOSE)
+        self.cilyndrical_bodies = rocket.getPart(RocketParts.CYLINDRICAL_BODY)
+        self.transitions = rocket.getPart(RocketParts.TRANSITION)
+        self.fin = rocket.getPart(RocketParts.FIN)
+        self.motor = rocket.getPart(RocketParts.MOTOR)

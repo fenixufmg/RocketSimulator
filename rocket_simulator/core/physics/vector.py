@@ -7,6 +7,7 @@ from typing import Type
 import numpy as np
 from numpy import ndarray
 
+
 class Vector:
     def __init__(self, x, y, z):
         """Representa um vetor.
@@ -19,14 +20,6 @@ class Vector:
         self.__x = x
         self.__y = y
         self.__z = z
-
-    def __calculateMagnitude(self) -> float: 
-        """Calcula a magnitude do vetor.
-
-        Returns:
-            float: Magnitude do vetor
-        """
-        return math.sqrt(self.__x**2 + self.__y**2 + self.__z**2)
 
     def x(self):
         """Retorna o valor no eixo x.
@@ -43,7 +36,7 @@ class Vector:
             x (float): Novo valor do eixo x.
         """
         self.__x = x
-    
+
     def y(self):
         """Retorna o valor do eixo y.
 
@@ -82,9 +75,9 @@ class Vector:
         Returns:
             float: Magnitude do vetor.
         """
-        return self.__calculateMagnitude()
+        return math.sqrt(self.__x ** 2 + self.__y ** 2 + self.__z ** 2)
 
-    def magnitudeRelativeTo(self, root:'Vector'):
+    def magnitudeRelativeTo(self, root: 'Vector'):
         """Retorna a magnitude do vetor, porém o sinal é negativo se o vetor instanciado tiver sentido
         contrário ao vetor root.
 
@@ -98,24 +91,23 @@ class Vector:
         dot_product = Vector.dotProduct(self, root)
         if dot_product == 0:
             return 0
-            
-        magnitude *=  dot_product / abs(dot_product)
+
+        magnitude *= dot_product / abs(dot_product)
         return magnitude
 
-
-    def unitVector(self)-> 'Vector':
+    def unitVector(self) -> 'Vector':
         """Retorna o vetor unitário.
 
         Returns:
             Vector: Vetor unitário
         """
-        if self.__calculateMagnitude() == 0:
-            return Vector(0,0,0)
+        if self.magnitude() == 0:
+            return Vector(0, 0, 0)
 
-        x = self.__x / self.__calculateMagnitude()
-        y = self.__y / self.__calculateMagnitude()
-        z = self.__z / self.__calculateMagnitude()
-        return Vector(x,y,z)
+        x = self.__x / self.magnitude()
+        y = self.__y / self.magnitude()
+        z = self.__z / self.magnitude()
+        return Vector(x, y, z)
 
     def toList(self) -> list:
         """Transforma o vetor em uma lista.
@@ -132,8 +124,8 @@ class Vector:
             np.matrix: Matriz do numpy
         """
         return np.matrix([self.toList()]).transpose()
-        
-    def __add__(self, vector:'Vector') -> 'Vector':
+
+    def __add__(self, vector: 'Vector') -> 'Vector':
         """Método sobrescrito que permite a utilização do operador + para a adição de vetores.
 
         Args:
@@ -145,7 +137,7 @@ class Vector:
         x = self.x() + vector.x()
         y = self.y() + vector.y()
         z = self.z() + vector.z()
-        return Vector(x,y,z)
+        return Vector(x, y, z)
 
     def __sub__(self, vector: 'Vector') -> 'Vector':
         """Método sobrescrito que permite a utilização do operador - para a substração de vetores.
@@ -159,9 +151,9 @@ class Vector:
         x = self.x() - vector.x()
         y = self.y() - vector.y()
         z = self.z() - vector.z()
-        return Vector(x,y,z)
+        return Vector(x, y, z)
 
-    def __mul__(self, scalar:float) -> 'Vector':
+    def __mul__(self, scalar: float) -> 'Vector':
         """Método sobrescrito que permite a utilização do operador * para o produto por escalar. O vetor SEMPRE
         deve vir antes do escalar na multiplicação.
 
@@ -175,14 +167,14 @@ class Vector:
         Returns:
             Vector: Vetor resultante do produto por escalar.
         """
-        if isinstance(scalar, self.__class__): # produto entre dois vetores
+        if isinstance(scalar, self.__class__):  # produto entre dois vetores
             raise ValueError("Impossible matrix multiplication")
 
-        elif isinstance(scalar, float) or isinstance(scalar, int): # produto escalar
+        elif isinstance(scalar, float) or isinstance(scalar, int):  # produto escalar
             x = self.x() * scalar
             y = self.y() * scalar
             z = self.z() * scalar
-            return Vector(x,y,z)
+            return Vector(x, y, z)
 
         else:
             raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'".format(self.__class__, type(scalar)))
@@ -219,7 +211,7 @@ class Vector:
         return np.dot(vector1.toList(), vector2.toList())
 
     @staticmethod
-    def rotateAroundAxis(vector:'Vector', axis:'Vector', theta:float):
+    def rotateAroundAxis(vector: 'Vector', axis: 'Vector', theta: float):
         """Método estático que rotaciona um vetor ao redor de um eixo em theta radianos.
 
         Args:
@@ -239,26 +231,26 @@ class Vector:
         sin_theta = sin(theta)
         one_minus_cos_theta = 1 - cos_theta
 
-        a11 = cos_theta + ux**2*one_minus_cos_theta
-        a12 = ux*uy*one_minus_cos_theta - uz*sin_theta
-        a13 = ux*uz*one_minus_cos_theta + uy*sin_theta
+        a11 = cos_theta + ux ** 2 * one_minus_cos_theta
+        a12 = ux * uy * one_minus_cos_theta - uz * sin_theta
+        a13 = ux * uz * one_minus_cos_theta + uy * sin_theta
 
-        a21 = uy*ux*one_minus_cos_theta + uz*sin_theta
-        a22 = cos_theta + uy**2*one_minus_cos_theta
-        a23 = uy*uz*one_minus_cos_theta - ux*sin_theta
+        a21 = uy * ux * one_minus_cos_theta + uz * sin_theta
+        a22 = cos_theta + uy ** 2 * one_minus_cos_theta
+        a23 = uy * uz * one_minus_cos_theta - ux * sin_theta
 
-        a31 = uz*ux*one_minus_cos_theta - uy*sin_theta
-        a32 = uz*uy*one_minus_cos_theta + ux*sin_theta
-        a33 = cos_theta + uz**2*one_minus_cos_theta
+        a31 = uz * ux * one_minus_cos_theta - uy * sin_theta
+        a32 = uz * uy * one_minus_cos_theta + ux * sin_theta
+        a33 = cos_theta + uz ** 2 * one_minus_cos_theta
 
         rotation_matriz = np.matrix([[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]])
 
         rotated_vector = np.matmul(rotation_matriz, vector.toNumpyVector())
-        rotated_vector = Vector(rotated_vector[0,0], rotated_vector[1,0], rotated_vector[2,0])
+        rotated_vector = Vector(rotated_vector[0, 0], rotated_vector[1, 0], rotated_vector[2, 0])
         return rotated_vector
 
     @staticmethod
-    def projectVector(vector:'Vector', root:'Vector'):
+    def projectVector(vector: 'Vector', root: 'Vector'):
         """Método estático que projeta o vetor do argumento no vetor root.
 
         Args:
@@ -268,9 +260,5 @@ class Vector:
         Returns:
             Vector: Vetor projetado.
         """
-        scalar = Vector.dotProduct(vector, root)/(root.magnitude()**2)
+        scalar = Vector.dotProduct(vector, root) / (root.magnitude() ** 2)
         return root * scalar
-        
-
-
-    

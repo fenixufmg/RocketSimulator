@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class RocketParts(Enum):
-    NOSE = 1
-    CYLINDRICAL_BODY = 2
-    TRANSITION = 3
-    FIN = 4
-    MOTOR = 5
-    ROCKET = 6
+    NOSE = "nose"
+    CYLINDRICAL_BODY = "cylidrical body"
+    TRANSITION = "transition"
+    FIN = "fin"
+    MOTOR = "motor"
+    ROCKET = "rocket"

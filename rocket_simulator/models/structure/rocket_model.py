@@ -1,13 +1,8 @@
 from typing import List
 from models.structure.abstract_model import AbstractModel
 
-from nose_model import NoseModel
-from cylindrical_body_model import CylindricalBodyModel
-from core.physics.body.rigid_body import RigidBody
 from core.physics.vector import Vector
-from transition_model import TransitionModel
-from fin_model import FinModel
-from motor_model import MotorModel
+from models.structure.fin_model import FinModel
 from models.structure.abstract_model import AbstractModel
 from utils.constants import Constants
 from utils.rocket_parts import RocketParts
@@ -20,7 +15,7 @@ class RocketModel(AbstractModel):
 
         self.rocket_height:Vector = Vector(0, 0, 0)
         self.__initialize()
-        super().__init__(RocketParts.ROCKET, -1)
+        super().__init__(RocketParts.ROCKET, -1, None)
 
     def __orderAvailablePartsByPosition(self) -> List[AbstractModel]:
         ordered_parts = []
@@ -38,7 +33,6 @@ class RocketModel(AbstractModel):
             i_found = [found == False for found in i_found]  # inverte os bools para usar o all() do jeito certo
             if all(i_found):  # para se todas as peças já foram ordenadas
                 break
-
         return ordered_parts
 
     def __getPreviousPart(self, part):
@@ -123,6 +117,11 @@ class RocketModel(AbstractModel):
     def calculateMomentOfInertia(self, axis_offset_to_cg: float) -> float:  # axis_offset_to_cg pode ser negativo
         axis_offset_to_cg *= -1  # inverter para o sentido da simulação
         available_parts = self.__getAvailableParts()
+        print(len(available_parts))
+        if len(available_parts) == 0:
+
+            return
+
         total_moment_of_inertia = 0
 
         for part in available_parts:
@@ -135,7 +134,12 @@ class RocketModel(AbstractModel):
     def calculateCg(self) -> Vector:
         total_mass = 0
         cg = Vector(0, 0, 0)
-        for part in self.__getAvailableParts():
+        available_parts = self.__getAvailableParts()
+
+        if len(available_parts) == 0:
+            return
+
+        for part in available_parts:
             total_mass += part.mass
             cg += part.cg * part.mass
 
@@ -145,7 +149,12 @@ class RocketModel(AbstractModel):
     def calculateCp(self) -> Vector:
         total_shape_coefficient = 0
         cp = Vector(0, 0, 0)
-        for part in self.__getAvailableParts():
+        available_parts = self.__getAvailableParts()
+
+        if len(available_parts) == 0:
+            return
+
+        for part in available_parts:
             cp += part.cp * part.shape_coefficient
             total_shape_coefficient += part.shape_coefficient
 
@@ -154,6 +163,9 @@ class RocketModel(AbstractModel):
 
     def createDelimitationPoints(self) -> list:
         ordered_parts = self.__orderAvailablePartsByPosition()
+        if len(ordered_parts) == 0:
+            return [Vector(0, 0, 0), Vector(0, 0, 0)]
+
         first_part:AbstractModel = ordered_parts[0]
         last_part:AbstractModel = ordered_parts[-1]
 
@@ -188,3 +200,10 @@ class RocketModel(AbstractModel):
             self.parts[part.part_type] = None  # remove parte única
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
+
+    def getPart(self, part_type: RocketParts):
+        for part in self.__getAvailableParts():
+            if part.part_type == part_type:
+                return part
+
+        print(f"Part type {part_type.value} doesnt exist")

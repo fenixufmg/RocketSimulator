@@ -1,4 +1,3 @@
-from __future__ import annotations
 import json
 from utils.paths import Paths
 import os
