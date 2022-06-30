@@ -4,7 +4,7 @@ import os
 
 class MaterialModel:
     def __init__(self, name:str):
-        self.name = name.lower().strip()
+        self.name = name.lower().strip() # arrumar para usar enums
         self.density = None
         self.yield_strength = None
         self.__initialize()

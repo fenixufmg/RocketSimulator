@@ -1,3 +1,4 @@
+from utils.nose_type import NoseType
 from utils.rocket_parts import RocketParts
 from email.mime import base
 from enum import Enum
@@ -7,11 +8,6 @@ from models.other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
 from core.physics.vector import Vector
 from utils.constants import Constants
-
-class NoseType(Enum):
-    CONICAL = 1
-    OGIVE = 2
-    PARABOLIC = 3
 
 class NoseModel(AbstractModel):
     def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, material:MaterialModel, position_order: int):

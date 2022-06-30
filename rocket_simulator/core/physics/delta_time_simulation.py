@@ -33,6 +33,7 @@ class DeltaTimeSimulation:
         self.time: float = time
 
         # peças
+        self.parachute = rocket.getPart(RocketParts.PARACHUTE)
         self.nose = rocket.getPart(RocketParts.NOSE)
         self.cilyndrical_bodies = rocket.getPart(RocketParts.CYLINDRICAL_BODY)
         self.transitions = rocket.getPart(RocketParts.TRANSITION)

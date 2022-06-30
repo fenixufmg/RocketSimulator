@@ -7,3 +7,6 @@ class MotorModel(AbstractModel):
     def __init__(self, position_order:int):
         super().__init__(RocketParts.MOTOR, position_order)
 
+    def activate(self):
+        pass
+

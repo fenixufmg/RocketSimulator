@@ -7,10 +7,15 @@ from core.recovery.drag_force import drag_force
 
 class ThrustTest(Force):
     def __init__(self):
-        super().__init__(0,0,0, ApplicationPoint.CG, None)
+        super().__init__(0,0,0, ApplicationPoint.CP, None)
     
     def calculate(self, current_state:DeltaTimeSimulation):
-        magnitude = drag_force
+        # magnitude = drag_force # antigo
+        parachute = current_state.parachute
+        transversal_section_area = parachute.transversalSectionArea()
+        drag_coefficient = parachute.drag_coefficient
+        magnitude = drag_force(transversal_section_area, drag_coefficient, current_state.velocity.magnitude())
+
         direction = current_state.looking_direction 
         thrust = direction * magnitude
 
