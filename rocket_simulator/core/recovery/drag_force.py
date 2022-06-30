@@ -1,7 +1,6 @@
 from math import *
 from data.parachutes import *
 from core.recovery.velocity import Velocity
-from core.recovery.parachute_area import transversal_section_area
 from utils.constants import Constants
 
 """
