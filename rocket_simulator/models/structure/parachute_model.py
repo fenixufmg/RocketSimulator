@@ -31,11 +31,15 @@ class ParachuteModel(AbstractModel):
         pass
 
     def eject(self): # concertar para ajustar o fator randomico de acordo com DELTA_TIME
+        if self.inflated is True:
+            return
+            
         self.ejected = True
         
         upper_limit = 2**(self.inflation_randomness_factor * 2)
         inflation_tentative = randint(1, upper_limit)
         if inflation_tentative == 1: # success
+            print("Parachute inflated")
             self.inflated = True
 
     def __calculateDragCoefficient(self):
