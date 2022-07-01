@@ -59,12 +59,12 @@ class ParachuteModel(AbstractModel):
     def __calculateTransversalArea(self) -> float:
         return ((self.diameter/2)**2)*5.099
 
-    def calculateVolume(self) -> float: 
+    def calculateVolume(self) -> float: # possivelmente errado
         inner_diameter = self.diameter - 2 * self.thickness
         volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
         return volume
 
-    def calculateMass(self) -> float:
+    def calculateMass(self) -> float: # possivelmente errado
         mass = self.material.density * self.calculateVolume
         return mass
 
