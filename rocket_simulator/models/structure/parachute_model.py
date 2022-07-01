@@ -21,6 +21,7 @@ class ParachuteModel(AbstractModel):
         self.coupled_part = coupled_part
         self.ejected = False
         self.inflated = False
+        self.inflation_force = None
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
 
@@ -33,7 +34,7 @@ class ParachuteModel(AbstractModel):
     def eject(self): # concertar para ajustar o fator randomico de acordo com DELTA_TIME
         if self.inflated is True:
             return
-            
+
         self.ejected = True
         
         upper_limit = 2**(self.inflation_randomness_factor * 2)
@@ -41,6 +42,10 @@ class ParachuteModel(AbstractModel):
         if inflation_tentative == 1: # success
             print("Parachute inflated")
             self.inflated = True
+            self.calculateInflationForce()
+    
+    def calculateMaximumInflationForce(self):
+        self.inflation_force = ??
 
     def __calculateDragCoefficient(self):
         parachute_folder = Paths.PARACHUTES.value
