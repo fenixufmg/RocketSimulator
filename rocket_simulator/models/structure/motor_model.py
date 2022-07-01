@@ -5,7 +5,20 @@ from utils.constants import Constants
 
 class MotorModel(AbstractModel):
     def __init__(self, position_order:int):
-        super().__init__(RocketParts.MOTOR, position_order)
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+
+        super().__init__(RocketParts.MOTOR, position_order,  self.drag_coefficient, self.transversal_area)
+        self.__verify()
+
+    def __verify(self): # fazer
+        pass
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+    
+    def __calculateTransversalArea(self): # fazer
+        pass
 
     def activate(self):
         pass

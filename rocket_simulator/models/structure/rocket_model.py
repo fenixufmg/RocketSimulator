@@ -14,8 +14,21 @@ class RocketModel(AbstractModel):
                         RocketParts.FIN: None, RocketParts.MOTOR: None}
 
         self.rocket_height:Vector = Vector(0, 0, 0)
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+        
+        super().__init__(RocketParts.ROCKET, -1, None, self.drag_coefficient, self.transversal_area)
+        self.__verify()
         self.__initialize()
-        super().__init__(RocketParts.ROCKET, -1, None)
+    
+    def __verify(self): # fazer
+        pass
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+    
+    def __calculateTransversalArea(self): # fazer
+        pass
 
     def __orderAvailablePartsByPosition(self) -> List[AbstractModel]:
         ordered_parts = []

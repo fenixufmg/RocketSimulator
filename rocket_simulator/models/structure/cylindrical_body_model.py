@@ -8,18 +8,25 @@ from models.structure.abstract_model import AbstractModel
 
 class CylindricalBodyModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material: MaterialModel, position_order: int):
-        self.__verify(diameter, thickness)
-
         self.height = height
         self.diameter = diameter  # Outer diameter
         self.thickness = thickness
         self.material = material
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
 
-        super().__init__(RocketParts.CYLINDRICAL_BODY, position_order, 0)
+        super().__init__(RocketParts.CYLINDRICAL_BODY, position_order, 0, self.drag_coefficient, self.transversal_area)
+        self.__verify(diameter, thickness)
 
     def __verify(self, diameter, thickness):
         if thickness >= diameter / 2:
             raise ValueError("Value of thickness is bigger than half of outer diameter")
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+    
+    def __calculateTransversalArea(self): # fazer
+        pass
 
     def calculateVolume(self) -> float:
         inner_diameter = self.diameter - 2 * self.thickness

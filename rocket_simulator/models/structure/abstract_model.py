@@ -5,15 +5,19 @@ from core.physics.vector import Vector
 from utils.rocket_parts import RocketParts
 
 class AbstractModel(ABC, RigidBody):
-    def __init__(self, part_type: RocketParts, position_order: int, shape_coefficient:float) -> None:
+    def __init__(self, part_type: RocketParts, position_order: int, shape_coefficient:float, 
+                drag_coefficient:float, transversal_area:float) -> None:
+        # rocket specific
         self.part_type = part_type
         self.position_order = position_order
         self.shape_coefficient = shape_coefficient
+        self.drag_coefficient = drag_coefficient
+        self.transversal_area = transversal_area  
 
+        # rigid body fields
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         self.volume = volume
-
         mass = self.calculateMass()
         moment_of_inertia = self.calculateMomentOfInertia
         cg = self.calculateCg()

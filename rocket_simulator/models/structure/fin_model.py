@@ -7,31 +7,44 @@ from models.structure.abstract_model import AbstractModel
 class FinModel(AbstractModel):
     def __init__(self, root_chord, tip_chord, span, max_thickness, sweep_angle, material: MaterialModel,
                  position_order: int, distance_to_base, distance_from_cylinder_center, nb_fins:int):
-        self.__root_chord = root_chord
-        self.__tip_chord = tip_chord
-        self.__span = span
-        self.__max_thickness = max_thickness
-        self.__sweep_angle = sweep_angle
-        self.__distance_to_base = distance_to_base
-        self.__distance_from_cylinder_center = distance_from_cylinder_center
-        self.__nb_fins = nb_fins
-        self.__material = material
-        super().__init__(RocketParts.FIN, position_order)
+        self.root_chord = root_chord
+        self.tip_chord = tip_chord
+        self.span = span
+        self.max_thickness = max_thickness
+        self.sweep_angle = sweep_angle
+        self.distance_to_base = distance_to_base
+        self.distance_from_cylinder_center = distance_from_cylinder_center
+        self.nb_fins = nb_fins
+        self.material = material
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+        
+        super().__init__(RocketParts.FIN, position_order, self.drag_coefficient, self.transversal_area)
+        self.__verify()
+
+    def __verify(self): # fazer
+        pass
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+    
+    def __calculateTransversalArea(self): # fazer
+        pass
 
     def getDistanceToBase(self) -> float:
-        return self.__distance_to_base
+        return self.distance_to_base
 
     def getDistanceFromCenter(self) -> float:
-        return self.__distance_from_cylinder_center
+        return self.distance_from_cylinder_center
 
     def getNumberOfFins(self) -> int:
-        return self.__nb_fins
+        return self.nb_fins
 
     def calculateVolume(self) -> float:
-        area = (self.__span * (self.__tip_chord + self.__root_chord)) / 2
-        volume = area * self.__max_thickness
+        area = (self.span * (self.tip_chord + self.root_chord)) / 2
+        volume = area * self.max_thickness
         return volume
 
     def calculateMass(self) -> float:
-        mass = self.__material.density * self.calculateVolume
+        mass = self.material.density * self.calculateVolume
         return mass

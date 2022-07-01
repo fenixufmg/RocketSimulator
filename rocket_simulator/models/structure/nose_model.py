@@ -15,12 +15,14 @@ class NoseModel(AbstractModel):
         self.base_radius = base_diameter / 2
         self.thinness_factor = thinness_factor
         self.height = thinness_factor*self.base_radius**2
-
         self.thickness = thickness # implementar nariz oco
         self.nose_type = nose_type
         self.material = material
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+
+        super().__init__(RocketParts.NOSE, position_order, 2, self.drag_coefficient, self.transversal_area)
         self.__verify()
-        super().__init__(RocketParts.NOSE, position_order, 2)
 
     def __verify(self):
         if self.base_diameter <= 0:
@@ -31,6 +33,12 @@ class NoseModel(AbstractModel):
             raise ValueError("Thickness greater than radius")
         if self.thinness_factor <= 0:
             raise ValueError("Thinness factor <= 0 not allowed")
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+    
+    def __calculateTransversalArea(self): # fazer
+        pass
 
     def calculateVolume(self) -> float: # https://www.grc.nasa.gov/www/k-12/airplane/volume.html
         if self.nose_type == NoseType.CONICAL:

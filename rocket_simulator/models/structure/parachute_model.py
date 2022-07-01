@@ -10,24 +10,35 @@ from math import pi
 from models.structure.abstract_model import AbstractModel
 import json
 import enum
+from random import randint
 
 class ParachuteModel(AbstractModel):
-    def __init__(self, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel):
-        self.__verify(diameter)
-        
+    def __init__(self, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel, inflation_randomness_factor: float = 1):
         self.parachute_type = parachute_type
+        self.inflation_randomness_factor = inflation_randomness_factor
         self.cable_type = cable_type
         self.diameter = diameter
         self.coupled_part = coupled_part
-        self.drag_coefficient = None
         self.ejected = False
-        self.__initialize()
-        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 0)
+        self.inflated = False
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+
+        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 0, self.drag_coefficient, self.transversal_area)
+        self.__verify(diameter)
 
     def __verify(self, diameter:float): # fazer
         pass
 
-    def __initialize(self):
+    def eject(self): # concertar para ajustar o fator randomico de acordo com DELTA_TIME
+        self.ejected = True
+        
+        upper_limit = 2**(self.inflation_randomness_factor * 2)
+        inflation_tentative = randint(1, upper_limit)
+        if inflation_tentative == 1: # success
+            self.inflated = True
+
+    def __calculateDragCoefficient(self):
         parachute_folder = Paths.PARACHUTES.value
 
         parachute_file = f"{parachute_folder}/{self.parachute_type.value}.json"
@@ -36,10 +47,7 @@ class ParachuteModel(AbstractModel):
 
             self.drag_coefficient = data["drag_coefficient"]
 
-    def eject(self):
-        pass
-
-    def transversalSectionArea(self) -> float:
+    def __calculateTransversalArea(self) -> float:
         return ((self.diameter/2)**2)*5.099
 
     def calculateVolume(self) -> float: 
