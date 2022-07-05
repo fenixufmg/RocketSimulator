@@ -66,3 +66,7 @@ class AbstractModel(ABC, RigidBody):
         displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
         self.move(displacement)
 
+    def getPosition(self):
+        position = [self.delimitation_points[0].toList(), self.cg.toList(), self.delimitation_points[1].toList()]
+        return position
+

@@ -63,22 +63,24 @@ class RocketModel(AbstractModel):
 
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
-        for ordered_part in ordered_parts: # debug
-            print(ordered_part.part_type)
         self.rocket_height = Vector(0, 0, 0)
         for part in ordered_parts:
             part.centerOnOrigin()
-
-            previous_part = self.__getPreviousPart(part)
             displacement = part.getTipDistanceToCg().magnitude() * -1  # move a própria altura acima do cg
             displacement = Vector(0, 0, displacement)
 
+            previous_part = self.__getPreviousPart(part)
+            if previous_part is None: # primeira parte
+                self.rocket_height = Vector(0, 0, part.height)
+
             if previous_part is not None:  # não é a primeira parte
-                previous_part_height = Vector(0, 0, previous_part.height)
-                self.rocket_height -= previous_part_height
-                displacement -= self.rocket_height  # move a altura das peças anteriores
+                current_part_height = Vector(0, 0, part.height)
+                self.rocket_height += current_part_height
+
+                displacement -= (self.rocket_height - current_part_height)  # move a altura das peças anteriores
 
             part.move(displacement)
+
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
                 distance_from_center = Vector(part.getDistanceFromCenter(), 0, 0)
