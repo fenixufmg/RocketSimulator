@@ -30,16 +30,16 @@ class CylindricalBodyModel(AbstractModel):
 
     def calculateVolume(self) -> float:
         inner_diameter = self.diameter - 2 * self.thickness
-        volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
+        volume = pi * self.height * ((self.diameter / 2) ** 2 - (inner_diameter / 2) ** 2)
         return volume
 
     def calculateMass(self) -> float:
-        mass = self.material.density * self.calculateVolume
+        mass = self.material.density * self.volume
         return mass
 
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # https://en.wikipedia.org/wiki/List_of_moments_of_inertia
         mass = self.calculateMass
-        Ixx = 1/12*mass*(3*( (self.diameter^2)/4 +((self.diameter-2*self.thickness)^2)/4 )+self.height^2)
+        Ixx = 1/12*mass*(3*( (self.diameter**2)/4 +((self.diameter-2*self.thickness)**2)/4 )+self.height**2)
         return Ixx
 
     def calculateCg(self) -> Vector:  # Feito amigo

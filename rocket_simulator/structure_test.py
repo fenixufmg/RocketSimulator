@@ -3,6 +3,8 @@ from core.physics.forces.translation_test_force import TranslationTestForce
 from core.physics.forces.rotation_test_force import RotationTestForce
 from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint
+from models.structure.rocket_model import RocketModel
+
 from rb_test.trajectory_test import trajectoryTest
 from rb_test.velocity_test import velocityTest
 from rb_test.angular_velocity_test import angularVelocityTest
@@ -13,7 +15,33 @@ from models.structure.nose_model import NoseModel
 from models.structure.nose_model import NoseType
 from models.other.material_model import MaterialModel
 from models.structure.cylindrical_body_model import CylindricalBodyModel
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib
 
 acrylic = MaterialModel("acrylic")
-nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)
-cylinder1 = CylindricalBodyModel(10, 2, 0.5, acrylic, 1)
+nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0) # height 1
+cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1) # height 5
+
+rocket = RocketModel()
+rocket.addPart(nose)
+rocket.addPart(cylinder1)
+
+fig = plt.figure(figsize=(8,5))
+# ax = fig.add_subplot(111, projection='3d')
+ax = fig.gca(projection='3d')
+
+parts = rocket.getParts()
+for part in parts:
+    delimitation_points = part.delimitation_points
+    coords = [part.part_type]
+    for delimitation in delimitation_points:
+        coords.append(delimitation.toList())
+
+    print(coords)
+
+    ax.scatter(delimitation_points[0].x(), delimitation_points[0].y(), delimitation_points[0].z(), color="red")
+    ax.scatter(delimitation_points[1].x(), delimitation_points[1].y(), delimitation_points[1].z(), color="blue")
+
+# plt.show()
+

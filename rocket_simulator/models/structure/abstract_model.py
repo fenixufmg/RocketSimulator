@@ -48,9 +48,8 @@ class AbstractModel(ABC, RigidBody):
     def createDelimitationPoints(self) -> List[Vector]:
         raise NotImplementedError("Function not implemented")
 
-
-    def getHeight(self) -> float:
-        raise NotImplementedError("Function not implemented")
+    # def getHeight(self) -> float:
+    #     raise NotImplementedError("Function not implemented")
 
     def updateState(self) -> None:
         self.volume = self.calculateVolume()

@@ -46,6 +46,7 @@ class RocketModel(AbstractModel):
             i_found = [found == False for found in i_found]  # inverte os bools para usar o all() do jeito certo
             if all(i_found):  # para se todas as peças já foram ordenadas
                 break
+
         return ordered_parts
 
     def __getPreviousPart(self, part):
@@ -62,6 +63,8 @@ class RocketModel(AbstractModel):
 
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
+        for ordered_part in ordered_parts: # debug
+            print(ordered_part.part_type)
         self.rocket_height = Vector(0, 0, 0)
         for part in ordered_parts:
             part.centerOnOrigin()
@@ -71,7 +74,7 @@ class RocketModel(AbstractModel):
             displacement = Vector(0, 0, displacement)
 
             if previous_part is not None:  # não é a primeira parte
-                previous_part_height = Vector(0, 0, previous_part.getHeight())
+                previous_part_height = Vector(0, 0, previous_part.height)
                 self.rocket_height -= previous_part_height
                 displacement -= self.rocket_height  # move a altura das peças anteriores
 
@@ -191,12 +194,14 @@ class RocketModel(AbstractModel):
             part_list = self.parts[part.part_type]
             part_list.append(part)
             self.parts[part.part_type] = part_list
+            self.__movePartsToPositions()
             return
 
         if self.parts[part.part_type] is not None:  # parte já existe
             raise ValueError(f"Cant have two parts of type {part.part_type}")
 
         self.parts[part.part_type] = part  # adiciona parte única
+        self.__movePartsToPositions()
 
     def removePart(self, part: AbstractModel):  # remove instâncias
         if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
@@ -204,6 +209,7 @@ class RocketModel(AbstractModel):
             part_list = self.parts[part.part_type]
             part_list.remove(part)
             self.parts[part.part_type] = part_list
+            self.__movePartsToPositions()
             return
 
         if self.parts[part.part_type] is None:  # parte não existe
@@ -211,6 +217,7 @@ class RocketModel(AbstractModel):
 
         if self.parts[part.part_type] == part:  # condicionado pela INSTÂNCIA
             self.parts[part.part_type] = None  # remove parte única
+            self.__movePartsToPositions()
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
 
@@ -220,3 +227,6 @@ class RocketModel(AbstractModel):
                 return part
 
         # print(f"Part type {part_type.value} doesnt exist")
+
+    def getParts(self) -> List[AbstractModel]:
+        return self.__getAvailableParts()
