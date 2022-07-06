@@ -31,6 +31,7 @@ class DeltaTimeSimulation:
         self.mass: float = rocket.mass
         self.looking_direction: Vector = rocket.getLookingDirection()
         self.time: float = time
+        self.is_on_ground:bool = rocket.is_on_ground
 
         # peças
         self.parachute = rocket.getPart(RocketParts.PARACHUTE)

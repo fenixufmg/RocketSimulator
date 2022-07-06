@@ -57,9 +57,9 @@ class RocketModel(AbstractModel):
             if part.position_order == previous_position_order:
                 return part
 
-    def __putRocketOnGround(self, ):
+    def __putRocketOnGround(self):
         for part in self.__getAvailableParts():
-            part.move(self.rocket_height)
+            part.move(self.rocket_height, ignore_ground=True)
 
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
@@ -79,7 +79,7 @@ class RocketModel(AbstractModel):
 
                 displacement -= (self.rocket_height - current_part_height)  # move a altura das peças anteriores
 
-            part.move(displacement)
+            part.move(displacement, ignore_ground=True)
 
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
@@ -92,7 +92,7 @@ class RocketModel(AbstractModel):
                     radians *= Constants.PI
                     z_axis = Vector(0, 0, 1)
                     displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
-                    part.move(displacement)
+                    part.move(displacement, ignore_ground=True)
 
         self.__putRocketOnGround()
 
@@ -137,7 +137,6 @@ class RocketModel(AbstractModel):
         available_parts = self.__getAvailableParts()
         print(len(available_parts))
         if len(available_parts) == 0:
-
             return
 
         total_moment_of_inertia = 0
@@ -197,6 +196,7 @@ class RocketModel(AbstractModel):
             part_list.append(part)
             self.parts[part.part_type] = part_list
             self.__movePartsToPositions()
+            self.updateState()
             return
 
         if self.parts[part.part_type] is not None:  # parte já existe
@@ -204,6 +204,7 @@ class RocketModel(AbstractModel):
 
         self.parts[part.part_type] = part  # adiciona parte única
         self.__movePartsToPositions()
+        self.updateState()
 
     def removePart(self, part: AbstractModel):  # remove instâncias
         if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
@@ -212,6 +213,7 @@ class RocketModel(AbstractModel):
             part_list.remove(part)
             self.parts[part.part_type] = part_list
             self.__movePartsToPositions()
+            self.updateState()
             return
 
         if self.parts[part.part_type] is None:  # parte não existe
@@ -220,6 +222,7 @@ class RocketModel(AbstractModel):
         if self.parts[part.part_type] == part:  # condicionado pela INSTÂNCIA
             self.parts[part.part_type] = None  # remove parte única
             self.__movePartsToPositions()
+            self.updateState()
         else:  # INSTÂNCIA não encontrada
             raise ValueError("Part instance doesnt exist")
 

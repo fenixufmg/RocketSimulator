@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from core.physics.simulation import Simulation
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 
 def __mapColors(values):
     values_len = len(values)
@@ -48,11 +49,14 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
         print(f"Velocity: {simulation.velocity}")
         print(f"Acceleration: {simulation.acceleration}")
         print(f"Cg position: {simulation.cg}")
+        print(f"Is on ground: {simulation.is_on_ground}")
+        print(f"Mass: {simulation.mass}")
         print("="*40)
 
     # ============ configurações do gráficos ============ #
     fig = plt.figure(figsize=(8,5))
-    ax = fig.add_subplot(projection='3d')
+    # ax = fig.add_subplot(projection='3d')
+    ax = fig.gca(projection='3d')
     ax.set_xlim(0, limit)
     ax.set_ylim(-limit/2, limit/2)
     ax.set_zlim(0, limit)

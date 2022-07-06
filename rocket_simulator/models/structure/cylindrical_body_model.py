@@ -38,7 +38,7 @@ class CylindricalBodyModel(AbstractModel):
         return mass
 
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # https://en.wikipedia.org/wiki/List_of_moments_of_inertia
-        mass = self.calculateMass
+        mass = self.calculateMass()
         Ixx = 1/12*mass*(3*( (self.diameter**2)/4 +((self.diameter-2*self.thickness)**2)/4 )+self.height**2)
         return Ixx
 
