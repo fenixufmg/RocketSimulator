@@ -65,12 +65,12 @@ class RigidBody:
             displacement (Vector): Vetor deslocamento
             ignore_ground (bool): Se verdadeiro pode mover corpo para baixo do solo
         """
-        if ignore_ground is False and self._isOnGround():
-            self.velocity = Vector(0,0,0)
-            self.total_acceleration = Vector(0,0,0)
-            self.angular_velocity = Vector(0,0,0)
-            self.cg.setZ(0.1)
-            return
+        # if ignore_ground is False and self._isOnGround():
+        #     self.velocity = Vector(0,0,0)
+        #     self.total_acceleration = Vector(0,0,0)
+        #     self.angular_velocity = Vector(0,0,0)
+        #     self.cg.setZ(0.1)
+        #     return
 
         self.cg += displacement
         self.cp += displacement
