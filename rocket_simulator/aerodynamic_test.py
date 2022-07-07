@@ -5,6 +5,8 @@ from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint
 from models.other.material_model import MaterialModel
 from models.structure.nose_model import NoseModel, NoseType
+from models.structure.cylindrical_body_model import CylindricalBodyModel
+from models.structure.fin_model import FinModel
 from models.structure.rocket_model import RocketModel
 from rb_test.trajectory_test import trajectoryTest
 from rb_test.velocity_test import velocityTest
@@ -22,7 +24,10 @@ rocket = RocketModel()
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)
+cylindrical_body = CylindricalBodyModel(20, 2, 0.5, acrylic, 1)
+
 rocket.addPart(nose)
+rocket.addPart(cylindrical_body)
 # rocket.delimitation_points = [Vector(0, 0, 2), Vector(0, 0, -2)]
 # rocket.mass = 2
 # rocket.volume = None

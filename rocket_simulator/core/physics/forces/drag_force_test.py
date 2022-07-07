@@ -7,7 +7,6 @@ from core.aerodynamic.drag import drag
 from utils.constants import Constants
 from models.structure.nose_model import NoseModel
 from math import pi
-# from core.aerodynamic.drag import drag
 
 
 class DragForceTest(Force):
@@ -15,7 +14,7 @@ class DragForceTest(Force):
         super().__init__(0, 0, 0, ApplicationPoint.CP, None)
 
     def calculate(self, current_state: DeltaTimeSimulation):
-        dragCoefficient = 2
+        dragCoefficient = 0.5
 
         # referenceArea = pi * NoseModel().__base_radius ** 2  # original
         referenceArea = pi * current_state.nose.base_radius ** 2  # certo
@@ -24,9 +23,9 @@ class DragForceTest(Force):
         # velocity = Vector.__calculateMagnitude(current_state.velocity)  # original
         print(current_state.velocity)
         velocity = current_state.velocity.magnitude()  # certo
-        
+
         magnitude = drag(referenceArea, dragCoefficient, velocity)
 
         self.setX(0)
         self.setY(0)
-        self.setZ(magnitude)
+        self.setZ(-magnitude)
