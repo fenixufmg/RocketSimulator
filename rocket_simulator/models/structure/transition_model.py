@@ -10,17 +10,15 @@ from typing import List
 
 class TransitionModel(AbstractModel):
     def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
+        self.__verify(bottom_diameter, top_diameter, thickness)
+
         self.position = position
         self.height = height
         self.bottom_diameter = bottom_diameter
         self.top_diameter = top_diameter
         self.thickness = thickness
         self.material = material
-        self.drag_coefficient = self.__calculateDragCoefficient()
-        self.transversal_area = self.__calculateTransversalArea()
-
         super().__init__(RocketParts.TRANSITION, position_order)
-        self.__verify(bottom_diameter, top_diameter, thickness, self.drag_coefficient, self.transversal_area)
 
     def __verify(self):
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
@@ -29,12 +27,6 @@ class TransitionModel(AbstractModel):
         else:
             if self.thickness >= self.top_diameter / 2:
                 raise ValueError("Value of thickness is bigger than half of top outer diameter")
-
-    def __calculateDragCoefficient(self): # fazer
-        pass
-    
-    def __calculateTransversalArea(self): # fazer
-        pass
 
     def calculateVolume(self) -> float:
         top_inner_diameter = self.top_diameter - 2 * self.thickness
@@ -67,8 +59,6 @@ class TransitionModel(AbstractModel):
         bottom_radius = self.bottom_diameter/2
         top_radius = self.top_diameter/2
 
-        height = self.getTipToBaseDistance()
-
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
             cg_local = self.height -self.height/4*((top_radius^2 +2*top_radius*bottom_radius + 3*bottom_radius^2)/(
                 top_radius^2 + top_radius*bottom_radius + bottom_radius^2))
@@ -82,7 +72,7 @@ class TransitionModel(AbstractModel):
         return self.toGroundCoordinates(cg)
 
     def calculateCp(self) -> Vector: # Reference from donwloaded files
-        Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
+        Cp = self.getTipToBaseDistance()*(1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
         return self.toGroundCoordinates(Cp)
 
     def createDelimitationPoints(self) -> List[Vector]:

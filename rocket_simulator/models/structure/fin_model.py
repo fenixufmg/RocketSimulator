@@ -1,4 +1,6 @@
 from utils.rocket_parts import RocketParts
+from math import tan
+from core.physics.vector import Vector
 from core.physics.body.rigid_body import RigidBody
 from models.other.material_model import MaterialModel
 from models.structure.abstract_model import AbstractModel
@@ -48,3 +50,22 @@ class FinModel(AbstractModel):
     def calculateMass(self) -> float:
         mass = self.material.density * self.calculateVolume
         return mass
+
+    def calculateCp(self) -> Vector: # Source: document rocket model pdf
+        m = self.span*tan(self.sweep_angle)
+
+        cp_local = self.getTipToBaseDistance().unitVector * ( m*(self.root_chord + 2*self.tip_chord)/(3*(self.root_chord + self.tip_chord)) +
+            1/6*(self.root_chord + self.tip_chord - self.root_chord*self.tip_chord/( self.root_chord + self.tip_chord) ))
+        
+        return self.toGroundCoordinates(cp_local)
+
+    def calculateCg(self) -> Vector: # source: https://www.efunda.com/math/areas/trapezoid.cfm 
+        m = self.span*tan(self.sweep_angle)
+
+        cg_local = self.getTipToBaseDistance().unitVector*((2*self.tip_chord*m + self.tip_chord^2 +m*self.root_chord +
+            self.root_chord*self.tip_chord + self.root_chord^2)/(3*(self.root_chord+self.tip_chord)) )
+        return self.toGroundCoordinates(cg_local)
+
+    def calculateMomentOfInertia(self) -> float: # source: https://www.efunda.com/math/areas/trapezoid.cfm 
+        # yet to complete
+        pass
