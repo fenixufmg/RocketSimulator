@@ -8,7 +8,7 @@ from utils.constants import Constants
 from utils.rocket_parts import RocketParts
 
 
-class RocketModel(AbstractModel):
+class RocketModel(AbstractModel): # não está movendo as peças
     def __init__(self):
         self.parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
                         RocketParts.FIN: None, RocketParts.MOTOR: None}

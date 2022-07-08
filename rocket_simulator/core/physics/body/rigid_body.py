@@ -110,6 +110,25 @@ class RigidBody:
         # move os pontos
         self.move(displacement)
 
+    def rotate(self, angular_displacement:Vector):
+        """Rotaciona o corpo.
+
+        Args:
+            angular_displacement (Vector): Vetor que representa a rotação.
+        """
+        self.cordinate_system.rotate(angular_displacement)
+
+        self.cp -= self.total_displacement # translada para a origem para rotacionar
+        self.cp = Vector.rotateAroundAxis(self.cp, angular_displacement, angular_displacement.magnitude())
+        self.cp += self.total_displacement # translada para o ponto antes da rotação
+        
+        for index, delimitation_point in enumerate(self.delimitation_points):
+            delimitation_point -= self.total_displacement  # translada para a origem para rotacionar
+            delimitation_point = Vector.rotateAroundAxis(delimitation_point, angular_displacement, angular_displacement.magnitude())
+            delimitation_point += self.total_displacement # translada para o ponto antes da rotação
+
+            self.delimitation_points[index] = delimitation_point
+
     def __rotateAroundCg(self, force:Force, duration:float, lever:Vector) -> None:
         """Rotaciona o corpo em torno do CG.
 
@@ -128,18 +147,7 @@ class RigidBody:
         self.angular_velocity = angular_velocity
 
         # rotaciona os pontos
-        self.cordinate_system.rotate(angular_displacement)
-
-        self.cp -= self.total_displacement # translada para a origem para rotacionar
-        self.cp = Vector.rotateAroundAxis(self.cp, angular_displacement, angular_displacement.magnitude())
-        self.cp += self.total_displacement # translada para o ponto antes da rotação
-        
-        for index, delimitation_point in enumerate(self.delimitation_points):
-            delimitation_point -= self.total_displacement  # translada para a origem para rotacionar
-            delimitation_point = Vector.rotateAroundAxis(delimitation_point, angular_displacement, angular_displacement.magnitude())
-            delimitation_point += self.total_displacement # translada para o ponto antes da rotação
-
-            self.delimitation_points[index] = delimitation_point
+        self.rotate(angular_displacement)
             
     def __applyForceOnCp(self, force:Force, duration:float) -> None:
         """Aplica uma força no CP durante uma determinada duração, oque resulta em uma translação e em uma rotação.
