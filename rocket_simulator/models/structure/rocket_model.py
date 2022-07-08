@@ -135,7 +135,6 @@ class RocketModel(AbstractModel):
     def calculateMomentOfInertia(self, axis_offset_to_cg: float) -> float:  # axis_offset_to_cg pode ser negativo
         axis_offset_to_cg *= -1  # inverter para o sentido da simulação
         available_parts = self.__getAvailableParts()
-        print(len(available_parts))
         if len(available_parts) == 0:
             return
 

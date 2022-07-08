@@ -15,17 +15,16 @@ class DragForceTest(Force):
 
     def calculate(self, current_state: DeltaTimeSimulation):
         dragCoefficient = 0.5
-
-        # referenceArea = pi * NoseModel().__base_radius ** 2  # original
         referenceArea = pi * current_state.nose.base_radius ** 2  # certo
         # a secção transversal no calculo do arrasto é so a do nariz? se não for fala cmg pra gente ver como fazer
-
-        # velocity = Vector.__calculateMagnitude(current_state.velocity)  # original
-        print(current_state.velocity)
-        velocity = current_state.velocity.magnitude()  # certo
-
+        velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
+        print(velocity)
         magnitude = drag(referenceArea, dragCoefficient, velocity)
+        dragForce = current_state.velocity * -1
+        dragForce = dragForce.unitVector() * magnitude
+        print(dragForce)
+        print("====================")
 
-        self.setX(0)
-        self.setY(0)
-        self.setZ(-magnitude)
+        self.setX(dragForce.x())
+        self.setY(dragForce.y())
+        self.setZ(dragForce.z())
