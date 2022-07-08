@@ -10,7 +10,6 @@ from typing import List
 
 class TransitionModel(AbstractModel):
     def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
-        self.__verify(bottom_diameter, top_diameter, thickness)
 
         self.position = position
         self.height = height
@@ -18,7 +17,13 @@ class TransitionModel(AbstractModel):
         self.top_diameter = top_diameter
         self.thickness = thickness
         self.material = material
+        self.drag_coefficient = self.__calculateDragCoefficient()
+        self.transversal_area = self.__calculateTransversalArea()
+
         super().__init__(RocketParts.TRANSITION, position_order)
+        
+        self.__verify(bottom_diameter, top_diameter, thickness)
+        #self.__verify(bottom_diameter, top_diameter, thickness, self.drag_coefficient, self.transversal_area) # Não entendi essa parte aqui, n existe tranversal area
 
     def __verify(self):
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
@@ -72,10 +77,16 @@ class TransitionModel(AbstractModel):
         return self.toGroundCoordinates(cg)
 
     def calculateCp(self) -> Vector: # Reference from donwloaded files
-        Cp = self.getTipToBaseDistance()*(1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
+        Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
         return self.toGroundCoordinates(Cp)
 
     def createDelimitationPoints(self) -> List[Vector]:
         upper_delimitation = Vector(0, 0, self.height)
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
+
+    def __calculateDragCoefficient(self): # fazer
+        pass
+
+    def __calculateTransversalArea(self): # fazer
+        pass
