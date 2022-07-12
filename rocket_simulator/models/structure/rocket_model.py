@@ -238,17 +238,14 @@ class RocketModel(AbstractModel): # não está movendo as peças
         return self.__getAvailableParts()
 
     def move(self, displacement: Vector, ignore_ground=False):
+        super().move(displacement, ignore_ground=ignore_ground)
+
         for part in self.__getAvailableParts():
             part.move(displacement, ignore_ground=ignore_ground)
 
-    def rotate(self, angular_displacement:Vector): # errado
+    def rotate(self, angular_displacement:Vector):
+        super().rotate(angular_displacement)
+
         for part in self.__getAvailableParts():
             part.rotate(angular_displacement)
 
-    def applyForce(self, force:Force, duration:float): # errado
-        for part in self.__getAvailableParts():
-            part.applyForce(force, duration)
-
-    def applyForces(self, forces:list, duration:float): # errado
-        for part in self.__getAvailableParts():
-            part.applyForces(forces, duration)

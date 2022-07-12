@@ -4,6 +4,9 @@ from core.physics.body.application_point import ApplicationPoint
 
 class RotationTestForce(Force):
     def __init__(self, x, y, z, application_point: ApplicationPoint, cg_offset=None):
+        self._setted_x = x
+        self._setted_y = y
+        self._setted_z = z
         super().__init__(x, y, z, application_point, cg_offset)
 
     def calculate(self, current_state:DeltaTimeSimulation):
@@ -14,14 +17,14 @@ class RotationTestForce(Force):
             self.setZ(0)
             
         if current_state.time >= 7:
-            self.setX(0.25)
-            self.setY(0)
-            self.setZ(0)
+            self.setX(self._setted_x)
+            self.setY(self._setted_y)
+            self.setZ(self._setted_z)
 
         if current_state.time >= 8:
-            self.setX(-0.25)
-            self.setY(0)
-            self.setZ(0)
+            self.setX(-self._setted_x)
+            self.setY(-self._setted_y)
+            self.setZ(-self._setted_z)
 
         if current_state.time >= 9:
             self.setX(0)

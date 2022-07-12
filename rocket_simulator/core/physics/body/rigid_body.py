@@ -58,6 +58,12 @@ class RigidBody:
         if self.delimitation_points[1].magnitudeRelativeTo(Vector(0,0,1)) > 0:
             raise ValueError("Top delimitation point and bottom are inverted")
 
+    def centerOnOrigin(self):
+        """Centraliza o cg do corpo na origem (0,0,0).
+        """
+        displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
+        self.move(displacement, ignore_ground=True)
+
     def move(self, displacement: Vector, ignore_ground=False):
         """" Move todos os pontos que representam um corpo com base em um deslocamento se o corpo não estiver no chão
 
@@ -116,18 +122,16 @@ class RigidBody:
         Args:
             angular_displacement (Vector): Vetor que representa a rotação.
         """
+        initial_position = self.cg
+        self.centerOnOrigin()
+
         self.cordinate_system.rotate(angular_displacement)
-
-        self.cp -= self.total_displacement # translada para a origem para rotacionar
         self.cp = Vector.rotateAroundAxis(self.cp, angular_displacement, angular_displacement.magnitude())
-        self.cp += self.total_displacement # translada para o ponto antes da rotação
-        
         for index, delimitation_point in enumerate(self.delimitation_points):
-            delimitation_point -= self.total_displacement  # translada para a origem para rotacionar
             delimitation_point = Vector.rotateAroundAxis(delimitation_point, angular_displacement, angular_displacement.magnitude())
-            delimitation_point += self.total_displacement # translada para o ponto antes da rotação
-
             self.delimitation_points[index] = delimitation_point
+
+        self.move(initial_position)
 
     def __rotateAroundCg(self, force:Force, duration:float, lever:Vector) -> None:
         """Rotaciona o corpo em torno do CG.

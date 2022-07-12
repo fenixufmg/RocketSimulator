@@ -61,11 +61,6 @@ class AbstractModel(ABC, RigidBody):
     def toGroundCoordinates(self, local_coordinates:Vector) -> Vector:
         return self.getTip() + local_coordinates
 
-    def centerOnOrigin(self):
-        # displacement = self.cg.magnitudeRelativeTo(Vector(0, 0, 1)) * -1
-        displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
-        self.move(displacement)
-
     def getPosition(self):
         position = [self.delimitation_points[0].toList(), self.cg.toList(), self.delimitation_points[1].toList()]
         return position
