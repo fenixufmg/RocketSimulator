@@ -24,7 +24,7 @@ def geometryTest():
     fig = plt.figure(figsize=(8,5))
     # ax = fig.add_subplot(111, projection='3d')
     ax = fig.gca(projection='3d')
-
+    print()
     parts = rocket.getParts()
     for part in parts:
         delimitation_points = part.delimitation_points
@@ -33,11 +33,17 @@ def geometryTest():
             coords.append(delimitation.toList())
 
         print(coords)
+        print(f"    {part.part_type} cg: {part.cg}")
+        print(f"    {part.part_type} cp: {part.cp}")
 
         ax.scatter(delimitation_points[0].x(), delimitation_points[0].y(), delimitation_points[0].z(), color="red")
         ax.scatter(delimitation_points[1].x(), delimitation_points[1].y(), delimitation_points[1].z(), color="blue")
 
-    plt.show()
+    print()
+    print(f"Rocket CG: {rocket.cg}")
+    print(f"Rocket CP: {rocket.cp}")
+
+    # plt.show()
 
 
 def physicsTest():
@@ -49,14 +55,15 @@ def physicsTest():
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0) # height 1
+
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1) # height 5
 cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2) # height 4 , rocket_height = 10
 
 rocket = RocketModel()
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
-rocket.addPart(cylinder2)
+# rocket.addPart(cylinder2)
 
-physicsTest()
-# geometryTest()
+# physicsTest()
+geometryTest()
 

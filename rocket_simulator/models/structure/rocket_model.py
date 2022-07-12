@@ -4,6 +4,7 @@ from models.structure.abstract_model import AbstractModel
 from core.physics.vector import Vector
 from models.structure.fin_model import FinModel
 from models.structure.abstract_model import AbstractModel
+from core.physics.forces.force import Force
 from utils.constants import Constants
 from utils.rocket_parts import RocketParts
 
@@ -157,6 +158,7 @@ class RocketModel(AbstractModel): # não está movendo as peças
 
         for part in available_parts:
             total_mass += part.mass
+            # print(f"Part cg: {part.cg}")
             cg += part.cg * part.mass
 
         cg = cg * (1/total_mass)
@@ -234,3 +236,19 @@ class RocketModel(AbstractModel): # não está movendo as peças
 
     def getParts(self) -> List[AbstractModel]:
         return self.__getAvailableParts()
+
+    def move(self, displacement: Vector, ignore_ground=False):
+        for part in self.__getAvailableParts():
+            part.move(displacement, ignore_ground=ignore_ground)
+
+    def rotate(self, angular_displacement:Vector): # errado
+        for part in self.__getAvailableParts():
+            part.rotate(angular_displacement)
+
+    def applyForce(self, force:Force, duration:float): # errado
+        for part in self.__getAvailableParts():
+            part.applyForce(force, duration)
+
+    def applyForces(self, forces:list, duration:float): # errado
+        for part in self.__getAvailableParts():
+            part.applyForces(forces, duration)

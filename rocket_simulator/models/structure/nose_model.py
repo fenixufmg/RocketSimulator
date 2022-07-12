@@ -1,3 +1,4 @@
+import cgi
 from utils.nose_type import NoseType
 from utils.rocket_parts import RocketParts
 from email.mime import base
@@ -77,10 +78,10 @@ class NoseModel(AbstractModel):
             cg = self.height - self.height/3 # escalar
         else:
             raise ValueError(f"Nose type {self.nose_type} is not available.")
-
+        
         cg = self.getTipToBaseDistance().unitVector() * cg
-        return self.toGroundCoordinates(cg)
-
+        cg = self.toGroundCoordinates(cg)
+        return cg
     def calculateCp(self) -> Vector:
         cp = None
         if self.nose_type == NoseType.CONICAL:
