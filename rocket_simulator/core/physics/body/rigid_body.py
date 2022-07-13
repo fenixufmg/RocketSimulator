@@ -24,6 +24,7 @@ class RigidBody:
             velocity (Vector): Velocidade de translação do corpo.
             total_displacement (Vector): Posição do corpo em relação a origem.
             total_acceleration (Vector): Aceleração resultante.
+            total_angular_acceleration (Vector): Aceleração angular resultante.
             angular_velocity (Vector): Velocidade angular.
             cordinate_system (BodyCoordinateSystem): Sistema de coordenadas relativo (do corpo).
         """
@@ -39,6 +40,7 @@ class RigidBody:
         # variaveis de estado
         self.velocity = Vector(0, 0, 0)
         self.total_acceleration = Vector(0, 0, 0)
+        self.total_angular_acceleration = Vector(0, 0, 0)
         self.total_displacement = Vector(0, 0, 0)
         self.angular_velocity = Vector(0, 0, 0)
         self.is_on_ground = False
@@ -98,25 +100,6 @@ class RigidBody:
         self.is_on_ground = False
         return False
 
-    def __applyForceOnCg(self, force: Force, duration: float) -> None:
-        """Aplica uma força no cg durante uma determinada duração, oque resulta em um translação do corpo.
-
-        Args:
-            force (Force): Força que será aplicada.
-            duration (float): Duração de tempo no qual a força será aplicada.
-        """
-        acceleration = force * (1 / self.mass)
-        self.total_acceleration += acceleration
-
-        displacement = self.velocity * duration + (acceleration * duration ** 2) * 0.5
-        velocity = self.velocity + acceleration * duration  # velocidade inicial é a velocidade de um estado antes do atual
-
-        self.velocity = velocity
-        self.total_displacement += displacement
-
-        # move os pontos
-        self.move(displacement)
-
     def rotate(self, angular_displacement: Vector, axis_displacement: Vector = Vector(0, 0, 0)):
         """Rotaciona o corpo.
 
@@ -140,7 +123,26 @@ class RigidBody:
 
         self.move(initial_position - axis_displacement)
 
-    def __rotateAroundCg(self, force: Force, duration: float, lever: Vector) -> None:
+    def __applyForceOnCg(self, force: Force, duration: float) -> None: # errado
+        """Aplica uma força no cg durante uma determinada duração, oque resulta em um translação do corpo.
+
+        Args:
+            force (Force): Força que será aplicada.
+            duration (float): Duração de tempo no qual a força será aplicada.
+        """
+        acceleration = force * (1 / self.mass)
+        self.total_acceleration += acceleration
+
+        displacement = self.velocity * duration + (acceleration * duration ** 2) * 0.5
+        velocity = self.velocity + acceleration * duration  # velocidade inicial é a velocidade de um estado antes do atual
+
+        self.velocity = velocity
+        self.total_displacement += displacement
+
+        # move os pontos
+        self.move(displacement)
+
+    def __rotateAroundCg(self, torque: Vector, duration: float) -> None:
         """Rotaciona o corpo em torno do CG.
 
         Args:
@@ -149,8 +151,9 @@ class RigidBody:
             lever (Vector): Braço de alavanca usado para calcular o torque, esse vetor DEVE apontar para o CG.
 
         """
-        torque = Vector.crossProduct(force, lever)
+        # torque = Vector.crossProduct(force, lever)
         angular_acceleration = torque * (1 / self.moment_of_inertia)
+        self.total_angular_acceleration += angular_acceleration
 
         angular_displacement = self.angular_velocity * duration + (angular_acceleration * duration ** 2) * 0.5
         angular_velocity = self.angular_velocity + angular_acceleration * duration
@@ -168,8 +171,9 @@ class RigidBody:
             duration (float): Duração de aplicação da força.
         """
         distance_to_cp = self.getCpCgDistance()  # aponta para o cg
+        torque = Vector.crossProduct(force, distance_to_cp)
         self.__applyForceOnCg(force, duration)
-        self.__rotateAroundCg(force, duration, distance_to_cp)
+        self.__rotateAroundCg(torque, duration)
 
     def __applyForceOnPoint(self, force: Force, duration: float):
         """Aplica uma força em um ponto durante uma determinada duração, oque resulta em uma translação e em uma rotação.
@@ -178,12 +182,13 @@ class RigidBody:
             force (Force): Força que será aplicada.
             duration (float): Duração de aplicação da força.
         """
-        cg_offset = self.getCpCgDistance().unitVector() * force.cgOffset()  # transforma o cgoffset em vetor
+        cg_offset = self.getCpCgDistance().unitVector() * force.cg_offset  # transforma o cgoffset em vetor
         cg_offset += self.total_displacement
 
         distance_to_application_point = self.cg - cg_offset
+        torque = Vector.crossProduct(force, distance_to_application_point)
         self.__applyForceOnCg(force, duration)
-        self.__rotateAroundCg(force, duration, distance_to_application_point)
+        self.__rotateAroundCg(torque, duration)
 
     def __isForceInsideBody(self, force: Force) -> None:
         """Verifica se o ponto de aplicação da força está dentro do corpo.
@@ -200,14 +205,14 @@ class RigidBody:
         length_down = (self.delimitation_points[1] - self.cg).magnitude()
         length_down = round(length_down, 5)
 
-        cg_offset = force.cgOffset()
+        cg_offset = force.cg_offset
 
         if (cg_offset < 0 and abs(cg_offset) > length_down):
-            raise ValueError(f"Force applied bellow body, cg_offset: {force.cgOffset()}, length down: {length_down}")
+            raise ValueError(f"Force applied bellow body, cg_offset: {force.cg_offset}, length down: {length_down}")
         if (cg_offset > 0 and abs(cg_offset) > length_up):
-            raise ValueError(f"Force applied above body, cg_offset: {force.cgOffset()}, length up: {length_up}")
+            raise ValueError(f"Force applied above body, cg_offset: {force.cg_offset}, length up: {length_up}")
 
-    def applyForce(self, force: Force, duration: float) -> None:
+    def applyForce(self, force: Force, duration: float) -> None: # REFORMULAR
         """Aplica uma força no corpo durante uma determinada duração, seu ponto de aplicação será processado dentro
         do método.
 
@@ -219,21 +224,30 @@ class RigidBody:
             ValueError: Levantado se o ponto de aplicação não for um dos campos do Enum ApplicationPoint.
         """
 
-        if force.applicationPoint() == ApplicationPoint.CG:
+        if force.application_point == ApplicationPoint.CG:
             self.moment_of_inertia = self.moment_of_inertia_function(0)
             self.__applyForceOnCg(force, duration)
 
-        elif force.applicationPoint() == ApplicationPoint.CP:
+        elif force.application_point == ApplicationPoint.CP:
             self.moment_of_inertia = self.moment_of_inertia_function(self.getCpCgDistance().magnitude())
             self.__applyForceOnCp(force, duration)
 
-        elif force.applicationPoint() == ApplicationPoint.CUSTOM:
-            self.moment_of_inertia = self.moment_of_inertia_function(abs(force.cgOffset()))
+        elif force.application_point == ApplicationPoint.CUSTOM:
+            self.moment_of_inertia = self.moment_of_inertia_function(abs(force.cg_offset))
             # self.__isForceInsideBody(force)
             self.__applyForceOnPoint(force, duration)
 
         else:
             raise ValueError("Invalid application point")
+
+    def applyTorque(self, torque: Vector, duration: float): # reformular
+        """Aplica torque ao corpo durante uma determinada duração. Somente deslocalmento angular
+        é gerado ao se utilizar esse método.
+
+        Args:
+            torque (Vector): Torque que será aplicado.
+        """
+        self.__rotateAroundCg(torque, duration)
 
     def applyForces(self, forces: list, duration: float) -> None:
         """Aplica um conjunto de forças no corpo durante uma determinada duração.

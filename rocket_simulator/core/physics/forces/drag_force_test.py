@@ -22,7 +22,7 @@ class DragForceTest(Force):
         magnitude = drag(referenceArea, dragCoefficient, velocity)
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
-        print(dragForce)
+        print(dragForce.magnitudeRelativeTo(current_state.velocity))
         print("====================")
 
         self.setX(dragForce.x())
