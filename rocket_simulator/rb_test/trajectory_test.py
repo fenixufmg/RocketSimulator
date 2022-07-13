@@ -51,8 +51,13 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
 
         print(f"    Cg position: {simulation.cg}")
         print(f"    Cp position: {simulation.cp}")
-        print(f"    cg->cp: {(simulation.cp - simulation.cg).magnitude()}")
-
+        print(f"    cg->cp: {simulation.cp - simulation.cg}")
+        print(f"    cg->cp (mag): {(simulation.cp - simulation.cg).magnitude()}")
+        print()
+        print(f"    Tip position: {simulation.tip}")
+        print(f"    Base position: {simulation.base}")
+        print(f"    Tip->Base: {simulation.base - simulation.tip}")
+        print(f"    Tip->Base (mab): {(simulation.base - simulation.tip).magnitude()}")
         print(f"Is on ground: {simulation.is_on_ground}")
         print(f"Mass: {simulation.mass}")
         print("="*40)

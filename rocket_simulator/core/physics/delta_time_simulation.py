@@ -15,6 +15,8 @@ class DeltaTimeSimulation:
         Fields:
             cg (Vector): Centro de gravidade do corpo
             cp (Vector): Centro de pressão do corpo
+            tip (Vector): Ponta do corpo
+            base (Vector): Base do corpo
             velocity (Vector): Velocidade do corpo
             acceleration (Vector): Aceleração do corpo
             angular_velocity (Vector): Velocidade angular do corpo
@@ -24,6 +26,8 @@ class DeltaTimeSimulation:
         """
         self.cg: Vector = rocket.cg
         self.cp: Vector = rocket.cp
+        self.tip: Vector = rocket.delimitation_points[0]
+        self.base: Vector = rocket.delimitation_points[1]
         self.position: Vector = rocket.total_displacement
         self.velocity: Vector = rocket.velocity
         self.acceleration: Vector = rocket.total_acceleration

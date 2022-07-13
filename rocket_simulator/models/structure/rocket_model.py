@@ -9,26 +9,26 @@ from utils.constants import Constants
 from utils.rocket_parts import RocketParts
 
 
-class RocketModel(AbstractModel): # não está movendo as peças
+class RocketModel(AbstractModel):  # não está movendo as peças
     def __init__(self):
         self.parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
-                        RocketParts.FIN: None, RocketParts.MOTOR: None}
+                      RocketParts.FIN: None, RocketParts.MOTOR: None}
 
-        self.rocket_height:Vector = Vector(0, 0, 0)
+        self.rocket_height: Vector = Vector(0, 0, 0)
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
-        
+
         super().__init__(RocketParts.ROCKET, -1, None, self.drag_coefficient, self.transversal_area)
         self.__verify()
         self.__initialize()
-    
-    def __verify(self): # fazer
+
+    def __verify(self):  # fazer
         pass
 
-    def __calculateDragCoefficient(self): # fazer
+    def __calculateDragCoefficient(self):  # fazer
         pass
-    
-    def __calculateTransversalArea(self): # fazer
+
+    def __calculateTransversalArea(self):  # fazer
         pass
 
     def __orderAvailablePartsByPosition(self) -> List[AbstractModel]:
@@ -71,7 +71,7 @@ class RocketModel(AbstractModel): # não está movendo as peças
             displacement = Vector(0, 0, displacement)
 
             previous_part = self.__getPreviousPart(part)
-            if previous_part is None: # primeira parte
+            if previous_part is None:  # primeira parte
                 self.rocket_height = Vector(0, 0, part.height)
 
             if previous_part is not None:  # não é a primeira parte
@@ -114,6 +114,17 @@ class RocketModel(AbstractModel): # não está movendo as peças
             available_parts.append(value)
 
         return available_parts
+
+    def updateState(self) -> None:
+        self.volume = self.calculateVolume()
+        self.mass = self.calculateMass()
+        self.moment_of_inertia = self.calculateMomentOfInertia
+        self.cg = self.calculateCg()
+        self.cp = self.calculateCp()
+        self.delimitation_points = self.createDelimitationPoints()
+
+        for part in self.__getAvailableParts():
+            part.updateState()
 
     def calculateVolume(self) -> float:
         available_parts = self.__getAvailableParts()
@@ -161,11 +172,11 @@ class RocketModel(AbstractModel): # não está movendo as peças
             # print(f"Part cg: {part.cg}")
             cg += part.cg * part.mass
 
-        cg = cg * (1/total_mass)
-        print("===================")
-        print(f"Calculating cg")
-        print(f"    Old: {self.cg}")
-        print(f"    New: {cg}")
+        cg = cg * (1 / total_mass)
+        # print("===================")
+        # print(f"Calculating cg")
+        # print(f"    Old: {self.cg}")
+        # print(f"    New: {cg}")
         return cg
 
     def calculateCp(self) -> Vector:
@@ -180,10 +191,10 @@ class RocketModel(AbstractModel): # não está movendo as peças
             cp += part.cp * part.shape_coefficient
             total_shape_coefficient += part.shape_coefficient
 
-        cp = cp * (1/total_shape_coefficient)
-        print(f"Calculating cp")
-        print(f"    Old: {self.cp}")
-        print(f"    New: {cp}")
+        cp = cp * (1 / total_shape_coefficient)
+        # print(f"Calculating cp")
+        # print(f"    Old: {self.cp}")
+        # print(f"    New: {cp}")
         return cp
 
     def createDelimitationPoints(self) -> list:
@@ -191,8 +202,8 @@ class RocketModel(AbstractModel): # não está movendo as peças
         if len(ordered_parts) == 0:
             return [Vector(0, 0, 0), Vector(0, 0, 0)]
 
-        first_part:AbstractModel = ordered_parts[0]
-        last_part:AbstractModel = ordered_parts[-1]
+        first_part: AbstractModel = ordered_parts[0]
+        last_part: AbstractModel = ordered_parts[-1]
 
         delimitation_points = [first_part.delimitation_points[0], last_part.delimitation_points[1]]
         return delimitation_points
@@ -250,9 +261,9 @@ class RocketModel(AbstractModel): # não está movendo as peças
         for part in self.__getAvailableParts():
             part.move(displacement, ignore_ground=ignore_ground)
 
-    def rotate(self, angular_displacement:Vector):
+    def rotate(self, angular_displacement: Vector, axis_displacement: Vector = Vector(0, 0, 0)):
         super().rotate(angular_displacement)
 
         for part in self.__getAvailableParts():
-            part.rotate(angular_displacement)
-
+            axis_displacement = part.cg - self.cg
+            part.rotate(angular_displacement, axis_displacement=axis_displacement)
