@@ -43,7 +43,7 @@ def geometryTest():
     print(f"Rocket CG: {rocket.cg}")
     print(f"Rocket CP: {rocket.cp}")
 
-    # plt.show()
+    plt.show()
 
 
 def physicsTest():
@@ -62,6 +62,8 @@ cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2) # height 4 , rocket_heig
 rocket = RocketModel()
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
+rotation = Vector(0, 0.5 ,0)
+rocket.rotate(rotation)
 # rocket.addPart(cylinder2)
 
 # physicsTest()

@@ -162,6 +162,10 @@ class RocketModel(AbstractModel): # não está movendo as peças
             cg += part.cg * part.mass
 
         cg = cg * (1/total_mass)
+        print("===================")
+        print(f"Calculating cg")
+        print(f"    Old: {self.cg}")
+        print(f"    New: {cg}")
         return cg
 
     def calculateCp(self) -> Vector:
@@ -177,6 +181,9 @@ class RocketModel(AbstractModel): # não está movendo as peças
             total_shape_coefficient += part.shape_coefficient
 
         cp = cp * (1/total_shape_coefficient)
+        print(f"Calculating cp")
+        print(f"    Old: {self.cp}")
+        print(f"    New: {cp}")
         return cp
 
     def createDelimitationPoints(self) -> list:
