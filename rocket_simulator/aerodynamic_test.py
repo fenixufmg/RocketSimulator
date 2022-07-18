@@ -32,7 +32,7 @@ rocket.addPart(cylindrical_body)
 # cg -> cp = 2.666
 # mass = 15.89
 rotation = Vector(0, 0.5 ,0) # rotaciona em torno do eixo errado
-# rocket.rotate(rotation)
+rocket.rotate(rotation)
 
 # rocket.delimitation_points = [Vector(0, 0, 2), Vector(0, 0, -2)]
 # rocket.mass = 2
@@ -45,13 +45,13 @@ weight = WeightForce()
 dragForce = DragForceTest()
 # thrust_test = TranslationTestForce(400, 0, 1500)
 # thrust_test = TranslationTestForce(0, 0, 2000)
-thrust_test = ImpulseTestForce(3000)
-# rotation_force = RotationTestForce(0,10000,0,ApplicationPoint.CUSTOM, cg_offset=2.1)
+thrust_test = ImpulseTestForce(1000)
+rotation_force = RotationTestForce(0,1000,0,ApplicationPoint.CP)
 
 # trajectoryTest(rocket, [thrust_test, dragForce, weight], 100, arrow_scale=400, has_arrows=True)
-# trajectoryTest(rocket, [thrust_test, weight], 10, arrow_scale=400, has_arrows=True)
+trajectoryTest(rocket, [thrust_test, weight, rotation_force], 20, arrow_scale=400, has_arrows=True)
 # trajectoryTest(rocket, [thrust_test, weight, dragForce], 20, arrow_scale=400, has_arrows=True)
-trajectoryTest(rocket, [weight, dragForce], 20, arrow_scale=400, has_arrows=True)
+# trajectoryTest(rocket, [weight, dragForce], 20, arrow_scale=400, has_arrows=True)
 # trajectoryTest(rigid_body, [drag_force, normal_force, weight], 100, arrow_scale=400, has_arrows=True)
 # velocityTest(rigid_body ,[translation_force, rotation_force, weight], 40, axis=Vector(0,0,1))
 # accelerationTest(rigid_body ,[translation_force, rotation_force, weight], 40, axis=Vector(0,0,1))

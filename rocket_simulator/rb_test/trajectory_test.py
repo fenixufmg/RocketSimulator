@@ -22,9 +22,7 @@ def __mapColors(values):
     return (normalizer, color_mapper, color_mapper(normalizer(colors)))
 
 def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit=5000, arrow_scale=150, has_arrows=True, debug=True):
-    simulation = Simulation(rigid_body)
-    for force in forces:
-        simulation.addForce(force)
+    simulation = Simulation(rigid_body, forces)
     simulations = simulation.simulate(simulation_time)
 
     x = []
@@ -46,8 +44,11 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
         y_magnitudes.append(looking_direction.y())
         z_magnitudes.append(looking_direction.z())
         print(f"Time: {time}")
-        print(f"Velocity: {simulation.velocity}")
-        print(f"Acceleration: {simulation.acceleration}")
+        print(f"    Velocity: {simulation.velocity}")
+        print(f"    Acceleration: {simulation.acceleration}")
+
+        print(f"    Angular velocity: {simulation.angular_velocity}")
+        print(f"    Angular acceleration: {simulation.angular_acceleration}")
 
         print(f"    Cg position: {simulation.cg}")
         print(f"    Cp position: {simulation.cp}")
@@ -57,7 +58,7 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
         print(f"    Tip position: {simulation.tip}")
         print(f"    Base position: {simulation.base}")
         print(f"    Tip->Base: {simulation.base - simulation.tip}")
-        print(f"    Tip->Base (mab): {(simulation.base - simulation.tip).magnitude()}")
+        print(f"    Tip->Base (mag): {(simulation.base - simulation.tip).magnitude()}")
         print()
         print(f"    Is on ground: {simulation.is_on_ground}")
         print(f"    Mass: {simulation.mass}")

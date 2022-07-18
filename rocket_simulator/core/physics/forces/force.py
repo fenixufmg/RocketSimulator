@@ -32,6 +32,7 @@ class Force(Vector, ABC):
             ValueError: Levantado se houver uma combinação errada entre pontos de aplicação e cg_offset.
         """
         if self.application_point == ApplicationPoint.CUSTOM:  # ponto de aplicação custom
+            raise ValueError("Custom application point not supported")
             if self.cg_offset is None:  # cg_offset não foi definido
                 raise ValueError("No cg_offset given to custom application point")
         else:  # Ponto de aplicação CG ou CP.

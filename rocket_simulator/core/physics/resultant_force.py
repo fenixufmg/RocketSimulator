@@ -11,20 +11,20 @@ from models.structure.rocket_model import RocketModel
 
 class ResultantForce(Force):
     def __init__(self, forces: List[Force]):
-        self.forces = forces # DEVE ser ordenado de mais independente para menos independente
-        self.resultant_force = Vector(0, 0, 0)
+        self.__forces = forces # DEVE ser ordenado de mais independente para menos independente
         super().__init__(0, 0, 0, ApplicationPoint.CG)
 
-    def __calculateResultantCgForce(self):
+    def calculate(self, current_state: DeltaTimeSimulation):
+        for force in self.__forces: # seguindo a ordem de dependência
+            force.calculate(current_state)
+
         resultant_force = Vector(0, 0, 0)
-        for force in self.forces:
+        for force in self.__forces:
             resultant_force += force
 
-        self.resultant_force = resultant_force
-
-    def calculate(self, current_state: DeltaTimeSimulation):
-        for force in self.forces: # seguindo a ordem de dependência
-            force.calculate(current_state)
+        self.setX(resultant_force.x())
+        self.setY(resultant_force.y())
+        self.setZ(resultant_force.z())
 
 
 
