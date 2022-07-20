@@ -29,7 +29,7 @@ class Simulation:
         self.__rocket = rocket
         self.__forces = forces
         self.__resultant_force:ResultantForce = ResultantForce(forces)
-        self.__resultant_torque:ResultantTorque = ResultantTorque(rocket.getTipToBaseDistance(), forces)
+        self.__resultant_torque:ResultantTorque = ResultantTorque(forces)
 
     def simulate(self, time:int) -> dict:
         """Roda a simulação física até o tempo determinado pelo parâmetro time com intervalos de __DELTA_TIME.

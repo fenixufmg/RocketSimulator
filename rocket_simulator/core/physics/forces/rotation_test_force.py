@@ -26,7 +26,7 @@ class RotationTestForce(Force):
         #     self.setY(-self._setted_y)
         #     self.setZ(-self._setted_z)
 
-        if current_state.time >= 6:
+        if current_state.time >= 7:
             self.setX(0)
             self.setY(0)
             self.setZ(0)

@@ -47,6 +47,7 @@ def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit
         print(f"    Velocity: {simulation.velocity}")
         print(f"    Acceleration: {simulation.acceleration}")
 
+        print(f"    Moment of inertia: {simulation.moment_of_inertia}")
         print(f"    Angular velocity: {simulation.angular_velocity}")
         print(f"    Angular acceleration: {simulation.angular_acceleration}")
 

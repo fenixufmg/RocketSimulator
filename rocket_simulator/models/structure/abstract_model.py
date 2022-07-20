@@ -19,10 +19,10 @@ class AbstractModel(ABC, RigidBody):
         volume = self.calculateVolume()
         self.volume = volume
         mass = self.calculateMass()
-        moment_of_inertia = self.calculateMomentOfInertia
+        moment_of_inertia_function = self.calculateMomentOfInertia
         cg = self.calculateCg()
         cp = self.calculateCp()
-        super().__init__(self.delimitation_points, mass, volume, moment_of_inertia, cg, cp)
+        super().__init__(self.delimitation_points, mass, volume, moment_of_inertia_function, cg, cp)
     
     @abstractmethod
     def calculateVolume(self) -> float:

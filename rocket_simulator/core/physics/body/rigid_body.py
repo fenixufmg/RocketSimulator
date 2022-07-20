@@ -247,19 +247,17 @@ class RigidBody:
             force (Force): Força que será aplicada.
             duration (float): Duração de tempo no qual a força será aplicada.
         """
-        acceleration = force * (1 / self.mass)
-        self.total_acceleration += acceleration
+        self.total_acceleration = force * (1 / self.mass)
 
-        displacement = self.velocity * duration + (acceleration * duration ** 2) * 0.5
-        velocity = self.velocity + acceleration * duration  # velocidade inicial é a velocidade de um estado antes do atual
+        displacement = self.velocity * duration + (self.total_acceleration * duration ** 2) * 0.5
+        self.velocity += self.total_acceleration * duration  # velocidade inicial é a velocidade de um estado antes do atual
 
-        self.velocity = velocity
         self.total_displacement += displacement
 
         # move os pontos
         self.move(displacement)
 
-    def applyTorque(self, torque: Vector, duration: float): # reformular
+    def applyTorque(self, torque: Vector, duration: float):
         """Aplica torque ao corpo durante uma determinada duração. Somente deslocalmento angular
         é gerado ao se utilizar esse método. É subentendido que todas as forças que geram torque atuam no CP.
 
@@ -269,13 +267,10 @@ class RigidBody:
         """
         
         self.moment_of_inertia = self.moment_of_inertia_function(self.getCpCgDistance().magnitude()) # momento de inercia no cp
-        angular_acceleration = torque * (1 / self.moment_of_inertia)
-        self.total_angular_acceleration += angular_acceleration
+        self.total_angular_acceleration = torque * (1 / self.moment_of_inertia)
 
-        angular_displacement = self.angular_velocity * duration + (angular_acceleration * duration ** 2) * 0.5
-        angular_velocity = self.angular_velocity + angular_acceleration * duration
-
-        self.angular_velocity = angular_velocity
+        angular_displacement = self.angular_velocity * duration + (self.total_angular_acceleration * duration ** 2) * 0.5
+        self.angular_velocity += self.total_angular_acceleration * duration
 
         # rotaciona os pontos
         self.rotate(angular_displacement)

@@ -118,7 +118,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
     def updateState(self) -> None:
         self.volume = self.calculateVolume()
         self.mass = self.calculateMass()
-        self.moment_of_inertia = self.calculateMomentOfInertia
+        # self.moment_of_inertia = self.calculateMomentOfInertia()
         self.cg = self.calculateCg()
         self.cp = self.calculateCp()
         self.delimitation_points = self.createDelimitationPoints()

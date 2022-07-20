@@ -31,6 +31,7 @@ class DeltaTimeSimulation:
         self.position: Vector = rocket.total_displacement
         self.velocity: Vector = rocket.velocity
         self.acceleration: Vector = rocket.total_acceleration
+        self.moment_of_inertia: float = rocket.moment_of_inertia
         self.angular_acceleration: Vector = rocket.total_angular_acceleration
         self.angular_velocity: Vector = rocket.angular_velocity
         self.mass: float = rocket.mass
