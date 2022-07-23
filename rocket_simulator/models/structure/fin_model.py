@@ -1,3 +1,4 @@
+from cmath import pi
 from utils.rocket_parts import RocketParts
 from math import tan
 from core.physics.vector import Vector
@@ -24,8 +25,13 @@ class FinModel(AbstractModel):
         super().__init__(RocketParts.FIN, position_order, self.drag_coefficient, self.transversal_area)
         self.__verify()
 
-    def __verify(self): # fazer
-        pass
+    def __verify(self): 
+        if self.max_thickness<0:
+            raise ValueError("Impossible negative fin values")
+        elif self.sweep_angle<0 or self.sweep_angle>pi/2:
+            raise ValueError("Invalid sweep angle for fins")
+        else:
+            pass
 
     def __calculateDragCoefficient(self): # fazer
         pass
@@ -67,5 +73,8 @@ class FinModel(AbstractModel):
         return self.toGroundCoordinates(cg_local)
 
     def calculateMomentOfInertia(self) -> float: # source: https://www.efunda.com/math/areas/trapezoid.cfm 
-        # yet to complete
-        pass
+        m = self.span*tan(self.sweep_angle)
+        inertia_yc= self.span*(4*self.tip_chord*self.root_chord*m^2 + 3*self.tip_chord^2*self.root_chord*m - 3*self.tip_chord*self.root_chord^2*m +
+            self.tip_chord^4 + self.root_chord^4 + 2*self.tip_chord^3*self.root_chord + self.tip_chord^2*m^2 + self.tip_chord^3*m +2*self.tip_chord*
+            self.root_chord^3-m*self.root_chord^3 + self.root_chord^2*m^2)/(36*(self.root_chord+self.tip_chord))
+        return inertia_yc
