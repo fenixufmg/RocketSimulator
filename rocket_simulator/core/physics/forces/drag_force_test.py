@@ -18,12 +18,9 @@ class DragForceTest(Force):
         referenceArea = pi * current_state.nose.base_radius ** 2  # certo
         # a secção transversal no calculo do arrasto é so a do nariz? se não for fala cmg pra gente ver como fazer
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
-        print(velocity)
         magnitude = drag(referenceArea, dragCoefficient, velocity)
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
-        print(dragForce.magnitudeRelativeTo(current_state.velocity))
-        print("====================")
 
         self.setX(dragForce.x())
         self.setY(dragForce.y())

@@ -8,9 +8,7 @@ import numpy as np
 from core.physics.vector import Vector
 
 def angularVelocityTest(rigid_body:RigidBody, forces:list, simulation_time:int, axis:Vector=None):
-    simulation = Simulation(rigid_body)
-    for force in forces:
-        simulation.addForce(force)
+    simulation = Simulation(rigid_body, forces)
     simulations = simulation.simulate(simulation_time)
 
     x = []

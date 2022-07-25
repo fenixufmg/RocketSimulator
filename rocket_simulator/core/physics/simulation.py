@@ -1,4 +1,4 @@
-from email.mime import application
+import numpy as np
 from typing import List
 
 from core.physics.body.rigid_body import RigidBody
@@ -25,7 +25,7 @@ class Simulation:
             __resultant_force (ResultantForce): Força resultante que atua no cg.
             __resultant_torque (ResultantTorque): Torque resultante.
         """
-        self.__DELTA_TIME = 1
+        self.__DELTA_TIME = 0.1
         self.__rocket = rocket
         self.__forces = forces
         self.__resultant_force:ResultantForce = ResultantForce(forces)
@@ -42,7 +42,7 @@ class Simulation:
         """
         delta_time_simulations = dict()
 
-        for total_elapsed_time in range(0, time+1, self.__DELTA_TIME): # 0, 1, 2, 3, 4, 5, ... , time
+        for total_elapsed_time in np.arange(0, time+self.__DELTA_TIME, self.__DELTA_TIME): # 0, 1, 2, 3, 4, 5, ... , time
             
             current_state = DeltaTimeSimulation(self.__rocket, total_elapsed_time)
             delta_time_simulations[total_elapsed_time] = current_state # salva as informações do estado atual
@@ -50,7 +50,9 @@ class Simulation:
             # self.__applyForces(current_state) # atualiza o estado para o futuro
             self.__applyResultantForce(current_state) # atualiza o estado para o futuro
             self.__applyResultantTorque(current_state) # atualiza o estado para o futuro
+            self.__rocket.cp = self.__rocket.cg
             self.__rocket.updateState()
+            self.__rocket.cp = self.__rocket.cg
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 
