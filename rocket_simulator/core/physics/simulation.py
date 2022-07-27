@@ -50,9 +50,9 @@ class Simulation:
             # self.__applyForces(current_state) # atualiza o estado para o futuro
             self.__applyResultantForce(current_state) # atualiza o estado para o futuro
             self.__applyResultantTorque(current_state) # atualiza o estado para o futuro
-            self.__rocket.cp = self.__rocket.cg
+            # self.__rocket.cp = self.__rocket.cg
             self.__rocket.updateState()
-            self.__rocket.cp = self.__rocket.cg
+            # self.__rocket.cp = self.__rocket.cg
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 
