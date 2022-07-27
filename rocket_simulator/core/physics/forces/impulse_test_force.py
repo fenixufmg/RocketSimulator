@@ -10,7 +10,7 @@ class ImpulseTestForce(Force):
         super().__init__(0,0,0, ApplicationPoint.CG, cg_offset)
 
     def calculate(self, current_state: DeltaTimeSimulation):
-        if current_state.time <= 10:
+        if current_state.time <= 2:
             thrust_force = current_state.looking_direction.unitVector() * self.thrust
             self.setX(thrust_force.x())
             self.setY(thrust_force.y())
