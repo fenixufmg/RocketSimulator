@@ -16,7 +16,6 @@ class DragForceTest(Force):
     def calculate(self, current_state: DeltaTimeSimulation):
         dragCoefficient = 0.5
         referenceArea = pi * current_state.nose.base_radius ** 2  # certo
-        # a secção transversal no calculo do arrasto é so a do nariz? se não for fala cmg pra gente ver como fazer
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         magnitude = drag(referenceArea, dragCoefficient, velocity)
         dragForce = current_state.velocity * -1

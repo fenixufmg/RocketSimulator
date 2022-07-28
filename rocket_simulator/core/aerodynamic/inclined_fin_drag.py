@@ -11,7 +11,14 @@ import circular_fin_drag
 import rectangle_fin_drag
 
 def inclined_fin_drag_coeficient(mach_number: float, LE_angle: float, fin_type: str) -> float:
+    """
+    Args:
+        LE_angle: ângulo da leading edge
+    Returns:
+        CDle: Coeficiente de arrasto de pressão das pontas das aletas
+    """
     if( fin_type == 'c'):
         return circular_fin_drag(mach_number) * pow(cos(LE_angle), 2)
+
     elif( fin_type == 'r'):
         return rectangle_fin_drag(mach_number) * pow(cos(LE_angle), 2) 

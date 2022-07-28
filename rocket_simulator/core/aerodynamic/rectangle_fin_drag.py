@@ -6,9 +6,9 @@
 ## * @desc [description]
 ## */
 
-import estag_pressure_drag
+from stag_pressure_drag import stag_pressure_drag_coeficient
 
 #condition: perpendicular air flow
 def rectangle_fin_drag_coeficient(mach_number) -> float:
     #condition: sub-sonic
-    return estag_pressure_drag.estag_pressure_drag_coeficient(mach_number)
+    return stag_pressure_drag_coeficient(mach_number)
