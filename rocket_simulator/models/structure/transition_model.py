@@ -57,7 +57,7 @@ class TransitionModel(AbstractModel):
         top_radius = self.top_diameter/2
         Iyy = 3*self.calculateMass*((bottom_radius^5+bottom_inner_radius^5)-(top_radius^5+top_inner_radius^5))/(
             20*((bottom_radius^3+bottom_inner_radius^3)-(top_radius^3+top_inner_radius^3)))
-        return Iyy
+        return Iyy + self.mass * distance_to_cg**2
 
     def calculateCg(self) -> Vector:  # aproximando por um tronco cheio https://www.passeidireto.com/pergunta/17392987/como-achar-um-centro-de-gravidade-em-um-tronco-de-cone 
 

@@ -84,7 +84,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
 
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
-                distance_from_center = Vector(part.getDistanceFromCenter(), 0, 0)
+                distance_from_center = Vector(part.distance_from_center, 0, 0)
 
                 for degrees in range(0, 361, 360 // part.getNumberOfFins()):  # rotaciona as aletas
                     if degrees == 0:

@@ -40,7 +40,7 @@ class CylindricalBodyModel(AbstractModel):
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # https://en.wikipedia.org/wiki/List_of_moments_of_inertia
         mass = self.calculateMass()
         Ixx = 1/12*mass*(3*( (self.diameter**2)/4 +((self.diameter-2*self.thickness)**2)/4 )+self.height**2)
-        return Ixx
+        return Ixx + self.mass * distance_to_cg**2
 
     def calculateCg(self) -> Vector:  # Feito amigo
         # Primeiro pega o vetor de altura da peça, a sua direção varia com a orientação do foguete, mas o módulo é

@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
 
+from models.structure.fin_model import FinModel
+
 
 # def isOnLine(line: List[Vector], point: Vector):
 #     a = (line[1].y() - line[0].y()) / (line[1].x() - line[0].x())
@@ -71,17 +73,16 @@ def physicsTest():
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
-
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
 cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2)  # height 4 , rocket_height = 10
+fins = FinModel(0.3, 0.1, 0.2, 0.05, 0.3925, acrylic, 3, 0, 2, 4)
 
 rocket = RocketModel()
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
+rocket.addPart(fins)
 rotation = Vector(0, 0.5, 0)
-rocket.rotate(rotation)
-rocket.updateState()
-# rocket.addPart(cylinder2)
+# rocket.rotate(rotation)
 
 # physicsTest()
 geometryTest()
