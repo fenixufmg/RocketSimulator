@@ -1,5 +1,4 @@
 import math
-from parachute_area import *
 
 """
 * @author Caio Bertolato Pereira
