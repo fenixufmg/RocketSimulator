@@ -13,8 +13,9 @@ from numpy import log as ln
 def skin_friction_drag(reynolds_number: float, critical_reynolds_number: float, 
                         material_roughness: float, rocket_length: float, 
                         mach_number: float) -> float:
+
     if reynolds_number <= 10000:
-        cf = 0.0148
+        cf = 0.0148 #cf: Initial skin drag coefficient 
 
     elif 10000 < reynolds_number < critical_reynolds_number:
         cf = 1 / (1.5 * ln(reynolds_number) - 5.6) ** 2
