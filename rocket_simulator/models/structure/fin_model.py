@@ -1,6 +1,6 @@
 from cmath import pi
 from utils.rocket_parts import RocketParts
-from math import tan
+from math import tan, sqrt
 from core.physics.vector import Vector
 from core.physics.body.rigid_body import RigidBody
 from models.other.material_model import MaterialModel
@@ -41,7 +41,10 @@ class FinModel(AbstractModel):
         pass
 
     def __calculateShapeCoefficient(self):
-        return 4 # temporario
+        m = self.span*tan(self.sweep_angle)
+        l = sqrt( (self.root_chord/2-(self.tip_chord/2+m))^2 + (self.span)^2)
+        cn_alpha_Force = (4*self.nb_fins*(self.span/self.distance_from_center)^2)/( 1+sqrt(1+(2*l/(self.root_chord+self.tip_chord))^2) )
+        return cn_alpha_Force
 
     def calculateVolume(self) -> float:
         area = (self.span * (self.tip_chord + self.root_chord)) / 2
