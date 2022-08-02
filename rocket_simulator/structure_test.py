@@ -53,7 +53,7 @@ def geometryTest():
         print(f"    {part.part_type} cp: {part.cp}")
 
         ax.scatter(delimitation_points[0].x(), delimitation_points[0].y(), delimitation_points[0].z(), color="red")
-        ax.scatter(delimitation_points[1].x(), delimitation_points[1].y(), delimitation_points[1].z(), color="blue")
+        ax.scatter(delimitation_points[1].x(), delimitation_points[1].y(), delimitation_points[1].z(), color="red")
         ax.scatter(part.cg.x(), part.cg.y(), part.cg.z(), color="green")
         ax.scatter(part.cp.x(), part.cp.y(), part.cp.z(), color="lightgreen")
 
@@ -61,7 +61,7 @@ def geometryTest():
     print(f"Rocket CG: {rocket.cg}")
     print(f"Rocket CP: {rocket.cp}")
 
-    plt.show()
+    # plt.show()
 
 
 def physicsTest():
@@ -74,8 +74,8 @@ def physicsTest():
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
-cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2)  # height 4 , rocket_height = 10
-fins = FinModel(0.3, 0.1, 0.2, 0.05, 0.3925, acrylic, 3, 0, 2, 4)
+# cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2)  # height 4 , rocket_height = 10
+fins = FinModel(0.3, 0.1, 0.2, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
 
 rocket = RocketModel()
 rocket.addPart(nose)
@@ -87,12 +87,12 @@ rotation = Vector(0, 0.5, 0)
 # physicsTest()
 geometryTest()
 
-# [<RocketParts.NOSE: 'nose'>, [1.5182523613093215, 0.0, 5.612326525164903], [1.0388268227051185, 0.0, 4.73474396327453]]
-# RocketParts.NOSE cg: (1.198635335573186, 0.0, 5.027271483904654)
-# RocketParts.NOSE cp: (1.27853959200722, 0.0, 5.173535244219717)
-# [<RocketParts.CYLINDRICAL_BODY: 'cylidrical body'>, [1.0388268227051185, 0.0, 4.73474396327453], [-1.3583008703158965, 0.0, 0.3468311538226665]]
-# RocketParts.CYLINDRICAL_BODY cg: (-0.15973702380538893, 0.0, 2.5407875585485984)
-# RocketParts.CYLINDRICAL_BODY cp: (-0.15973702380538893, 0.0, 2.5407875585485984)
-#
+# [<RocketParts.NOSE: 'nose'>, [0.0, 0.0, 6.0], [0.0, 0.0, 5.0]]
+#     RocketParts.NOSE cg: (0.0, 0.0, 5.333333333333333)
+#     RocketParts.NOSE cp: (0.0, 0.0, 5.5)
+# [<RocketParts.CYLINDRICAL_BODY: 'cylidrical body'>, [0.0, 0.0, 5.0], [0.0, 0.0, 0.0]]
+#     RocketParts.CYLINDRICAL_BODY cg: (0.0, 0.0, 2.5)
+#     RocketParts.CYLINDRICAL_BODY cp: (0.0, 0.0, 2.5)
+
 # Rocket CG: (0.0, 0.0, 2.8331842193272525)
-# Rocket CP: (1.27853959200722, 0.0, 5.173535244219717)
+# Rocket CP: (0.0, 0.0, 5.5)

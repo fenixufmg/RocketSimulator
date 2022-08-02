@@ -8,8 +8,9 @@ from models.structure.abstract_model import AbstractModel
 
 
 class FinModel(AbstractModel):
-    def __init__(self, root_chord:float, tip_chord:float, span:float, max_thickness:float, sweep_angle:float, material: MaterialModel,
-                 position_order: int, distance_to_base:float, distance_from_cylinder_center:float, nb_fins:int):
+    def __init__(self, root_chord:float, tip_chord:float, span:float, max_thickness:float, sweep_angle:float, 
+    distance_to_base:float, distance_from_cylinder_center:float, nb_fins:int, material: MaterialModel,
+                 position_order: int):
         self.root_chord = root_chord
         self.tip_chord = tip_chord
         self.span = span
@@ -42,8 +43,8 @@ class FinModel(AbstractModel):
 
     def __calculateShapeCoefficient(self):
         m = self.span*tan(self.sweep_angle)
-        l = sqrt( (self.root_chord/2-(self.tip_chord/2+m))^2 + (self.span)^2)
-        cn_alpha_Force = (4*self.nb_fins*(self.span/self.distance_from_center)^2)/( 1+sqrt(1+(2*l/(self.root_chord+self.tip_chord))^2) )
+        l = sqrt( (self.root_chord/2-(self.tip_chord/2+m))**2 + (self.span)**2)
+        cn_alpha_Force = (4*self.nb_fins*(self.span/self.distance_from_center)**2)/( 1+sqrt(1+(2*l/(self.root_chord+self.tip_chord))**2) )
         return cn_alpha_Force
 
     def calculateVolume(self) -> float:

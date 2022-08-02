@@ -37,26 +37,37 @@ class RocketModel(AbstractModel):  # não está movendo as peças
         while True:
             i += 1
             i_found = []
-            for part in self.__getAvailableParts():
+            available_parts = self.__getAvailableParts()
+            for part in available_parts:
                 if part.position_order == i:
                     ordered_parts.append(part)
                     i_found.append(True)
                 else:
                     i_found.append(False)
 
+            if i < len(available_parts): # certifica que toda a lista de partes é percorrida
+                continue
+
             i_found = [found == False for found in i_found]  # inverte os bools para usar o all() do jeito certo
             if all(i_found):  # para se todas as peças já foram ordenadas
                 break
-
         return ordered_parts
+
+    def getPartWithPositionOrder(self, position_order):
+        for part in self.__getAvailableParts():
+            if part.position_order == position_order:
+                return part
 
     def __getPreviousPart(self, part):
         position_order = part.position_order
-        previous_position_order = position_order - 1 if position_order - 1 >= 0 else None
+        previous_position_order = position_order - 1
 
-        for part in self.__getAvailableParts():
-            if part.position_order == previous_position_order:
-                return part
+        while previous_position_order >= 0: # vai até a primeira parte
+            previous_part = self.getPartWithPositionOrder(previous_position_order)
+            if previous_part is not None: # parte encontrada
+                return previous_part
+
+            previous_position_order -= 1
 
     def __putRocketOnGround(self):
         for part in self.__getAvailableParts():
@@ -79,21 +90,28 @@ class RocketModel(AbstractModel):  # não está movendo as peças
                 self.rocket_height += current_part_height
 
                 displacement -= (self.rocket_height - current_part_height)  # move a altura das peças anteriores
+                # print(part.part_type)
+                # print(displacement)
 
             part.move(displacement, ignore_ground=True)
 
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
-                distance_from_center = Vector(part.distance_from_center, 0, 0)
+                displacement = Vector(0, 0, part.root_chord + part.distance_to_base)
+                part.move(displacement, ignore_ground=True)
 
-                for degrees in range(0, 361, 360 // part.getNumberOfFins()):  # rotaciona as aletas
-                    if degrees == 0:
-                        continue
-                    radians = degrees / 180
-                    radians *= Constants.PI
-                    z_axis = Vector(0, 0, 1)
-                    displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
-                    part.move(displacement, ignore_ground=True)
+                print(part.delimitation_points[0])
+                print(part.delimitation_points[1])
+            #     distance_from_center = Vector(part.distance_from_center, 0, 0)
+
+            #     for degrees in range(0, 361, 360 // part.nb_fins):  # rotaciona as aletas
+            #         if degrees == 0:
+            #             continue
+            #         radians = degrees / 180
+            #         radians *= Constants.PI.value
+            #         z_axis = Vector(0, 0, 1)
+            #         displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
+            #         part.move(displacement, ignore_ground=True)
 
         self.__putRocketOnGround()
 
