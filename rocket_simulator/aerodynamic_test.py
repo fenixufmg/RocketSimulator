@@ -50,7 +50,7 @@ dragForce = DragForceTest()
 thrust_test = ImpulseTestForce(200)
 rotation_force = RotationTestForce(0,1,0,ApplicationPoint.CP)
 
-trajectoryTest(rocket, [thrust_test, weight, dragForce], 30, arrow_scale=1, has_arrows=False, limit=20)
+trajectoryTest(rocket, [thrust_test, weight, dragForce], 30, arrow_scale=1, has_arrows=True, limit=20)
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
 # angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
