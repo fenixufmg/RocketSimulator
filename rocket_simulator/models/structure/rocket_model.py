@@ -100,18 +100,19 @@ class RocketModel(AbstractModel):  # não está movendo as peças
                 displacement = Vector(0, 0, part.root_chord + part.distance_to_base)
                 part.move(displacement, ignore_ground=True)
 
-                print(part.delimitation_points[0])
-                print(part.delimitation_points[1])
-            #     distance_from_center = Vector(part.distance_from_center, 0, 0)
+                # distance_from_center = Vector(part.distance_from_center, 0, 0)
+                fin_index = -2
+                for degrees in range(0, 361, 360 // part.nb_fins):  # rotaciona as aletas
+                    fin_index += 1
+                    if degrees == 0:
+                        continue
 
-            #     for degrees in range(0, 361, 360 // part.nb_fins):  # rotaciona as aletas
-            #         if degrees == 0:
-            #             continue
-            #         radians = degrees / 180
-            #         radians *= Constants.PI.value
-            #         z_axis = Vector(0, 0, 1)
-            #         displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
-            #         part.move(displacement, ignore_ground=True)
+                    radians = degrees / 180
+                    radians *= Constants.PI.value
+                    z_axis = Vector(0, 0, 1)
+                    # displacement = Vector.rotateAroundAxis(distance_from_center, z_axis, radians)
+                    part.fin_rotation_vectors[fin_index] = Vector.rotateAroundAxis(part.fin_rotation_vectors[fin_index], z_axis, radians)
+                    # part.move(displacement, ignore_ground=True)
 
         self.__putRocketOnGround()
 

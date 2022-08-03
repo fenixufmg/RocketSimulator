@@ -22,6 +22,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
 
 from models.structure.fin_model import FinModel
+from utils.rocket_parts import RocketParts
 
 
 # def isOnLine(line: List[Vector], point: Vector):
@@ -75,7 +76,7 @@ acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
 # cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2)  # height 4 , rocket_height = 10
-fins = FinModel(0.3, 0.1, 0.2, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
+fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
 
 rocket = RocketModel()
 rocket.addPart(nose)
