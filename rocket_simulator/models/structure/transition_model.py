@@ -33,6 +33,12 @@ class TransitionModel(AbstractModel):
             if self.thickness >= self.top_diameter / 2:
                 raise ValueError("Value of thickness is bigger than half of top outer diameter")
 
+    def __calculateDragCoefficient(self): # fazer
+        pass
+
+    def __calculateTransversalArea(self): # fazer
+        pass
+
     def calculateVolume(self) -> float:
         top_inner_diameter = self.top_diameter - 2 * self.thickness
         bottom_inner_diameter = self.bottom_diameter - 2 * self.thickness
@@ -85,8 +91,3 @@ class TransitionModel(AbstractModel):
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
 
-    def __calculateDragCoefficient(self): # fazer
-        pass
-
-    def __calculateTransversalArea(self): # fazer
-        pass
