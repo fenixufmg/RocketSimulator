@@ -36,10 +36,10 @@ class FinModel(AbstractModel):
         else:
             pass
 
-    def __calculateDragCoefficient(self): # fazer
+    def __calculateDragCoefficient(self) -> float: # fazer
         pass
     
-    def __calculateTransversalArea(self): # fazer
+    def __calculateTransversalArea(self) -> float: # fazer
         pass
 
     def __calculateShapeCoefficient(self):

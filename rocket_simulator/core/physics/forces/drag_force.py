@@ -16,10 +16,10 @@ class DragForce(Force):
         air_density = Constants.AIR_DENSITY.value
         return ((1/2)*air_density*velocity**2*transversal_section_area*drag_coefficient)
 
-    def __calculateSkinDragCoefficient(self,  current_state: DeltaTimeSimulation): # coef. arrasto de pele
+    def __calculateSkinDragCoefficient(self,  current_state: DeltaTimeSimulation) -> float: # coef. arrasto de pele
         pass
 
-    def __calculateDragCoefficient(self, current_state: DeltaTimeSimulation): # coef. arrasto final usado no calculo do arrasto
+    def __calculateDragCoefficient(self, current_state: DeltaTimeSimulation) -> float: # coef. arrasto final usado no calculo do arrasto
         pass
 
     def calculate(self, current_state: DeltaTimeSimulation):

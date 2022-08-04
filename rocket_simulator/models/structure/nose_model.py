@@ -35,10 +35,10 @@ class NoseModel(AbstractModel):
         if self.thinness_factor <= 0:
             raise ValueError("Thinness factor <= 0 not allowed")
 
-    def __calculateDragCoefficient(self): # fazer
+    def __calculateDragCoefficient(self) -> float: # fazer
         pass
     
-    def __calculateTransversalArea(self): # fazer
+    def __calculateTransversalArea(self) -> float: # fazer
         pass
 
     def calculateVolume(self) -> float: # https://www.grc.nasa.gov/www/k-12/airplane/volume.html

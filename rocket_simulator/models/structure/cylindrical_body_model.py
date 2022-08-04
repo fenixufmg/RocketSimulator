@@ -22,10 +22,10 @@ class CylindricalBodyModel(AbstractModel):
         if thickness >= diameter / 2:
             raise ValueError("Value of thickness is bigger than half of outer diameter")
 
-    def __calculateDragCoefficient(self): # fazer
+    def __calculateDragCoefficient(self) -> float: # fazer
         pass
     
-    def __calculateTransversalArea(self): # fazer
+    def __calculateTransversalArea(self) -> float: # fazer
         pass
 
     def calculateVolume(self) -> float:
