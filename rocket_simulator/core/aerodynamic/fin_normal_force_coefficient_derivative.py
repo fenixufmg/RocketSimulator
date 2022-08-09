@@ -18,29 +18,29 @@ def normal_force_coefficient_derivative(CNa1: float, D: float, N: int, Ntot: int
         Ntot:  total number of parallel fins that have an interference effect
         sumOfD: Sum of the squared sin of Dihedral angles
     Returns:
-        CNan: Normal force coefficient derivative
+        CNanF: Normal force coefficient derivative
     """
-    sumOfD = 0
+    sumOfD = 0 
     for value in range(N):
-        sumOfD += (sin(radians(D))) ** 2
+        sumOfD += (sin(radians(D))) ** 2 #Falta o código para cálculo dos ângulos
 
-    CNan = sumOfD * CNa1 
-    
-    if Ntot > 0 and Ntot <= 4:
-        return CNan
+    if N >= 3:
+        CNanF = N/2 * CNa1
+        if Ntot > 0 and Ntot <= 4:
+            return CNanF
 
-    elif Ntot == 5:
-        return CNan * 0.948
+        elif Ntot == 5:
+            return CNanF * 0.948
 
-    elif Ntot == 6:
-        return CNan * 0.913
+        elif Ntot == 6:
+            return CNanF * 0.913
 
-    elif Ntot == 7:
-        return CNan * 0.854
+        elif Ntot == 7:
+            return CNanF * 0.854
 
-    elif Ntot == 8:
-        return CNan * 0.810
-    
-    elif Ntot > 8:
-        return CNan * 0.750
+        elif Ntot == 8:
+            return CNanF * 0.810
+        
+        elif Ntot > 8:
+            return CNanF * 0.750
 

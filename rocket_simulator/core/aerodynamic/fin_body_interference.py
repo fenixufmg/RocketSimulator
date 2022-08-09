@@ -11,7 +11,7 @@
 def final_normal_force_coefficient_derivative(CNan: float, s: float, rt: float) -> float:
     """
     Args:
-        CNan: Normal force coefficient derivative
+        CNanF: Normal force coefficient derivative
         s: Spanwise length of one fin
         rt: Body radius at the fins position
     Returns:
