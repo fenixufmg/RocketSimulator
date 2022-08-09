@@ -1,8 +1,8 @@
 from multiprocessing.sharedctypes import Value
 from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
+from simulation.simulation import Simulation
 import matplotlib.pyplot as plt
-from core.physics.simulation import Simulation
 import numpy as np
 
 from core.physics.vector import Vector

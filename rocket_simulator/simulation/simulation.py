@@ -10,6 +10,7 @@ import collections
 
 from core.physics.resultant_force import ResultantForce
 from core.physics.resultant_torque import ResultantTorque
+from utils.rocket_parts import RocketParts
 
 class Simulation:
     def __init__(self, rocket: RocketModel, forces: List[Force]):
@@ -27,9 +28,10 @@ class Simulation:
         """
         self.__DELTA_TIME = 0.1
         self.__rocket = rocket
+
         self.__forces = forces
-        self.__resultant_force:ResultantForce = ResultantForce(forces)
-        self.__resultant_torque:ResultantTorque = ResultantTorque(forces)
+        self.__resultant_force:ResultantForce = ResultantForce(self.__forces)
+        self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
 
     def simulate(self, time:int) -> dict:
         """Roda a simulação física até o tempo determinado pelo parâmetro time com intervalos de __DELTA_TIME.

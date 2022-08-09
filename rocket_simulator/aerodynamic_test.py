@@ -17,6 +17,7 @@ from core.physics.forces.thrust_test import ThrustTest
 from core.physics.forces.weight_force import WeightForce
 from rb_test.acceleration_test import accelerationTest
 from core.physics.forces.impulse_test_force import ImpulseTestForce
+from simulation.earth_ambient import EarthAmbient
 
 def inertia_test(x):
     return 1
@@ -54,6 +55,10 @@ trajectoryTest(rocket, [thrust_test, weight, dragForce], 30, arrow_scale=1, has_
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
 # angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
+
+# ambient = EarthAmbient(rocket)
+# simulations = ambient.simulate(30)
+
 
 
     

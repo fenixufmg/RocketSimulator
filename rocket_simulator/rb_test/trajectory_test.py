@@ -3,7 +3,7 @@ from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
 import matplotlib
-from core.physics.simulation import Simulation
+from simulation.simulation import Simulation
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 

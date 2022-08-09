@@ -26,11 +26,11 @@ class DragForce(Force):
         if self.__drag_coefficient is None: # otimização, calcula apenas uma vez
             self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
 
-        dragCoefficient = self.__drag_coefficient
+        self.__drag_coefficient = 0.5 # provisório
         referenceArea = pi * current_state.nose.base_radius ** 2 
 
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
-        magnitude = self.__calculateDrag(referenceArea, dragCoefficient, velocity)
+        magnitude = self.__calculateDrag(referenceArea, self.__drag_coefficient, velocity)
 
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
