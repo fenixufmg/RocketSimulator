@@ -3,6 +3,7 @@ from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
 import matplotlib
+from simulation.abstract_ambient import AbstractAmbient
 from simulation.simulation import Simulation
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
@@ -21,8 +22,8 @@ def __mapColors(values):
     color_mapper = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lime", "green" ,"olivedrab","orange","chocolate","red"])
     return (normalizer, color_mapper, color_mapper(normalizer(colors)))
 
-def trajectoryTest(rigid_body:RigidBody, forces:list, simulation_time:int, limit=5000, arrow_scale=150, has_arrows=True, debug=True):
-    simulation = Simulation(rigid_body, forces)
+def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_time:int, limit=5000, arrow_scale=150, additional_forces:list=[] ,has_arrows=True, debug=True):
+    simulation = Simulation(rigid_body, ambient, additional_forces=additional_forces)
     simulations = simulation.simulate(simulation_time)
 
     x = []

@@ -10,15 +10,17 @@ import collections
 
 from core.physics.resultant_force import ResultantForce
 from core.physics.resultant_torque import ResultantTorque
+from simulation.abstract_ambient import AbstractAmbient
 from utils.rocket_parts import RocketParts
 
 class Simulation:
-    def __init__(self, rocket: RocketModel, forces: List[Force]):
+    def __init__(self, rocket: RocketModel, ambient: AbstractAmbient, additional_forces: List[Force]= []): # colocar ambient
         """ Classe responsável pela coordenação da simulação física.
 
         Args:
             rocket (RocketModel): Foguete no qual serão aplicadas as forças e extraídos os dados.
-            forces (List[Force]): Lista que contem as forças que serão usadas ao longo de toda a simulação.
+            ambient (AbstractAmbient): Ambiente no qual a simulação está imersa.
+            additional_forces (List[Force]): Lista que contem as forças ADICIONAIS que serão usadas ao longo de toda a simulação.
 
         Fields:
             __DELTA_TIME (float): Tamanho do intervalo de tempo entre duas simulações, quanto menor mais próximo da realidade.
@@ -29,7 +31,7 @@ class Simulation:
         self.__DELTA_TIME = 0.1
         self.__rocket = rocket
 
-        self.__forces = forces
+        self.__forces = [*ambient.forces, *additional_forces]
         self.__resultant_force:ResultantForce = ResultantForce(self.__forces)
         self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
 

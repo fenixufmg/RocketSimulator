@@ -17,10 +17,8 @@ from core.physics.forces.thrust_test import ThrustTest
 from core.physics.forces.weight_force import WeightForce
 from rb_test.acceleration_test import accelerationTest
 from core.physics.forces.impulse_test_force import ImpulseTestForce
+from simulation.airless_earth_ambient import AirlessEarthAmbient
 from simulation.earth_ambient import EarthAmbient
-
-def inertia_test(x):
-    return 1
 
 rocket = RocketModel()
 
@@ -37,21 +35,12 @@ rotation = Vector(0, 0.2 ,0)
 rocket.rotate(rotation)
 
 
-# rocket.delimitation_points = [Vector(0, 0, 2), Vector(0, 0, -2)]
-# rocket.mass = 2
-# rocket.volume = None
-# rocket.moment_of_inertia_function = inertia_test
-# rocket.cg = Vector(0, 0, 0)
-# rocket.cp = Vector(0, 0, -1)
-
-weight = WeightForce()
-dragForce = DragForce()
-# thrust_test = TranslationTestForce(400, 0, 1500)
-# thrust_test = TranslationTestForce(0, 0, 2000)
 thrust_test = ImpulseTestForce(200)
-rotation_force = RotationTestForce(0,1,0,ApplicationPoint.CP)
+rotation_force = RotationTestForce(0,50,0,ApplicationPoint.CP)
+ambient = EarthAmbient()
+# ambient = AirlessEarthAmbient()
 
-trajectoryTest(rocket, [thrust_test, weight, dragForce], 30, arrow_scale=1, has_arrows=True, limit=20)
+trajectoryTest(rocket, ambient, 30, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[])
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
 # angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
