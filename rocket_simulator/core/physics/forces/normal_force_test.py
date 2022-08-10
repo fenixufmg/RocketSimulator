@@ -23,8 +23,8 @@ class NormalForceTest(Force):
     
     def calculate(self, current_state: DeltaTimeSimulation):
         rocket = RocketModel()
-        air_density = 1.2
-        attack_angle = 1
+        air_density = 1.2 #Ampliar
+        attack_angle = 1 #Ampliar
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         reference_area = pi * current_state.nose.base_radius ** 2 #conferir 
         mach = mach_number(velocity, 340)
@@ -43,22 +43,17 @@ class NormalForceTest(Force):
                 Atop = pi * (current_state.transitions.top_diameter ** 2) / 4 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
-            
-            elif type == 'RocketParts.CYLINDRICAL_BODY': 
-                pass
 
             elif type == 'RocketParts.FIN':
                 CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.transversal_area, current_state.fin.sweep_angle)
                 CNanF = normal_force_coefficient_derivative(CNa1, 0, current_state.fin.nb_fins, current_state.fin.nb_fins)
                 CNaTb = final_normal_force_coefficient_derivative(CNanF, current_state.fin.span, current_state.fin.distance_from_center)
                 CNan_sum += CNaTb
-                
-        
-        #normal_force_coefficient = body_normal_force_coefficient_derivative() #CORRIGIR
+            
+            else:
+                pass
 
-        
-        
-        magnitude = normal_force(normal_force_coefficient, air_density, velocity, reference_area, attack_angle)
+        magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)
         
         normalForce = current_state.velocity #a força aponta para fora da lateral do foguete, deve-se adicionar algo que redirecione o vetor de forma correta
         normalForce = normalForce.unitVector() * magnitude
