@@ -41,7 +41,7 @@ rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
 ambient = EarthAmbient()
 # ambient = AirlessEarthAmbient()
 
-trajectoryTest(rocket, ambient, 30, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[])
+trajectoryTest(rocket, ambient, 30, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[NormalForceTest])
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
 # angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))

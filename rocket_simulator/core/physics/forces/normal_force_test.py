@@ -10,12 +10,11 @@ from core.aerodynamic.fin_body_interference import final_normal_force_coefficien
 from core.aerodynamic.fin_normal_force_coefficient_derivative import normal_force_coefficient_derivative
 from core.aerodynamic.single_fin_normal_force_coefficient import single_fin_normal_force_coefficient
 from core.aerodynamic.normal_force import normal_force
-from rocket_simulator.core.aerodynamic.mach_number import mach_number
+from core.aerodynamic.mach_number import mach_number
 from utils.constants import Constants
 from models.structure.rocket_model import RocketModel
 from models.structure.nose_model import NoseModel, NoseType
 from math import pi, sin, radians
-
 
 class NormalForceTest(Force):
     def __init__(self):

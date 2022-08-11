@@ -1,5 +1,4 @@
-from math import sin, radians
-from single_fin_normal_force_coefficient import single_fin_normal_force_coefficient as CNa1
+from math import sin, radians 
 """/**
  * @author João Lucas Gomes Alencar
  * @email alencarj2021@mail.com

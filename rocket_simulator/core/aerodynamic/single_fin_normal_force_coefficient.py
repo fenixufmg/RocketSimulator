@@ -1,5 +1,4 @@
 from math import sqrt, cos, radians, pi
-from core.aerodynamic.mach_number import mach_number as M
 
 """
 /**
