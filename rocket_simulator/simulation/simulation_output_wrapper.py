@@ -24,7 +24,7 @@ class SimulationOutputWrapper():
                 filtered_data[time] = self.__raw_data[time]
             except KeyError:
                 raise ValueError(f"Invalid step: {self.__step}")
-
+    
         return filtered_data
 
     def write(self):

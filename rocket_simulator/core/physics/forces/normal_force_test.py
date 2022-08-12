@@ -57,6 +57,7 @@ class NormalForceTest(Force):
         normalForce = current_state.velocity #a força aponta para fora da lateral do foguete, deve-se adicionar algo que redirecione o vetor de forma correta
         normalForce = normalForce.unitVector() * magnitude
         
+        print(normalForce)
         self.setX(normalForce.x())
         self.setY(normalForce.y())
         self.setZ(normalForce.z())
