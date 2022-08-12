@@ -9,9 +9,7 @@ from typing import List
 
 
 class TransitionModel(AbstractModel):
-    def __init__(self, position, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
-
-        self.position = position
+    def __init__(self, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
         self.height = height
         self.bottom_diameter = bottom_diameter
         self.top_diameter = top_diameter
@@ -20,10 +18,8 @@ class TransitionModel(AbstractModel):
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
 
-        super().__init__(RocketParts.TRANSITION, position_order)
-        
-        self.__verify(bottom_diameter, top_diameter, thickness)
-        #self.__verify(bottom_diameter, top_diameter, thickness, self.drag_coefficient, self.transversal_area) # Não entendi essa parte aqui, n existe tranversal area
+        super().__init__(RocketParts.TRANSITION, position_order, self.__calculateShapeCoefficient(), self.drag_coefficient, self.transversal_area)
+        self.__verify()
 
     def __verify(self):
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
@@ -39,20 +35,23 @@ class TransitionModel(AbstractModel):
     def __calculateTransversalArea(self) -> float: # fazer
         pass
 
+    def __calculateShapeCoefficient(self) -> float:
+        pass
+
     def calculateVolume(self) -> float:
         top_inner_diameter = self.top_diameter - 2 * self.thickness
         bottom_inner_diameter = self.bottom_diameter - 2 * self.thickness
 
         outer_trunk_volume = (pi / 3) * self.height * (
-                    self.bottom_diameter ^ 2 + self.bottom_diameter * self.top_diameter + self.top_diameter ^ 2)
+                    self.bottom_diameter ** 2 + self.bottom_diameter * self.top_diameter + self.top_diameter ** 2)
         inner_trunk_volume = (pi / 3) * self.height * (
-                    bottom_inner_diameter ^ 2 + bottom_inner_diameter * top_inner_diameter + top_inner_diameter ^ 2)
+                    bottom_inner_diameter ** 2 + bottom_inner_diameter * top_inner_diameter + top_inner_diameter ** 2)
 
         total_volume = outer_trunk_volume - inner_trunk_volume
         return total_volume
 
     def calculateMass(self) -> float:
-        mass = self.material.density * self.calculateVolume
+        mass = self.material.density * self.calculateVolume()
         return mass
 
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # https://media.cheggcdn.com/media/51d/51d19df6-2a92-4a5f-bdb2-275f8c7d8f0c/php43DZ1T.png based on last example
@@ -61,8 +60,8 @@ class TransitionModel(AbstractModel):
         bottom_inner_radius = (self.bottom_diameter - 2 * self.thickness)/2
         bottom_radius = self.bottom_diameter/2
         top_radius = self.top_diameter/2
-        Iyy = 3*self.calculateMass*((bottom_radius^5+bottom_inner_radius^5)-(top_radius^5+top_inner_radius^5))/(
-            20*((bottom_radius^3+bottom_inner_radius^3)-(top_radius^3+top_inner_radius^3)))
+        Iyy = 3*self.calculateMass*((bottom_radius**5+bottom_inner_radius**5)-(top_radius**5+top_inner_radius**5))/(
+            20*((bottom_radius**3+bottom_inner_radius**3)-(top_radius**3+top_inner_radius**3)))
         return Iyy + self.mass * distance_to_cg**2
 
     def calculateCg(self) -> Vector:  # aproximando por um tronco cheio https://www.passeidireto.com/pergunta/17392987/como-achar-um-centro-de-gravidade-em-um-tronco-de-cone 
@@ -71,19 +70,19 @@ class TransitionModel(AbstractModel):
         top_radius = self.top_diameter/2
 
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
-            cg_local = self.height -self.height/4*((top_radius^2 +2*top_radius*bottom_radius + 3*bottom_radius^2)/(
-                top_radius^2 + top_radius*bottom_radius + bottom_radius^2))
+            cg_local = self.height -self.height/4*((top_radius**2 +2*top_radius*bottom_radius + 3*bottom_radius**2)/(
+                top_radius**2 + top_radius*bottom_radius + bottom_radius**2))
             
         else:
-            cg_local = self.height -self.height/4*((bottom_radius^2 +2*bottom_radius*top_radius + 3*top_radius^2)/(
-                bottom_radius^2 + bottom_radius*top_radius + top_radius^2))
+            cg_local = self.height -self.height/4*((bottom_radius**2 +2*bottom_radius*top_radius + 3*top_radius**2)/(
+                bottom_radius**2 + bottom_radius*top_radius + top_radius**2))
             
         cg = self.getTipToBaseDistance().unitVector() * cg_local
 
         return self.toGroundCoordinates(cg)
 
     def calculateCp(self) -> Vector: # Reference from donwloaded files
-        Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
+        Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)**2))
         return self.toGroundCoordinates(Cp)
 
     def createDelimitationPoints(self) -> List[Vector]:

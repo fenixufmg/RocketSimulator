@@ -15,6 +15,7 @@ from core.physics.forces.weight_force import WeightForce
 from rb_test.acceleration_test import accelerationTest
 from models.structure.nose_model import NoseModel
 from models.structure.nose_model import NoseType
+from models.structure.transition_model import TransitionModel
 from models.other.material_model import MaterialModel
 from models.structure.cylindrical_body_model import CylindricalBodyModel
 import matplotlib.pyplot as plt
@@ -74,9 +75,10 @@ def physicsTest():
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
-cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
-# cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 2)  # height 4 , rocket_height = 10
-fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
+transition = TransitionModel(0.5, 2, 2, 0.5, acrylic, 1)
+cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 2)  # height 5
+# cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
+fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 4)
 
 rocket = RocketModel()
 rocket.addPart(nose)
