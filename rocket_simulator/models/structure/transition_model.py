@@ -9,7 +9,7 @@ from typing import List
 
 
 class TransitionModel(AbstractModel):
-    def __init__(self, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int):
+    def __init__(self, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int,nose_diameter):
         self.height = height
         self.bottom_diameter = bottom_diameter
         self.top_diameter = top_diameter
@@ -17,6 +17,7 @@ class TransitionModel(AbstractModel):
         self.material = material
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
+        self.nose_diameter = nose_diameter
 
         super().__init__(RocketParts.TRANSITION, position_order, self.__calculateShapeCoefficient(), self.drag_coefficient, self.transversal_area)
         self.__verify()
@@ -36,7 +37,8 @@ class TransitionModel(AbstractModel):
         pass
 
     def __calculateShapeCoefficient(self) -> float:
-        pass
+        c_N_alpha_cb = 2*((self.bottom_diameter/self.nose_diameter)**2-(self.top_diameter/self.bottom_diameter)**2)
+        return c_N_alpha_cb
 
     def calculateVolume(self) -> float:
         top_inner_diameter = self.top_diameter - 2 * self.thickness
@@ -82,8 +84,12 @@ class TransitionModel(AbstractModel):
         return self.toGroundCoordinates(cg)
 
     def calculateCp(self) -> Vector: # Reference from donwloaded files
-        Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)**2))
-        return self.toGroundCoordinates(Cp)
+        if self.top_diameter != self.bottom_diameter:
+            Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
+            return self.toGroundCoordinates(Cp)
+        else:
+            Cp = self.getTipToBaseDistance()*0.5
+            return self.toGroundCoordinates(Cp)
 
     def createDelimitationPoints(self) -> List[Vector]:
         upper_delimitation = Vector(0, 0, self.height)
