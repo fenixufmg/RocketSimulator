@@ -38,8 +38,9 @@ rocket.rotate(rotation)
 
 thrust_test = ImpulseTestForce(200)
 rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
-ambient = EarthAmbient()
 normalForce = NormalForceTest()
+
+ambient = EarthAmbient()
 # ambient = AirlessEarthAmbient()
 
 trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[normalForce], step=0.2, debug=True)

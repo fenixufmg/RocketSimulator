@@ -5,15 +5,19 @@ from utils.cable_type import CableType
 from utils.parachute_type import ParachuteType
 from utils.paths import Paths
 from core.physics.body.rigid_body import RigidBody
-from other.material_model import MaterialModel
+from models.other.material_model import MaterialModel
 from math import pi
 from models.structure.abstract_model import AbstractModel
 import json
 import enum
 from random import randint
 
+class EjectionCriteria(enum.Enum):
+    APOGEE = 1
+
 class ParachuteModel(AbstractModel):
-    def __init__(self, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel, inflation_randomness_factor: float = 1):
+    def __init__(self, ejection_criteria:EjectionCriteria, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel, inflation_randomness_factor: float = 1):
+        self.ejection_criteria = ejection_criteria
         self.parachute_type = parachute_type
         self.inflation_randomness_factor = inflation_randomness_factor
         self.cable_type = cable_type
@@ -45,7 +49,7 @@ class ParachuteModel(AbstractModel):
             self.calculateInflationForce()
     
     def calculateMaximumInflationForce(self):
-        self.inflation_force = ??
+        self.inflation_force = None
 
     def __calculateDragCoefficient(self):
         parachute_folder = Paths.PARACHUTES.value
@@ -59,34 +63,27 @@ class ParachuteModel(AbstractModel):
     def __calculateTransversalArea(self) -> float:
         return ((self.diameter/2)**2)*5.099
 
-    def calculateVolume(self) -> float: # possivelmente errado
-        inner_diameter = self.diameter - 2 * self.thickness
-        volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
-        return volume
+    # def calculateVolume(self) -> float: # possivelmente errado
+    #     inner_diameter = self.diameter - 2 * self.thickness
+    #     volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
+    #     return volume
 
-    def calculateMass(self) -> float: # possivelmente errado
-        mass = self.material.density * self.calculateVolume
-        return mass
+    # def calculateMass(self) -> float: # possivelmente errado
+    #     mass = self.material.density * self.calculateVolume
+    #     return mass
 
-    def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # possivelmente errado
-        mass = self.calculateMass
-        Ixx = 1/12*mass*(3*( (self.diameter^2)/4 +((self.diameter-2*self.thickness)^2)/4 )+self.height^2)
-        return Ixx
+    # def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # possivelmente errado
+    #     mass = self.calculateMass
+    #     Ixx = 1/12*mass*(3*( (self.diameter^2)/4 +((self.diameter-2*self.thickness)^2)/4 )+self.height^2)
+    #     return Ixx
 
     def calculateCg(self) -> Vector: # possivelmente errado
-        height = self.getTipToBaseDistance()
-        cg_local = height * 0.5
-        return self.toGroundCoordinates(cg_local)
+        return self.toGroundCoordinates(Vector(0, 0, 0))
 
     def calculateCp(self) -> Vector: # possivelmente errado
-        height = self.getTipToBaseDistance()
-        cg_local = height * 0.5  
-        cp_local = cg_local # Assuming same position as cp
-        return self.toGroundCoordinates(cp_local)
+        return self.toGroundCoordinates(Vector(0, 0, 0))
 
     def createDelimitationPoints(self) -> List[Vector]: # possivelmente errado
-        upper_delimitation = Vector(0, 0, self.height)
-        lower_delimitation = Vector(0, 0, 0)
-        return [upper_delimitation, lower_delimitation]
+        return [Vector(0, 0, 0), Vector(0, 0, 0)]
 
     

@@ -1,7 +1,7 @@
+from multiprocessing.sharedctypes import Value
 import numpy as np
 from typing import List
 
-from core.physics.body.rigid_body import RigidBody
 from core.physics.vector import Vector
 from core.physics.forces.force import Force
 from core.physics.delta_time_simulation import DeltaTimeSimulation
@@ -10,8 +10,12 @@ import collections
 
 from core.physics.resultant_force import ResultantForce
 from core.physics.resultant_torque import ResultantTorque
+from core.physics.forces.parachute_drag_force import ParachuteDrag
+from models.structure.parachute_model import ParachuteModel
+from models.structure.parachute_model import EjectionCriteria
 from simulation.abstract_ambient import AbstractAmbient
 from utils.rocket_parts import RocketParts
+from core.physics.forces.impulse_test_force import ImpulseTestForce
 
 class Simulation:
     def __init__(self, rocket: RocketModel, ambient: AbstractAmbient, additional_forces: List[Force]= []): # colocar ambient
@@ -31,9 +35,34 @@ class Simulation:
         self.__DELTA_TIME = 0.1
         self.__rocket = rocket
 
-        self.__forces = [*ambient.forces, *additional_forces]
+        thrust = ImpulseTestForce(200) # provisório
+        parachute_drag_force = ParachuteDrag()
+        self.__forces = [thrust, parachute_drag_force, *ambient.forces, *additional_forces]
         self.__resultant_force:ResultantForce = ResultantForce(self.__forces)
         self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
+
+    def __tryEjection(self, current_state:DeltaTimeSimulation):
+        """Verifica constantemente se as condições de ejeção do paraquedas são atendidas, caso positivo ele é ejetado.
+
+        Args:
+            current_state (DeltaTimeSimulation): Estado atual.
+
+        Raises:
+            ValueError: Critério de ejeção não suportado.
+        """
+        parachute:ParachuteModel = current_state.parachute
+        if parachute is None: # não tem paraquedas
+            return
+            
+        if parachute.ejected: # já foi ejetado
+            return
+
+        if parachute.ejection_criteria == EjectionCriteria.APOGEE:
+            if current_state.velocity.y() <= 0 and current_state.time > 0: # ejetar
+                parachute.eject()
+        else:
+            raise ValueError(f"Ejection criteria: {parachute.ejection_criteria} not supported")
+
 
     def simulate(self, time:int) -> dict:
         """Roda a simulação física até o tempo determinado pelo parâmetro time com intervalos de __DELTA_TIME.
@@ -51,43 +80,21 @@ class Simulation:
             current_state = DeltaTimeSimulation(self.__rocket, total_elapsed_time)
             delta_time_simulations[total_elapsed_time] = current_state # salva as informações do estado atual
 
-            # self.__applyForces(current_state) # atualiza o estado para o futuro
+            self.__tryEjection(current_state)
             self.__applyResultantForce(current_state) # atualiza o estado para o futuro
             self.__applyResultantTorque(current_state) # atualiza o estado para o futuro
-            # self.__rocket.cp = self.__rocket.cg
             self.__rocket.updateState()
-            # self.__rocket.cp = self.__rocket.cg
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 
 
-    # def __applyForces(self, current_state):
-    #     """Diz as forças que foram denifidas em __foces para calcular seus valores com base no estado atual 
-    #     e depois aplica todas elas no corpo rígido.
-
-    #     Args:
-    #         current_state (DeltaTimeSimulation): Estado atual do corpo.
-    #     """
-    #     for force in self.__forces:
-    #         force.calculate(current_state) 
-            
-    #     self.__rocket.applyForces(self.__forces, self.__DELTA_TIME)
-
-    # def addForce(self, force:Force) -> None:
-    #     """Adiciona uma força no campo __forces.
-
-    #     Args:
-    #         force (Force): Força a ser adicionada.
-    #     """
-    #     self.__forces.append(force)
-
-    def __applyResultantForce(self, current_state):
+    def __applyResultantForce(self, current_state:DeltaTimeSimulation):
         """Aplica a força resultante no corpo
         """
         self.__resultant_force.calculate(current_state)
         self.__rocket.applyForce(self.__resultant_force, self.__DELTA_TIME)
 
-    def __applyResultantTorque(self, current_state):
+    def __applyResultantTorque(self, current_state:DeltaTimeSimulation):
         """Aplica o torque resultante no corpo.
         """
         self.__resultant_torque.calculate(current_state)
