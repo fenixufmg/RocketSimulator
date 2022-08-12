@@ -12,19 +12,19 @@ class SimulationOutputWrapper():
 
     def __setDeltaTime(self):
         samples = list(self.__raw_data.keys())[:2]
-        self.__DELTA_TIME = samples[1] - samples[0]
+        return samples[1] - samples[0]
 
-    def read(self) -> List[DeltaTimeSimulation]:
+    def read(self) -> dict:
         if self.__step is None:
             return self.__raw_data
 
         filtered_data = dict()
-        for time in np.arange(0, self.__time+self.__DELTA_TIME, self.__step):
+        for time in np.arange(0, self.__time + self.__DELTA_TIME, self.__step):
             try:
                 filtered_data[time] = self.__raw_data[time]
             except KeyError:
                 raise ValueError(f"Invalid step: {self.__step}")
-    
+
         return filtered_data
 
     def write(self):

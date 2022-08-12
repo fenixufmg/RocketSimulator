@@ -3,6 +3,7 @@ from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
 import matplotlib
+from simulation.simulation_output_wrapper import SimulationOutputWrapper
 from simulation.abstract_ambient import AbstractAmbient
 from simulation.simulation import Simulation
 import numpy as np
@@ -22,9 +23,12 @@ def __mapColors(values):
     color_mapper = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lime", "green" ,"olivedrab","orange","chocolate","red"])
     return (normalizer, color_mapper, color_mapper(normalizer(colors)))
 
-def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_time:int, limit=5000, arrow_scale=150, additional_forces:list=[] ,has_arrows=True, debug=True):
+def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_time:int, limit=5000, arrow_scale=150, additional_forces:list=[] ,has_arrows=True, debug=True, step=None):
     simulation = Simulation(rigid_body, ambient, additional_forces=additional_forces)
     simulations = simulation.simulate(simulation_time)
+
+    output_wrapper = SimulationOutputWrapper(simulations, step=step)
+    simulations = output_wrapper.read()
 
     x = []
     y = []
@@ -44,27 +48,28 @@ def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_ti
         x_magnitudes.append(looking_direction.x())
         y_magnitudes.append(looking_direction.y())
         z_magnitudes.append(looking_direction.z())
-        # print(f"Time: {time}")
-        # print(f"    Velocity: {simulation.velocity}")
-        # print(f"    Acceleration: {simulation.acceleration}")
+        if debug:
+            print(f"Time: {time}")
+            print(f"    Velocity: {simulation.velocity}")
+            print(f"    Acceleration: {simulation.acceleration}")
 
-        # print(f"    Moment of inertia: {simulation.moment_of_inertia}")
-        # print(f"    Angular velocity: {simulation.angular_velocity}")
-        # print(f"    Angular acceleration: {simulation.angular_acceleration}")
+            print(f"    Moment of inertia: {simulation.moment_of_inertia}")
+            print(f"    Angular velocity: {simulation.angular_velocity}")
+            print(f"    Angular acceleration: {simulation.angular_acceleration}")
 
-        # print(f"    Cg position: {simulation.cg}")
-        # print(f"    Cp position: {simulation.cp}")
-        # print(f"    cg->cp: {simulation.cp - simulation.cg}")
-        # print(f"    cg->cp (mag): {(simulation.cp - simulation.cg).magnitude()}")
-        # print()
-        # print(f"    Tip position: {simulation.tip}")
-        # print(f"    Base position: {simulation.base}")
-        # print(f"    Tip->Base: {simulation.base - simulation.tip}")
-        # print(f"    Tip->Base (mag): {(simulation.base - simulation.tip).magnitude()}")
-        # print()
-        # print(f"    Is on ground: {simulation.is_on_ground}")
-        # print(f"    Mass: {simulation.mass}")
-        # print("="*40)
+            print(f"    Cg position: {simulation.cg}")
+            print(f"    Cp position: {simulation.cp}")
+            print(f"    cg->cp: {simulation.cp - simulation.cg}")
+            print(f"    cg->cp (mag): {(simulation.cp - simulation.cg).magnitude()}")
+            print()
+            print(f"    Tip position: {simulation.tip}")
+            print(f"    Base position: {simulation.base}")
+            print(f"    Tip->Base: {simulation.base - simulation.tip}")
+            print(f"    Tip->Base (mag): {(simulation.base - simulation.tip).magnitude()}")
+            print()
+            print(f"    Is on ground: {simulation.is_on_ground}")
+            print(f"    Mass: {simulation.mass}")
+            print("="*40)
 
     # ============ configurações do gráficos ============ #
     fig = plt.figure(figsize=(8,5))
