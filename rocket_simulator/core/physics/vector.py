@@ -262,3 +262,17 @@ class Vector:
         """
         scalar = Vector.dotProduct(vector, root) / (root.magnitude() ** 2)
         return root * scalar
+
+    @staticmethod
+    def angleBetweenVectors(vector1: 'Vector', vector2: 'Vector') -> float:
+        """Método estático que retorna o ângulo em radianos entre dois vetores.
+
+        Args:
+            vector1 (Vector): Vetor 1
+            vector2 (Vector): Vetor 2
+
+        Returns:
+            (float): Angulo entre os vetores, medido em radianos.
+        """
+        cosine_theta = Vector.dotProduct(vector1, vector2) / (vector1.magnitude() * vector2.magnitude())
+        return math.acos(cosine_theta)

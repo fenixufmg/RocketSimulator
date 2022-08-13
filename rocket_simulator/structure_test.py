@@ -21,7 +21,7 @@ from models.structure.cylindrical_body_model import CylindricalBodyModel
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
-
+from utils.utils import Utils
 from models.structure.fin_model import FinModel
 from utils.rocket_parts import RocketParts
 
@@ -86,7 +86,6 @@ rocket.addPart(cylinder1)
 rocket.addPart(fins)
 rotation = Vector(0, 0.5, 0)
 
-print(rocket.getParts())
 # rocket.rotate(rotation)
 
 # physicsTest()
