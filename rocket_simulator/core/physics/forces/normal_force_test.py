@@ -29,6 +29,7 @@ class NormalForceTest(Force):
         mach = mach_number(velocity, 340)
         parts = rocket.getParts()
         CNan_sum = 0 #Soma dos coeficientes normais
+        print(parts)
         for part in parts:
             type = str(part.part_type)
             if type == 'RocketParts.NOSE':
@@ -36,7 +37,7 @@ class NormalForceTest(Force):
                 Atop = 0 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
-
+                
             elif type == 'RocketParts.TRANSITION':
                 Abase = pi * (current_state.transitions.bottom_diameter ** 2) / 4 #Área da base do corpo
                 Atop = pi * (current_state.transitions.top_diameter ** 2) / 4 #Área do topo do corpo
@@ -51,11 +52,11 @@ class NormalForceTest(Force):
             
             else:
                 pass
-
+    
         magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)
         
         normalForce = current_state.velocity #a força aponta para fora da lateral do foguete, deve-se adicionar algo que redirecione o vetor de forma correta
-        normalForce = normalForce.unitVector() * magnitude
+        normalForce = normalForce.unitVector() * magnitude 
         
         print(normalForce)
         self.setX(normalForce.x())

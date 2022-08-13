@@ -8,6 +8,7 @@ from models.structure.nose_model import NoseModel, NoseType
 from models.structure.cylindrical_body_model import CylindricalBodyModel
 from models.structure.fin_model import FinModel
 from models.structure.rocket_model import RocketModel
+from models.structure.transition_model import TransitionModel
 from rb_test.trajectory_test import trajectoryTest
 from rb_test.velocity_test import velocityTest
 from rb_test.angular_velocity_test import angularVelocityTest
@@ -24,11 +25,13 @@ from simulation.earth_ambient import EarthAmbient
 rocket = RocketModel()
 
 acrylic = MaterialModel("acrylic")
-nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)
-cylindrical_body = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)
+nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  
+cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)   
+fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 2)
 
 rocket.addPart(nose)
-rocket.addPart(cylindrical_body)
+rocket.addPart(cylinder1)
+rocket.addPart(fins)
 # cg -> cp = 2.666
 # mass = 15.89
 # rotation = Vector(0, 0.5 ,0)
@@ -43,7 +46,7 @@ normalForce = NormalForceTest()
 ambient = EarthAmbient()
 # ambient = AirlessEarthAmbient()
 
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[normalForce], step=0.2, debug=True)
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[normalForce], step=0.2, debug=False)
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
 # angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
