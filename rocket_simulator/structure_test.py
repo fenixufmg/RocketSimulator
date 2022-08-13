@@ -75,7 +75,7 @@ def physicsTest():
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
-transition = TransitionModel(0.5, 2, 2, 0.5, acrylic, 1)
+# transition = TransitionModel(0.5, 2, 2, 0.5, acrylic, 1)
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 2)  # height 5
 # cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
 fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 4)
@@ -85,10 +85,12 @@ rocket.addPart(nose)
 rocket.addPart(cylinder1)
 rocket.addPart(fins)
 rotation = Vector(0, 0.5, 0)
+
+print(rocket.getParts())
 # rocket.rotate(rotation)
 
 # physicsTest()
-geometryTest()
+# geometryTest()
 
 # [<RocketParts.NOSE: 'nose'>, [0.0, 0.0, 6.0], [0.0, 0.0, 5.0]]
 #     RocketParts.NOSE cg: (0.0, 0.0, 5.333333333333333)
