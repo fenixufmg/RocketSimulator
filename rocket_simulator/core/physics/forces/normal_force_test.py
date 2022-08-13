@@ -21,15 +21,13 @@ class NormalForceTest(Force):
         super().__init__(0, 0, 0, ApplicationPoint.CP, None)
     
     def calculate(self, current_state: DeltaTimeSimulation):
-        rocket = RocketModel()
         air_density = 1.2 #Ampliar
         attack_angle = 1 #Ampliar
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         reference_area = pi * current_state.nose.base_radius ** 2 #conferir 
         mach = mach_number(velocity, 340)
-        parts = rocket.getParts()
+        parts = current_state.parts
         CNan_sum = 0 #Soma dos coeficientes normais
-        print(parts)
         for part in parts:
             type = str(part.part_type)
             if type == 'RocketParts.NOSE':

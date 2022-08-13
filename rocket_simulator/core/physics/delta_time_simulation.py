@@ -40,6 +40,7 @@ class DeltaTimeSimulation:
         self.is_on_ground:bool = rocket.is_on_ground
 
         # peças
+        self.parts = rocket.getParts()
         self.parachute = rocket.getPart(RocketParts.PARACHUTE)
         self.nose = rocket.getPart(RocketParts.NOSE)
         self.cilyndrical_bodies = rocket.getPart(RocketParts.CYLINDRICAL_BODY)
