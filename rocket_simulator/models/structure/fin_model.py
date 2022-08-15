@@ -1,6 +1,6 @@
-from cmath import pi
+from cmath import cos, pi
 from utils.rocket_parts import RocketParts
-from math import tan, sqrt
+from math import atan, tan, sqrt
 from core.physics.vector import Vector
 from core.physics.body.rigid_body import RigidBody
 from models.other.material_model import MaterialModel
@@ -83,3 +83,13 @@ class FinModel(AbstractModel):
         upper_delimitation = Vector(0, 0, self.root_chord)
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
+
+    def calculateSuperficialArea(self) -> float:
+        m = self.span*tan(self.sweep_angle)
+        faces_area = self.span(self.root_chord+ self.tip_chord) # front and backside areas
+        top_area = self.span*(self.span/cos(self.sweep_angle))
+        side_area = self.span*self.tip_chord
+        bottom_angle = atan(abs((self.root_chord - (m+self.tip_chord))/self.span))
+        bottom_area = self.span*(self.span/cos(bottom_angle))
+        sum_superficial_area = faces_area + top_area + side_area + bottom_area
+        return sum_superficial_area
