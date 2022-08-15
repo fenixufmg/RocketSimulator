@@ -35,7 +35,7 @@ rocket.addPart(fins)
 # cg -> cp = 2.666
 # mass = 15.89
 # rotation = Vector(0, 0.5 ,0)
-rotation = Vector(0, 0.2 ,0)
+rotation = Vector(0, 0.2 ,0) #Consertar
 rocket.rotate(rotation)
 
 

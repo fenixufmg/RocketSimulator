@@ -1,3 +1,4 @@
+from utils.utils import Utils
 import imp
 
 from numpy import single
@@ -22,9 +23,9 @@ class NormalForceTest(Force):
     
     def calculate(self, current_state: DeltaTimeSimulation):
         air_density = 1.2 #Ampliar
-        attack_angle = 1 #Ampliar
+        attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(Vector(0,0,1), current_state.velocity))
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
-        reference_area = pi * current_state.nose.base_radius ** 2 #conferir 
+        reference_area = pi * current_state.nose.base_radius ** 2 
         mach = mach_number(velocity, 340)
         parts = current_state.parts
         CNan_sum = 0 #Soma dos coeficientes normais
@@ -41,21 +42,34 @@ class NormalForceTest(Force):
                 Atop = pi * (current_state.transitions.top_diameter ** 2) / 4 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
-
+            
             elif type == 'RocketParts.FIN':
-                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.transversal_area, current_state.fin.sweep_angle)
+                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.transversal_area, current_state.fin.sweep_angle) #Criar código para transversal_area
                 CNanF = normal_force_coefficient_derivative(CNa1, 0, current_state.fin.nb_fins, current_state.fin.nb_fins)
                 CNaTb = final_normal_force_coefficient_derivative(CNanF, current_state.fin.span, current_state.fin.distance_from_center)
                 CNan_sum += CNaTb
             
             else:
-                pass
+                pass 
     
         magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)
-        
-        normalForce = current_state.velocity #a força aponta para fora da lateral do foguete, deve-se adicionar algo que redirecione o vetor de forma correta
-        normalForce = normalForce.unitVector() * magnitude 
-        
+
+        normalForceX = Vector.projectVector(current_state.velocity, Vector(1, 0, 0))
+        normalForceY = Vector.projectVector(current_state.velocity, Vector(0, 1, 0))
+
+        if normalForceX.toList()[0] > 0:
+            normalForceX = normalForceX.unitVector()
+        else:
+            normalForceX = normalForceX.unitVector() * (-1)
+
+        if normalForceY.toList()[1] > 0:
+            normalForceY = normalForceY.unitVector()
+        else:
+            normalForceY = normalForceY.unitVector() * (-1)
+            
+        normalForce = normalForceX + normalForceY
+        normalForce = normalForce.unitVector() * magnitude
+
         print(normalForce)
         self.setX(normalForce.x())
         self.setY(normalForce.y())
