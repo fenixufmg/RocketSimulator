@@ -15,6 +15,7 @@ from core.aerodynamic.mach_number import mach_number
 from utils.constants import Constants
 from models.structure.rocket_model import RocketModel
 from models.structure.nose_model import NoseModel, NoseType
+from models.structure.fin_model import FinModel
 from math import pi, sin, radians
 
 class NormalForceTest(Force):
@@ -23,7 +24,7 @@ class NormalForceTest(Force):
     
     def calculate(self, current_state: DeltaTimeSimulation):
         air_density = 1.2 #Ampliar
-        attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(Vector(0,0,1), current_state.velocity))
+        attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(current_state.looking_direction, current_state.velocity))
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         reference_area = pi * current_state.nose.base_radius ** 2 
         mach = mach_number(velocity, 340)
@@ -44,13 +45,14 @@ class NormalForceTest(Force):
                 CNan_sum += CNan
             
             elif type == 'RocketParts.FIN':
-                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.transversal_area, current_state.fin.sweep_angle) #Criar código para transversal_area
+                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.superficial_area, current_state.fin.sweep_angle) #Criar código para transversal_area
                 CNanF = normal_force_coefficient_derivative(CNa1, 0, current_state.fin.nb_fins, current_state.fin.nb_fins)
                 CNaTb = final_normal_force_coefficient_derivative(CNanF, current_state.fin.span, current_state.fin.distance_from_center)
                 CNan_sum += CNaTb
             
             else:
-                pass 
+                pass
+        print(CNan_sum) 
     
         magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)
 
