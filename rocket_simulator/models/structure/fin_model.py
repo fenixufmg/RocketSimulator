@@ -84,12 +84,12 @@ class FinModel(AbstractModel):
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
 
-    def calculateSuperficialArea(self) -> float:
+    def calculateWetArea(self) -> float:
         m = self.span*tan(self.sweep_angle)
         faces_area = self.span(self.root_chord+ self.tip_chord) # front and backside areas
         top_area = self.span*(self.span/cos(self.sweep_angle))
         side_area = self.span*self.tip_chord
         bottom_angle = atan(abs((self.root_chord - (m+self.tip_chord))/self.span))
         bottom_area = self.span*(self.span/cos(bottom_angle))
-        sum_superficial_area = faces_area + top_area + side_area + bottom_area
-        return sum_superficial_area
+        sum_wet_area = faces_area + top_area + side_area + bottom_area
+        return sum_wet_area

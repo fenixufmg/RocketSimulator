@@ -59,3 +59,7 @@ class CylindricalBodyModel(AbstractModel):
         upper_delimitation = Vector(0, 0, self.height)
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
+
+    def calculateWetArea(self) -> float:
+        wet_area = pi*self.diameter*self.height
+        return wet_area

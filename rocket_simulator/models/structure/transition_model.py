@@ -1,5 +1,5 @@
 from utils.rocket_parts import RocketParts
-from math import pi
+from math import pi,sqrt
 from core.physics.vector import Vector
 from models.other.material_model import MaterialModel
 from core.physics.body.rigid_body import RigidBody
@@ -95,4 +95,9 @@ class TransitionModel(AbstractModel):
         upper_delimitation = Vector(0, 0, self.height)
         lower_delimitation = Vector(0, 0, 0)
         return [upper_delimitation, lower_delimitation]
+
+    def calculateWetArea(self) -> float: # Reference from https://brasilescola.uol.com.br/matematica/tronco-cone.htm 
+        g = sqrt(self.height**2 + (self.top_diameter-self.bottom_diameter)**2) 
+        wet_area = pi*g*(self.top_diameter+self.bottom_diameter)
+        return wet_area
 
