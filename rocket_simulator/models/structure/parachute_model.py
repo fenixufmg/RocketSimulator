@@ -1,3 +1,4 @@
+from core.recovery.maximum_force import maximum_force
 from typing import List
 from core.physics.vector import Vector
 from utils.rocket_parts import RocketParts
@@ -49,7 +50,7 @@ class ParachuteModel(AbstractModel):
             self.calculateInflationForce()
     
     def calculateMaximumInflationForce(self):
-        self.inflation_force = None
+        self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
 
     def __calculateDragCoefficient(self):
         parachute_folder = Paths.PARACHUTES.value
