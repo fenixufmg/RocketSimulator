@@ -4,6 +4,7 @@ from core.physics.forces.force import Force
 from core.physics.delta_time_simulation import DeltaTimeSimulation
 from core.physics.body.application_point import ApplicationPoint
 from core.physics.vector import Vector
+from models.structure.rocket_model import RocketModel
 from ...aerodynamic.boattail_pressure_drag import boattail_pressure_drag_coeficent
 from utils.constants import Constants
 from models.structure.nose_model import NoseModel
@@ -30,12 +31,13 @@ class DragForce(Force):
         return ((1/2)*air_density*velocity**2*transversal_section_area*drag_coefficient)
 
     def __calculateSkinDragCoefficient(self,  current_state: DeltaTimeSimulation) -> float: # coef. arrasto de pele
+        rocket = RocketModel()
+        rocketLength = rocket.rocket_height.magnitude()
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         referenceArea = pi * current_state.nose.base_radius ** 2 
         meanChord = mean_aerodynamic_chord_length('trapezoidal', current_state.fin.root_chord, current_state.fin.tip_chord)
-        rocketLength = current_state.rocket.rocket_height.magnitudeRelativeTo(current_state.rocket.rocket_height)
         rocketSurfaceArea = 0.5 #Fazer
-        reynoldsNumber = reynolds_number(rocketLength, Constants.KINEMATIC_VISCOSITY.value)
+        reynoldsNumber = reynolds_number(velocity, rocketLength, Constants.KINEMATIC_VISCOSITY.value)
         mach = mach_number(velocity, 340)
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength ,current_state.nose.base_diameter)
         criticalReynoldsNumber = critical_reynolds_number(0.0000005, rocketLength)
@@ -46,38 +48,47 @@ class DragForce(Force):
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         referenceArea = pi * current_state.nose.base_radius ** 2
         mach = mach_number(velocity, 340)
-        baseDrag = base_drag_coefficient(mach) * (pi * current_state.fin.distance_from_center ** 2) / referenceArea #coletar
-        stagnationDrag = stag_pressure_drag_coeficient(mach) #coletar
+        baseDrag = base_drag_coefficient(mach) * (pi * current_state.fin.distance_from_center ** 2) / referenceArea 
+        stagnationDrag = stag_pressure_drag_coeficient(mach) 
         parts = current_state.parts
+        pressureDragCoefficient = baseDrag + stagnationDrag
         for part in parts:
             type = str(part.part_type)
             if type == 'RocketParts.NOSE':
                 if current_state.nose.nose_type == 1:
                     bodynoseAngle = degrees(atan(current_state.nose.nose_radius / current_state.nose.height))
-                    noseDrag = nose_pressure_drag(bodynoseAngle) #coletar
+                    noseDrag = nose_pressure_drag(bodynoseAngle) 
+                    pressureDragCoefficient += noseDrag
 
                 else:
                     pass
                 
-            if type == 'RocketParts.TRANSITION':
+            elif type == 'RocketParts.TRANSITION':
                 topDiameter = current_state.transitions.top_diameter
                 bottomDiameter = current_state.transitions.bottom_diameter
                 height = current_state.transitions.height
                 if bottomDiameter < topDiameter:
-                    boatttailDrag = boattail_pressure_drag_coeficent(topDiameter, bottomDiameter, height, baseDrag, (pi * topDiameter ** 2) / 4, (pi * bottomDiameter ** 2) / 4) #coletar
-                
+                    boatttailDrag = boattail_pressure_drag_coeficent(topDiameter, bottomDiameter, height, baseDrag, (pi * topDiameter ** 2) / 4, (pi * bottomDiameter ** 2) / 4) 
+                    pressureDragCoefficient += boatttailDrag * abs((pi * topDiameter ** 2) / 4 - (pi * bottomDiameter ** 2) / 4) / referenceArea
                 else:
                     bodyshoulderAngle = degrees(atan(abs((current_state.transitions.bottom_diameter/2) - (current_state.transitions.top_diameter/2))/current_state.transitions.height))
                     shoulderDrag = nose_pressure_drag(bodyshoulderAngle) #coletar
+                    pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
-            if type == 'RocketParts.FIN':
+            elif type == 'RocketParts.FIN':
                 leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(current_state.fin.root_chord - current_state.fin.tip_chord) / current_state.fin.span))) ** 2
                 trailingEdgeDrag = base_drag_coefficient(mach)
-                FinDrag = leadingEdgeDrag + trailingEdgeDrag #coletar
+                finDrag = leadingEdgeDrag + trailingEdgeDrag 
+                pressureDragCoefficient += finDrag * current_state.fin.nb_fins * current_state.fin.max_thickness * current_state.fin.span / referenceArea
 
+            else:
+                pass
+
+            #Existe documentação para implementação do arrasto para guias de lançamento também
+        return pressureDragCoefficient
 
     def __calculateDragCoefficient(self, current_state: DeltaTimeSimulation) -> float: # coef. arrasto final usado no calculo do arrasto
-        pass
+        return self.__calculateSkinDragCoefficient(current_state) * self.__calculatePressureDragCoefficient(current_state)
 
     def calculate(self, current_state: DeltaTimeSimulation):
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
@@ -92,6 +103,8 @@ class DragForce(Force):
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
 
+
         self.setX(dragForce.x())
         self.setY(dragForce.y())
         self.setZ(dragForce.z())
+
