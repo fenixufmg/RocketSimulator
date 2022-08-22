@@ -13,11 +13,6 @@ the nose and the suface of the conical shape.
  */
  """
 
-def nose_pressure_drag(transition: str, bodynoseAngle: float):
+def nose_pressure_drag(bodynoseAngle: float):
+    return 0.8 * (sin(radians(bodynoseAngle))) ** 2 #Angle between body and cilindricbody is in degrees
 
-    if transition == "smooth":
-        return 0
-    else:
-        return 0.8 * (sin(radians(bodynoseAngle))) ** 2
-
-#Angle between body and cilindricbody is in degrees

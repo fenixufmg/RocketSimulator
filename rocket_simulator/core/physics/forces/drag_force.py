@@ -12,10 +12,13 @@ from core.aerodynamic.mach_number import mach_number
 from core.aerodynamic.mean_aerodynamic_chord import mean_aerodynamic_chord_length
 from core.aerodynamic.rocket_fineness_ratio import rocket_fineness_ratio
 from core.aerodynamic.critical_reynolds_number import critical_reynolds_number
+from core.aerodynamic.stag_pressure_drag import stag_pressure_drag_coeficient
+from core.aerodynamic.fin_drag import fin_drag_coeficient
 from core.aerodynamic.skin_friction_drag import skin_friction_drag
 from core.aerodynamic.total_skin_friction_drag_coefficient import total_skin_friction_drag_coefficient 
 from core.aerodynamic.base_drag import base_drag_coefficient
-from math import pi
+from core.aerodynamic.nose_pressure_drag import nose_pressure_drag
+from math import pi, atan, degrees, cos
 
 class DragForce(Force):
     def __init__(self):
@@ -37,19 +40,22 @@ class DragForce(Force):
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength ,current_state.nose.base_diameter)
         criticalReynoldsNumber = critical_reynolds_number(0.0000005, rocketLength)
         skingFrictionDrag = skin_friction_drag(reynoldsNumber, criticalReynoldsNumber, 0.0000005, rocketLength, mach)
-        skinDragCoefficient = total_skin_friction_drag_coefficient(skingFrictionDrag, rocketFinenessRatio, rocketSurfaceArea, current_state.fin.max_thickness, meanChord, current_state.fin.superficial_area, referenceArea)
+        return total_skin_friction_drag_coefficient(skingFrictionDrag, rocketFinenessRatio, rocketSurfaceArea, current_state.fin.max_thickness, meanChord, current_state.fin.superficial_area, referenceArea)
 
     def __calculatePressureDragCoefficient(self, current_state: DeltaTimeSimulation) -> float:
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
         referenceArea = pi * current_state.nose.base_radius ** 2
         mach = mach_number(velocity, 340)
-        baseDrag = base_drag_coefficient(mach) * (pi * current_state.fin.distance_from_center ** 2) / referenceArea
+        baseDrag = base_drag_coefficient(mach) * (pi * current_state.fin.distance_from_center ** 2) / referenceArea #coletar
+        stagnationDrag = stag_pressure_drag_coeficient(mach) #coletar
         parts = current_state.parts
         for part in parts:
             type = str(part.part_type)
             if type == 'RocketParts.NOSE':
                 if current_state.nose.nose_type == 1:
-                    pass #Fazer
+                    bodynoseAngle = degrees(atan(current_state.nose.nose_radius / current_state.nose.height))
+                    noseDrag = nose_pressure_drag(bodynoseAngle) #coletar
+
                 else:
                     pass
                 
@@ -58,10 +64,16 @@ class DragForce(Force):
                 bottomDiameter = current_state.transitions.bottom_diameter
                 height = current_state.transitions.height
                 if bottomDiameter < topDiameter:
-                    boatttailDrag = boattail_pressure_drag_coeficent(topDiameter, bottomDiameter, height, baseDrag, (pi * topDiameter ** 2) / 4, (pi * bottomDiameter ** 2) / 4)
+                    boatttailDrag = boattail_pressure_drag_coeficent(topDiameter, bottomDiameter, height, baseDrag, (pi * topDiameter ** 2) / 4, (pi * bottomDiameter ** 2) / 4) #coletar
                 
                 else:
-                    pass #Fazer para o Shoulder
+                    bodyshoulderAngle = degrees(atan(abs((current_state.transitions.bottom_diameter/2) - (current_state.transitions.top_diameter/2))/current_state.transitions.height))
+                    shoulderDrag = nose_pressure_drag(bodyshoulderAngle) #coletar
+
+            if type == 'RocketParts.FIN':
+                leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(current_state.fin.root_chord - current_state.fin.tip_chord) / current_state.fin.span))) ** 2
+                trailingEdgeDrag = base_drag_coefficient(mach)
+                FinDrag = leadingEdgeDrag + trailingEdgeDrag #coletar
 
 
     def __calculateDragCoefficient(self, current_state: DeltaTimeSimulation) -> float: # coef. arrasto final usado no calculo do arrasto
