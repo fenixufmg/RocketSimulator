@@ -50,7 +50,8 @@ class ParachuteModel(AbstractModel):
             self.calculateInflationForce()
     
     def calculateMaximumInflationForce(self):
-        self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
+        pass
+        # self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
 
     def __calculateDragCoefficient(self):
         parachute_folder = Paths.PARACHUTES.value
