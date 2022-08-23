@@ -1,4 +1,3 @@
-import cgi
 from utils.nose_type import NoseType
 from utils.rocket_parts import RocketParts
 from email.mime import base
@@ -10,12 +9,18 @@ from models.structure.abstract_model import AbstractModel
 from core.physics.vector import Vector
 from utils.constants import Constants
 
+
+
 class NoseModel(AbstractModel):
-    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, material:MaterialModel, position_order: int):
+    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, cylinder_height:float ,material:MaterialModel, position_order: int):
         self.base_diameter = base_diameter
         self.base_radius = base_diameter / 2
         self.thinness_factor = thinness_factor
-        self.height = thinness_factor*self.base_radius**2
+
+        self.cylinder_height = cylinder_height
+        self.height = cylinder_height + thinness_factor*self.base_radius**2
+        self.paraboloid_height = self.height - self.cylinder_height
+
         self.thickness = thickness # implementar nariz oco
         self.nose_type = nose_type
         self.material = material
@@ -54,7 +59,7 @@ class NoseModel(AbstractModel):
             pi = Constants.PI.value
             k = self.thinness_factor
 
-            return pi*((0 + k*r**2)*(r**2) - (k*r**4)/2)
+            return pi*((self.cylinder_height + k*r**2)*(r**2) - (k*r**4)/2)
             
         else:
             raise ValueError(f"Nose type {self.nose_type} is not available.")
@@ -97,6 +102,17 @@ class NoseModel(AbstractModel):
             raise ValueError(f"Nose type {self.nose_type} is not available.")
 
         return self.toGroundCoordinates(cp)
+
+    def calculateWetArea(self) -> float: # https://mathworld.wolfram.com/Paraboloid.html
+        a = self.base_radius
+        h = self.paraboloid_height
+        pi = Constants.PI
+
+        paraboloid_area = (pi*a)/(6*h**2)
+        paraboloid_area *= ((a**2 + 4*h**2)**1.5 - a**3)
+
+        cylinder_area = self.cylinder_height * (2*pi*a) 
+        return cylinder_area + paraboloid_area
 
     def createDelimitationPoints(self) -> list:
         upper_delimitation = Vector(0, 0, self.height)

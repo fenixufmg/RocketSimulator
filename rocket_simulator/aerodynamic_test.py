@@ -1,4 +1,3 @@
-from core.physics.body.rigid_body import RigidBody
 from core.physics.forces.translation_test_force import TranslationTestForce
 from core.physics.forces.rotation_test_force import RotationTestForce
 from core.physics.vector import Vector
@@ -25,7 +24,7 @@ from simulation.earth_ambient import EarthAmbient
 rocket = RocketModel()
 
 acrylic = MaterialModel("acrylic")
-nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  
+nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, 0.2, acrylic, 0)  
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)   
 fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 2)
 

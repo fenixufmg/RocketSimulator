@@ -28,6 +28,7 @@ class DeltaTimeSimulation:
         self.cp: Vector = rocket.cp
         self.tip: Vector = rocket.delimitation_points[0]
         self.base: Vector = rocket.delimitation_points[1]
+        self.rocket_height = rocket.rocket_height
         self.position: Vector = rocket.total_displacement
         self.velocity: Vector = rocket.velocity
         self.acceleration: Vector = rocket.total_acceleration
@@ -35,6 +36,8 @@ class DeltaTimeSimulation:
         self.angular_acceleration: Vector = rocket.total_angular_acceleration
         self.angular_velocity: Vector = rocket.angular_velocity
         self.mass: float = rocket.mass
+        self.volume:float = rocket.volume
+        self.wet_area:float = rocket.wet_area
         self.looking_direction: Vector = rocket.getLookingDirection()
         self.time: float = time
         self.is_on_ground:bool = rocket.is_on_ground

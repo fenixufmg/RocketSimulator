@@ -1,4 +1,3 @@
-from core.physics.forces.force import Force
 from typing import List
 from core.physics.forces.drag_force import DragForce
 from core.physics.forces.weight_force import WeightForce

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from posixpath import abspath
 from typing import List
 from core.physics.body.rigid_body import RigidBody
 from core.physics.vector import Vector
@@ -18,6 +19,7 @@ class AbstractModel(ABC, RigidBody):
         self.delimitation_points = self.createDelimitationPoints()
         volume = self.calculateVolume()
         self.volume = volume
+        self.wet_area = self.calculateWetArea()
         mass = self.calculateMass()
         moment_of_inertia_function = self.calculateMomentOfInertia
         cg = self.calculateCg()
@@ -48,11 +50,13 @@ class AbstractModel(ABC, RigidBody):
     def createDelimitationPoints(self) -> List[Vector]:
         raise NotImplementedError("Function not implemented")
 
-    # def getHeight(self) -> float:
-    #     raise NotImplementedError("Function not implemented")
+    @abstractmethod
+    def calculateWetArea(self) -> float:
+        raise NotImplementedError("Function not implemented")
 
     def updateState(self) -> None:
         self.volume = self.calculateVolume()
+        self.wet_area = self.calculateWetArea()
         self.mass = self.calculateMass()
         self.moment_of_inertia = self.calculateMomentOfInertia
         self.cg = self.calculateCg()

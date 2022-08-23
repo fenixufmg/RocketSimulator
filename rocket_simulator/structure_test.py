@@ -1,5 +1,6 @@
 from typing import List
-
+from simulation.airless_earth_ambient import AirlessEarthAmbient
+from simulation.earth_ambient import EarthAmbient
 from core.physics.body.rigid_body import RigidBody
 from core.physics.forces.translation_test_force import TranslationTestForce
 from core.physics.forces.rotation_test_force import RotationTestForce
@@ -23,7 +24,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
 from utils.utils import Utils
 from models.structure.fin_model import FinModel
-from utils.rocket_parts import RocketParts
+from models.structure.rocket_model import RocketParts
 
 
 # def isOnLine(line: List[Vector], point: Vector):
@@ -74,7 +75,7 @@ def physicsTest():
 
 
 acrylic = MaterialModel("acrylic")
-nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, acrylic, 0)  # height 1
+nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, 0.2, acrylic, 0) 
 # transition = TransitionModel(0.5, 2, 2, 0.5, acrylic, 1)
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 2)  # height 5
 # cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
@@ -84,7 +85,12 @@ rocket = RocketModel()
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
 rocket.addPart(fins)
-rotation = Vector(0, 0.5, 0)
+rotation = Vector(0, 0.1, 0)
+rocket.rotate(rotation)
+
+# ambient = EarthAmbient()
+ambient = AirlessEarthAmbient()
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
 
 # rocket.rotate(rotation)
 

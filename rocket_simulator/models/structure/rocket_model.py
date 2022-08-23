@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 from models.structure.abstract_model import AbstractModel
 
@@ -7,8 +8,7 @@ from models.structure.abstract_model import AbstractModel
 from core.physics.forces.force import Force
 from utils.constants import Constants
 from utils.rocket_parts import RocketParts
-
-
+    
 class RocketModel(AbstractModel):  # não está movendo as peças
     def __init__(self):
         self.parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
@@ -226,6 +226,15 @@ class RocketModel(AbstractModel):  # não está movendo as peças
 
         delimitation_points = [first_part.delimitation_points[0], last_part.delimitation_points[1]]
         return delimitation_points
+
+    def calculateWetArea(self) -> float:
+        available_parts = self.__getAvailableParts()
+        total_wet_area = 0
+
+        for part in available_parts:
+            total_wet_area += part.wet_area
+
+        return total_wet_area
 
     def addPart(self, part: AbstractModel):  # adiciona instâncias
         if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #

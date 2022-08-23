@@ -1,4 +1,6 @@
 import enum
+
+
 class ParachuteType(enum.Enum):
     ANNULAR = "annular"
     BICONICAL = "biconical"

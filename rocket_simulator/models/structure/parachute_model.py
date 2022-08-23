@@ -13,6 +13,7 @@ import json
 import enum
 from random import randint
 
+
 class EjectionCriteria(enum.Enum):
     APOGEE = 1
 
