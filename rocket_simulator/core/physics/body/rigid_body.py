@@ -62,38 +62,29 @@ class RigidBody:
         if self.delimitation_points[1].magnitudeRelativeTo(Vector(0, 0, 1)) > 0:
             raise ValueError("Top delimitation point and bottom are inverted")
 
-    def _isOnGround(self) -> bool:
+    def __isOnGround(self) -> bool:
         """Verifica se o corpo está no chão
 
         Returns:
             (bool): True se está no chão
         """
         if self.cg.z() < 0:
-            self.is_on_ground = True
             return True
-        self.is_on_ground = False
         return False
 
     def centerOnOrigin(self):
         """Centraliza o cg do corpo na origem (0,0,0).
         """
         displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
-        self.move(displacement, ignore_ground=True)
+        self.move(displacement)
 
-    def move(self, displacement: Vector, ignore_ground=False):
+    def move(self, displacement: Vector):
         """" Move todos os pontos que representam um corpo com base em um deslocamento se o corpo não estiver no chão
 
         Args:
             displacement (Vector): Vetor deslocamento
             ignore_ground (bool): Se verdadeiro pode mover corpo para baixo do solo
         """
-        # if ignore_ground is False and self._isOnGround():
-        #     self.velocity = Vector(0,0,0)
-        #     self.total_acceleration = Vector(0,0,0)
-        #     self.angular_velocity = Vector(0,0,0)
-        #     self.cg.setZ(0.1)
-        #     return
-
         self.cg += displacement
         self.cp += displacement
 
@@ -130,6 +121,10 @@ class RigidBody:
             force (Force): Força que será aplicada.
             duration (float): Duração de tempo no qual a força será aplicada.
         """
+        self.is_on_ground = self.__isOnGround()
+        if self.is_on_ground is True:
+            return
+
         self.total_acceleration = force * (1 / self.mass)
 
         displacement = self.velocity * duration + (self.total_acceleration * duration ** 2) * 0.5

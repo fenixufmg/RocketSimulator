@@ -86,7 +86,7 @@ class FinModel(AbstractModel):
 
     def calculateWetArea(self) -> float:
         m = self.span*tan(self.sweep_angle)
-        faces_area = self.span(self.root_chord+ self.tip_chord) # front and backside areas
+        faces_area = self.span*(self.root_chord+ self.tip_chord) # front and backside areas
         top_area = self.span*(self.span/cos(self.sweep_angle))
         side_area = self.span*self.tip_chord
         bottom_angle = atan(abs((self.root_chord - (m+self.tip_chord))/self.span))

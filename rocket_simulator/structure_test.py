@@ -85,12 +85,12 @@ rocket = RocketModel()
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
 rocket.addPart(fins)
-rotation = Vector(0, 0.1, 0)
+rotation = Vector(0, 0.2, 0)
 rocket.rotate(rotation)
 
 # ambient = EarthAmbient()
 ambient = AirlessEarthAmbient()
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=True)
 
 # rocket.rotate(rotation)
 

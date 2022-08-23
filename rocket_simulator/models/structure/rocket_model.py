@@ -71,7 +71,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
 
     def __putRocketOnGround(self):
         for part in self.__getAvailableParts():
-            part.move(self.rocket_height, ignore_ground=True)
+            part.move(self.rocket_height)
 
     def __movePartsToPositions(self):
         ordered_parts = self.__orderAvailablePartsByPosition()
@@ -93,7 +93,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
                 # print(part.part_type)
                 # print(displacement)
 
-            part.move(displacement, ignore_ground=True)
+            part.move(displacement)
 
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
@@ -283,11 +283,11 @@ class RocketModel(AbstractModel):  # não está movendo as peças
     def getParts(self) -> List[AbstractModel]:
         return self.__getAvailableParts()
 
-    def move(self, displacement: Vector, ignore_ground=False):
-        super().move(displacement, ignore_ground=ignore_ground)
+    def move(self, displacement: Vector):
+        super().move(displacement)
 
         for part in self.__getAvailableParts():
-            part.move(displacement, ignore_ground=ignore_ground)
+            part.move(displacement)
 
     def rotate(self, angular_displacement: Vector, axis_displacement: Vector = Vector(0, 0, 0)):
         super().rotate(angular_displacement)

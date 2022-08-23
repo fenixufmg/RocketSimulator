@@ -106,7 +106,7 @@ class NoseModel(AbstractModel):
     def calculateWetArea(self) -> float: # https://mathworld.wolfram.com/Paraboloid.html
         a = self.base_radius
         h = self.paraboloid_height
-        pi = Constants.PI
+        pi = Constants.PI.value
 
         paraboloid_area = (pi*a)/(6*h**2)
         paraboloid_area *= ((a**2 + 4*h**2)**1.5 - a**3)

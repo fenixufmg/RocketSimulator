@@ -42,7 +42,7 @@ class DragForce(Force):
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength ,current_state.nose.base_diameter)
         criticalReynoldsNumber = critical_reynolds_number(0.0000005, rocketLength)
         skingFrictionDrag = skin_friction_drag(reynoldsNumber, criticalReynoldsNumber, 0.0000005, rocketLength, mach)
-        return total_skin_friction_drag_coefficient(skingFrictionDrag, rocketFinenessRatio, rocketSurfaceArea, current_state.fin.max_thickness, meanChord, current_state.fin.superficial_area, referenceArea)
+        return total_skin_friction_drag_coefficient(skingFrictionDrag, rocketFinenessRatio, rocketSurfaceArea, current_state.fin.max_thickness, meanChord, current_state.fin.wet_area, referenceArea)
 
     def __calculatePressureDragCoefficient(self, current_state: DeltaTimeSimulation) -> float:
         velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)

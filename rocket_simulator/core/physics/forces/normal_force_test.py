@@ -45,7 +45,7 @@ class NormalForceTest(Force):
                 CNan_sum += CNan
             
             elif type == 'RocketParts.FIN':
-                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.superficial_area, current_state.fin.sweep_angle) #Criar código para transversal_area
+                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.wet_area, current_state.fin.sweep_angle) #Criar código para transversal_area
                 CNanF = normal_force_coefficient_derivative(CNa1, 0, current_state.fin.nb_fins, current_state.fin.nb_fins)
                 CNaTb = final_normal_force_coefficient_derivative(CNanF, current_state.fin.span, current_state.fin.distance_from_center)
                 CNan_sum += CNaTb
