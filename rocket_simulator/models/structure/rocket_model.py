@@ -11,7 +11,7 @@ from utils.rocket_parts import RocketParts
     
 class RocketModel(AbstractModel):  # não está movendo as peças
     def __init__(self):
-        self.parts = {RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
+        self.parts = {RocketParts.PARACHUTE: None, RocketParts.NOSE: None, RocketParts.CYLINDRICAL_BODY: [], RocketParts.TRANSITION: [],
                       RocketParts.FIN: None, RocketParts.MOTOR: None}
 
         self.rocket_height: Vector = Vector(0, 0, 0)
@@ -98,7 +98,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
             if part.part_type == RocketParts.FIN:
                 part: FinModel = part  # só para tirar o erro do INTELLIJ
                 displacement = Vector(0, 0, part.root_chord + part.distance_to_base)
-                part.move(displacement, ignore_ground=True)
+                part.move(displacement)
 
                 # distance_from_center = Vector(part.distance_from_center, 0, 0)
                 fin_index = -2
@@ -191,7 +191,10 @@ class RocketModel(AbstractModel):  # não está movendo as peças
             # print(f"Part cg: {part.cg}")
             cg += part.cg * part.mass
 
-        cg = cg * (1 / total_mass)
+        if total_mass == 0:
+            cg = 0
+        else:
+            cg = cg * (1 / total_mass)
         # print("===================")
         # print(f"Calculating cg")
         # print(f"    Old: {self.cg}")
@@ -207,10 +210,15 @@ class RocketModel(AbstractModel):  # não está movendo as peças
             return
 
         for part in available_parts:
+            if part.part_type == RocketParts.PARACHUTE and part.inflated is False:
+                continue # só conta a contribuição do paraquedas quando inflado
             cp += part.cp * part.shape_coefficient
             total_shape_coefficient += part.shape_coefficient
 
-        cp = cp * (1 / total_shape_coefficient)
+        if total_shape_coefficient == 0:
+            cp = 0
+        else:
+            cp = cp * (1 / total_shape_coefficient)
         # print(f"Calculating cp")
         # print(f"    Old: {self.cp}")
         # print(f"    New: {cp}")

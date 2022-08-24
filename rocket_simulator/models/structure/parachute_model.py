@@ -20,6 +20,7 @@ class EjectionCriteria(enum.Enum):
 class ParachuteModel(AbstractModel):
     def __init__(self, ejection_criteria:EjectionCriteria, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel, inflation_randomness_factor: float = 1):
         self.ejection_criteria = ejection_criteria
+        self.height = 0
         self.parachute_type = parachute_type
         self.inflation_randomness_factor = inflation_randomness_factor
         self.cable_type = cable_type
@@ -31,7 +32,7 @@ class ParachuteModel(AbstractModel):
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
 
-        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 0, self.drag_coefficient, self.transversal_area)
+        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 1000000, self.drag_coefficient, self.transversal_area)
         self.__verify(diameter)
 
     def __verify(self, diameter:float): # fazer
@@ -42,29 +43,42 @@ class ParachuteModel(AbstractModel):
             return
 
         self.ejected = True
-        
-        upper_limit = 2**(self.inflation_randomness_factor * 2)
+        upper_limit = int(2**(self.inflation_randomness_factor * 2))
         inflation_tentative = randint(1, upper_limit)
         if inflation_tentative == 1: # success
-            print("Parachute inflated")
             self.inflated = True
-            self.calculateInflationForce()
+            self.calculateMaximumInflationForce()
     
     def calculateMaximumInflationForce(self):
         pass
         # self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
 
     def __calculateDragCoefficient(self):
+        drag_coefficient = None
         parachute_folder = Paths.PARACHUTES.value
 
         parachute_file = f"{parachute_folder}/{self.parachute_type.value}.json"
         with open(parachute_file) as parachute_file:
             data = json.load(parachute_file)
 
-            self.drag_coefficient = data["drag_coefficient"]
+            drag_coefficient = data["drag_coefficient"]
+
+        return drag_coefficient
 
     def __calculateTransversalArea(self) -> float:
         return ((self.diameter/2)**2)*5.099
+
+    def calculateMass(self):
+        return 0
+
+    def calculateMomentOfInertia(self, distance_to_cg:float):
+        return 0
+
+    def calculateVolume(self):
+        return 0
+
+    def calculateWetArea(self):
+        return self.__calculateTransversalArea()
 
     # def calculateVolume(self) -> float: # possivelmente errado
     #     inner_diameter = self.diameter - 2 * self.thickness

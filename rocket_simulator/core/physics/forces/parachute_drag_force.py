@@ -21,7 +21,7 @@ class ParachuteDrag(Force):
             self.setZ(0) 
             return
 
-        transversal_section_area = parachute.transversalSectionArea()
+        transversal_section_area = parachute.transversal_area
         drag_coefficient = parachute.drag_coefficient
         magnitude = self.__calculateDrag(transversal_section_area, drag_coefficient, current_state.velocity.magnitude())
 

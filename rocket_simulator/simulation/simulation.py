@@ -53,9 +53,6 @@ class Simulation:
         parachute:ParachuteModel = current_state.parachute
         if parachute is None: # não tem paraquedas
             return
-            
-        if parachute.ejected: # já foi ejetado
-            return
 
         if parachute.ejection_criteria == EjectionCriteria.APOGEE:
             if current_state.velocity.y() <= 0 and current_state.time > 0: # ejetar
