@@ -1,5 +1,6 @@
 from typing import List
 
+from models.structure.motor_model import MotorModel
 from models.structure.parachute_model import ParachuteModel, EjectionCriteria
 from simulation.airless_earth_ambient import AirlessEarthAmbient
 from simulation.earth_ambient import EarthAmbient
@@ -73,24 +74,28 @@ def geometryTest():
 
 
 acrylic = MaterialModel("acrylic")
-nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, 0.2, acrylic, 0)
-parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 5, nose)
-# transition = TransitionModel(0.5, 2, 2, 0.5, acrylic, 1)
-cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 2)  # height 5
-# cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
-fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 4)
+nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, 0.2, acrylic, 0) # height 1.2
+cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
+transition = TransitionModel(0.5, 2, 2, 0.5, 2, acrylic, 2) # concertar argumento nose diameter
+parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 5, cylinder1)
+cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
+motor = MotorModel(0.5, 2, 0.25, acrylic, 4)
+fins = FinModel(1, 0.1, 1.5, 1, 0.3925, 0, 2, 4, acrylic, 5)
 
 rocket = RocketModel()
-rocket.addPart(parachute)
+rocket.addPart(parachute)  # fazer torque de excentricidade
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
-# rocket.addPart(fins)
+rocket.addPart(transition)
+rocket.addPart(cylinder2)
+rocket.addPart(fins)
+rocket.addPart(motor)
 rotation = Vector(0, 0.1, 0)
-# rocket.rotate(rotation)
+rocket.rotate(rotation)
 
 # ambient = EarthAmbient()
 ambient = AirlessEarthAmbient()
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.5, debug=True)
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=True)
 
 
 # physicsTest()

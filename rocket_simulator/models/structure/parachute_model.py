@@ -32,7 +32,7 @@ class ParachuteModel(AbstractModel):
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
 
-        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 1000000, self.drag_coefficient, self.transversal_area)
+        super().__init__(RocketParts.PARACHUTE, coupled_part.position_order, 1_000_000, self.drag_coefficient, self.transversal_area)
         self.__verify(diameter)
 
     def __verify(self, diameter:float): # fazer
@@ -46,6 +46,7 @@ class ParachuteModel(AbstractModel):
         upper_limit = int(2**(self.inflation_randomness_factor * 2))
         inflation_tentative = randint(1, upper_limit)
         if inflation_tentative == 1: # success
+            print("inflated")
             self.inflated = True
             self.calculateMaximumInflationForce()
     

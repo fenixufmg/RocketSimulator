@@ -31,8 +31,15 @@ class RocketModel(AbstractModel):  # não está movendo as peças
     def __calculateTransversalArea(self):  # fazer
         pass
 
+    def __getMaximumPositionOrder(self):
+        position_orders = [part.position_order for part in self.__getAvailableParts()]
+        if len(position_orders) == 0:
+            return 0
+        return max(position_orders)
+
     def __orderAvailablePartsByPosition(self) -> List[AbstractModel]:
         ordered_parts = []
+        max_position_order = self.__getMaximumPositionOrder()
         i = -1
         while True:
             i += 1
@@ -41,11 +48,12 @@ class RocketModel(AbstractModel):  # não está movendo as peças
             for part in available_parts:
                 if part.position_order == i:
                     ordered_parts.append(part)
+
                     i_found.append(True)
                 else:
                     i_found.append(False)
 
-            if i < len(available_parts): # certifica que toda a lista de partes é percorrida
+            if i < max_position_order: # certifica que toda a lista de partes é percorrida
                 continue
 
             i_found = [found == False for found in i_found]  # inverte os bools para usar o all() do jeito certo
@@ -90,8 +98,6 @@ class RocketModel(AbstractModel):  # não está movendo as peças
                 self.rocket_height += current_part_height
 
                 displacement -= (self.rocket_height - current_part_height)  # move a altura das peças anteriores
-                # print(part.part_type)
-                # print(displacement)
 
             part.move(displacement)
 

@@ -8,7 +8,7 @@ from typing import List
 
 
 class TransitionModel(AbstractModel):
-    def __init__(self, height, bottom_diameter, top_diameter, thickness, material: MaterialModel, position_order: int,nose_diameter):
+    def __init__(self, height, bottom_diameter, top_diameter, thickness, nose_diameter, material: MaterialModel, position_order: int):
         self.height = height
         self.bottom_diameter = bottom_diameter
         self.top_diameter = top_diameter
@@ -56,12 +56,17 @@ class TransitionModel(AbstractModel):
         return mass
 
     def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # https://media.cheggcdn.com/media/51d/51d19df6-2a92-4a5f-bdb2-275f8c7d8f0c/php43DZ1T.png based on last example
+        if self.top_diameter == self.bottom_diameter: # momento de inercia de cilindro
+            mass = self.calculateMass()
+            Ixx = 1/12*mass*(3*( (self.top_diameter**2)/4 +((self.top_diameter-2*self.thickness)**2)/4 )+self.height**2)
+            return Ixx + self.mass * distance_to_cg**2
+
         # from https://en.wikipedia.org/wiki/List_of_moments_of_inertia and parallel axis theorem
         top_inner_radius = (self.top_diameter - 2 * self.thickness)/2
         bottom_inner_radius = (self.bottom_diameter - 2 * self.thickness)/2
         bottom_radius = self.bottom_diameter/2
         top_radius = self.top_diameter/2
-        Iyy = 3*self.calculateMass*((bottom_radius**5+bottom_inner_radius**5)-(top_radius**5+top_inner_radius**5))/(
+        Iyy = 3*self.calculateMass()*((bottom_radius**5+bottom_inner_radius**5)-(top_radius**5+top_inner_radius**5))/(
             20*((bottom_radius**3+bottom_inner_radius**3)-(top_radius**3+top_inner_radius**3)))
         return Iyy + self.mass * distance_to_cg**2
 

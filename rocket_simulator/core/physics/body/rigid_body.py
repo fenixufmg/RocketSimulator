@@ -143,7 +143,10 @@ class RigidBody:
             torque (Vector): Torque que será aplicado.
             duration (float): Duração de aplicação da força.
         """
-        
+        self.is_on_ground = self.__isOnGround()
+        if self.is_on_ground is True:
+            return
+
         self.moment_of_inertia = self.moment_of_inertia_function(self.getCpCgDistance().magnitude()) # momento de inercia no cp
         self.total_angular_acceleration = torque * (1 / self.moment_of_inertia)
 

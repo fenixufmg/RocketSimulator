@@ -3,6 +3,7 @@ from core.physics.forces.rotation_test_force import RotationTestForce
 from core.physics.vector import Vector
 from core.physics.body.application_point import ApplicationPoint
 from models.other.material_model import MaterialModel
+from models.structure.motor_model import MotorModel
 from models.structure.nose_model import NoseModel, NoseType
 from models.structure.cylindrical_body_model import CylindricalBodyModel
 from models.structure.fin_model import FinModel
@@ -25,8 +26,9 @@ rocket = RocketModel()
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(4, 0.5, NoseType.CONICAL, 1, 0.2, acrylic, 0)  
-cylinder1 = CylindricalBodyModel(5, 4, 0.5, acrylic, 1)   
-fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 2)
+cylinder1 = CylindricalBodyModel(5, 4, 0.5, acrylic, 1)
+# motor = MotorModel(0.5, 2, 0.25, acrylic, 2)
+fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
 
 rocket.addPart(nose)
 #rocket.addPart(cylinder1)

@@ -35,11 +35,20 @@ class Simulation:
         self.__DELTA_TIME = 0.1
         self.__rocket = rocket
 
-        thrust = ImpulseTestForce(200) # provisório
-        parachute_drag_force = ParachuteDrag()
-        self.__forces = [thrust, parachute_drag_force, *ambient.forces, *additional_forces]
+        self.__setupForces(ambient, additional_forces)
         self.__resultant_force:ResultantForce = ResultantForce(self.__forces)
         self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
+
+    def __setupForces(self, ambient: AbstractAmbient, additional_forces: List[Force]):
+        thrust = ImpulseTestForce(200) # provisório
+        # thrust = None
+        # try:
+        #     thrust = self.__rocket.getPart(RocketParts.MOTOR).thrust
+        # except AttributeError:
+        #     raise ValueError("Rocket doesn't have motor")
+        #
+        parachute_drag_force = ParachuteDrag()
+        self.__forces = [thrust, parachute_drag_force, *ambient.forces, *additional_forces]
 
     def __tryEjection(self, current_state:DeltaTimeSimulation):
         """Verifica constantemente se as condições de ejeção do paraquedas são atendidas, caso positivo ele é ejetado.
@@ -55,7 +64,7 @@ class Simulation:
             return
 
         if parachute.ejection_criteria == EjectionCriteria.APOGEE:
-            if current_state.velocity.y() <= 0 and current_state.time > 0: # ejetar
+            if current_state.velocity.z() < 0 and current_state.time > 0: # ejetar
                 parachute.eject()
         else:
             raise ValueError(f"Ejection criteria: {parachute.ejection_criteria} not supported")
@@ -96,6 +105,8 @@ class Simulation:
         """
         self.__resultant_torque.calculate(current_state)
         self.__rocket.applyTorque(self.__resultant_torque, self.__DELTA_TIME)
+
+
 
 
 

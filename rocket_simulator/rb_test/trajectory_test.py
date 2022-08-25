@@ -66,6 +66,7 @@ def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_ti
             print(f"    Base position: {simulation.base}")
             print(f"    Tip->Base: {simulation.base - simulation.tip}")
             print(f"    Tip->Base (mag): {(simulation.base - simulation.tip).magnitude()}")
+            print(f"    Tip->cp (mag): {(simulation.cp - simulation.tip).magnitude()}")
             print()
             print(f"    Is on ground: {simulation.is_on_ground}")
             print(f"    Mass: {simulation.mass}")
