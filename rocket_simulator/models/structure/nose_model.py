@@ -12,7 +12,7 @@ from utils.constants import Constants
 
 
 class NoseModel(AbstractModel):
-    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, cylinder_height:float ,material:MaterialModel, position_order: int):
+    def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, cylinder_height:float, material:MaterialModel, position_order: int):
         self.base_diameter = base_diameter
         self.base_radius = base_diameter / 2
         self.thinness_factor = thinness_factor

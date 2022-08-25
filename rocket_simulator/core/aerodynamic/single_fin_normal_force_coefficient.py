@@ -21,7 +21,7 @@ def single_fin_normal_force_coefficient(s: float, Aref: float, M: float, Afin: f
     Returns:
         CNa1: Normal force coefficient of one fin
     """
-    return (2 * pi * (s ** 2) / Aref) / (1 + sqrt(1 + ((sqrt(abs((M ** 2) - 1)) * s ** 2) / Afin * cos(radians(T))) ** 2))
+    return (2 * pi * (s ** 2) / Aref) / (1 + sqrt(abs(1 + ((sqrt(abs((M ** 2) - 1)) * s ** 2) / Afin * cos(radians(T))) ** 2)))
 
 
 
