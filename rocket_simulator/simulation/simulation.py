@@ -48,7 +48,7 @@ class Simulation:
         #     raise ValueError("Rocket doesn't have motor")
         #
         parachute_drag_force = ParachuteDrag()
-        self.__forces = [thrust, parachute_drag_force, *ambient.forces, *additional_forces]
+        self.__forces = [*additional_forces, thrust, *ambient.forces, parachute_drag_force]
 
     def __tryEjection(self, current_state:DeltaTimeSimulation):
         """Verifica constantemente se as condições de ejeção do paraquedas são atendidas, caso positivo ele é ejetado.

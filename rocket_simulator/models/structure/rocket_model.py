@@ -141,12 +141,7 @@ class RocketModel(AbstractModel):  # não está movendo as peças
         return available_parts
 
     def updateState(self) -> None:
-        self.volume = self.calculateVolume()
-        self.mass = self.calculateMass()
-        # self.moment_of_inertia = self.calculateMomentOfInertia()
-        self.cg = self.calculateCg()
-        self.cp = self.calculateCp()
-        self.delimitation_points = self.createDelimitationPoints()
+        super().updateState()
 
         for part in self.__getAvailableParts():
             part.updateState()
@@ -244,7 +239,6 @@ class RocketModel(AbstractModel):  # não está movendo as peças
     def calculateWetArea(self) -> float:
         available_parts = self.__getAvailableParts()
         total_wet_area = 0
-
         for part in available_parts:
             total_wet_area += part.wet_area
 

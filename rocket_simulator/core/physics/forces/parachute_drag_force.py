@@ -2,6 +2,7 @@ from core.physics.forces.force import Force
 from core.physics.delta_time_simulation import DeltaTimeSimulation
 from core.physics.body.application_point import ApplicationPoint
 from math import pi
+from core.physics.vector import Vector
 from utils.constants import Constants
 
 
@@ -25,7 +26,8 @@ class ParachuteDrag(Force):
         drag_coefficient = parachute.drag_coefficient
         magnitude = self.__calculateDrag(transversal_section_area, drag_coefficient, current_state.velocity.magnitude())
 
-        direction = current_state.velocity.unitVector() * -1 
+        # direction = current_state.velocity.unitVector() * -1 
+        direction = Vector(0, 0, 1)
         thrust = direction * magnitude
 
         self.setX(thrust.x())

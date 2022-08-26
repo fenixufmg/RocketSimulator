@@ -64,7 +64,7 @@ class DragForce(Force):
         pressureDragCoefficient = 0
         for part in parts:
             part_type = str(part.part_type)
-            if part_type == 'RocketParts.NOSE':
+            if part_type == RocketParts.NOSE:
                 if current_state.nose.nose_type == NoseType.CONICAL:
                     bodynoseAngle = degrees(atan(current_state.nose.base_radius / current_state.nose.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
