@@ -112,7 +112,8 @@ class DragForce(Force):
         velocity = current_state.velocity.magnitude()
         referenceArea = pi * current_state.nose.base_radius ** 2 
         
-        self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
+        self.__drag_coefficient = 0.75
+        # self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
 
         #self.__drag_coefficient = 0.5  #provisório
 

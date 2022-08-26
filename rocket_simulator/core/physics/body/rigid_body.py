@@ -165,6 +165,9 @@ class RigidBody:
         """
         return self.cordinate_system.getLookingDirection()
 
+    def setLookingDirection(self, looking_direction: Vector):
+        self.cordinate_system.setLookingDirection(looking_direction)
+
     def getCpCgDistance(self) -> Vector:
         """Retorna o vetor que representa a distância entre o CP e o CG (apontando para o CG), 
         sua direção acompanha a direção (orientação) do corpo.

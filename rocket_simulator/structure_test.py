@@ -77,7 +77,7 @@ acrylic = MaterialModel("acrylic")
 nose = NoseModel(2, 0.5, NoseType.PARABOLIC, 1, 0.2, acrylic, 0) # height 1.2
 cylinder1 = CylindricalBodyModel(5, 2, 0.5, acrylic, 1)  # height 5
 transition = TransitionModel(0.5, 2, 2, 0.5, 2, acrylic, 2) # concertar argumento nose diameter
-parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 5, cylinder1, inflation_randomness_factor=0)
+parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 5, nose, inflation_randomness_factor=0)
 cylinder2 = CylindricalBodyModel(4, 2, 0.5, acrylic, 3)  # height 4 , rocket_height = 10
 motor = MotorModel(0.5, 2, 0.25, acrylic, 4)
 fins = FinModel(1, 0.1, 1.5, 1, 0.3925, 0, 2, 4, acrylic, 5)
@@ -93,13 +93,15 @@ rocket.addPart(cylinder1)
 rotation = Vector(0, 0.1, 0)
 rocket.rotate(rotation)
 
-ambient = EarthAmbient(0.5, WindDirection.NO)
+ambient = EarthAmbient(0.7, WindDirection.NO)
 # ambient = EarthAmbient(0, WindDirection.N)
 # ambient = AirlessEarthAmbient()
 # print("updating")
 # rocket.updateState()
 trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=True)
+# velocityTest(rocket, ambient, 10, axis=Vector(0,0,1))
 
+# velocidade terminal paraquedas = -3.08
 
 # physicsTest()
 # geometryTest()

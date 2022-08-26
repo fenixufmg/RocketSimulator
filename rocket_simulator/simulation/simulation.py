@@ -2,6 +2,7 @@ from multiprocessing.sharedctypes import Value
 import numpy as np
 from typing import List
 
+from core.physics.forces.parachute_torque import ParachuteTorque
 from core.physics.vector import Vector
 from core.physics.forces.force import Force
 from core.physics.delta_time_simulation import DeltaTimeSimulation
@@ -40,7 +41,7 @@ class Simulation:
         self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
 
     def __setupForces(self, ambient: AbstractAmbient, additional_forces: List[Force]):
-        thrust = ImpulseTestForce(200) # provisório
+        thrust = ImpulseTestForce(400) # provisório
         # thrust = None
         # try:
         #     thrust = self.__rocket.getPart(RocketParts.MOTOR).thrust
@@ -69,6 +70,13 @@ class Simulation:
         else:
             raise ValueError(f"Ejection criteria: {parachute.ejection_criteria} not supported")
 
+    def __correctParachuteOrientation(self, current_state):
+        parachute = current_state.parachute
+        if parachute is None: # não tem paraquedas
+            return
+
+        if parachute.inflated:
+            self.__rocket.setLookingDirection(Vector(0, 0, 1))
 
     def simulate(self, time:int) -> dict:
         """Roda a simulação física até o tempo determinado pelo parâmetro time com intervalos de __DELTA_TIME.
@@ -90,6 +98,7 @@ class Simulation:
             self.__applyResultantForce(current_state) # atualiza o estado para o futuro
             self.__applyResultantTorque(current_state) # atualiza o estado para o futuro
             self.__rocket.updateState()
+            self.__correctParachuteOrientation(current_state)
 
         delta_time_simulations = collections.OrderedDict(sorted(delta_time_simulations.items()))
         return delta_time_simulations 

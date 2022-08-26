@@ -22,6 +22,19 @@ class BodyCoordinateSystem():
         """
         return self.__z_axis # já é unitario
 
+    def setLookingDirection(self, looking_direction:Vector):
+        """Retorna o eixo Z (orientação do foguete).
+
+        Returns:
+            Vector: Orientação do foguete.
+        """
+        angle = Vector.angleBetweenVectors(self.__z_axis, looking_direction)
+        axis = Vector.crossProduct(self.__z_axis, looking_direction)
+
+        self.__x_axis = Vector.rotateAroundAxis(self.__x_axis, axis, angle)
+        self.__y_axis = Vector.rotateAroundAxis(self.__y_axis, axis, angle)
+        self.__z_axis = Vector.rotateAroundAxis(self.__z_axis, axis, angle)
+
     def rotate(self, angular_displacement:Vector) -> None:
         """Rotaciona o sistema de coordenadas dado um deslocamento angular.
 

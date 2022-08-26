@@ -3,6 +3,8 @@ from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
 import matplotlib
+
+from models.structure.rocket_model import RocketModel
 from simulation.simulation_output_wrapper import SimulationOutputWrapper
 from simulation.abstract_ambient import AbstractAmbient
 from simulation.simulation import Simulation
@@ -23,8 +25,9 @@ def __mapColors(values):
     color_mapper = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lime", "green" ,"olivedrab","orange","chocolate","red"])
     return (normalizer, color_mapper, color_mapper(normalizer(colors)))
 
-def trajectoryTest(rigid_body:RigidBody, ambient: AbstractAmbient, simulation_time:int, limit=5000, arrow_scale=150, additional_forces:list=[] ,has_arrows=True, debug=True, step=None):
-    simulation = Simulation(rigid_body, ambient, additional_forces=additional_forces)
+
+def trajectoryTest(rocket:RocketModel, ambient: AbstractAmbient, simulation_time:int, limit=5000, arrow_scale=150, additional_forces:list=[] ,has_arrows=True, debug=True, step=None):
+    simulation = Simulation(rocket, ambient, additional_forces=additional_forces)
     simulations = simulation.simulate(simulation_time)
 
     output_wrapper = SimulationOutputWrapper(simulations, step=step)

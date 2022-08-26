@@ -2,14 +2,22 @@ from multiprocessing.sharedctypes import Value
 from core.physics.forces.weight_force import WeightForce
 from core.physics.body.rigid_body import RigidBody
 import matplotlib.pyplot as plt
+
+from models.structure.rocket_model import RocketModel
+from simulation.abstract_ambient import AbstractAmbient
 from simulation.simulation import Simulation
 import numpy as np
 
 from core.physics.vector import Vector
+from simulation.simulation_output_wrapper import SimulationOutputWrapper
 
-def velocityTest(rigid_body:RigidBody, forces:list, simulation_time:int, axis:Vector=None):
-    simulation = Simulation(rigid_body, forces)
+
+def velocityTest(rocket:RocketModel, ambient: AbstractAmbient, simulation_time:int, additional_forces=[],axis:Vector=None, step=None):
+    simulation = Simulation(rocket, ambient, additional_forces=additional_forces)
     simulations = simulation.simulate(simulation_time)
+
+    output_wrapper = SimulationOutputWrapper(simulations, step=step)
+    simulations = output_wrapper.read()
 
     x = []
     y = []

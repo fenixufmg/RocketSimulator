@@ -1,5 +1,6 @@
 from typing import List
 from core.physics.forces.drag_force import DragForce
+from core.physics.forces.normal_force import NormalForce
 from core.physics.forces.weight_force import WeightForce
 from core.physics.forces.weight_force import CelestialBody
 from core.physics.forces.wind_force import WindForce
@@ -15,5 +16,6 @@ class EarthAmbient(AbstractAmbient):
         weight = WeightForce(CelestialBody.EARTH)
         drag_force = DragForce()
         wind_force = WindForce(wind_velocity, wind_direction)
+        normal_force = NormalForce()
         forces = [weight, wind_force, drag_force]
         super().__init__(forces)

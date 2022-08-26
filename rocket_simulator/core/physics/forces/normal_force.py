@@ -18,7 +18,7 @@ from models.structure.nose_model import NoseModel, NoseType
 from models.structure.fin_model import FinModel
 from math import pi, sin, radians
 
-class NormalForceTest(Force):
+class NormalForce(Force):
     def __init__(self):
         super().__init__(0, 0, 0, ApplicationPoint.CP, None)
     
