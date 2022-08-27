@@ -45,7 +45,7 @@ class DragForce(Force):
                 finsWetArea = 0
 
         #rocketSurfaceArea = current_state.wet_area
-        rocketSurfaceArea = 41.7950031
+        rocketSurfaceArea = 29.2286324862
         reynoldsNumber = reynolds_number(velocity, rocketLength, Constants.KINEMATIC_VISCOSITY.value)
         mach = mach_number(velocity, 340)
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength, current_state.nose.base_diameter)
@@ -64,16 +64,16 @@ class DragForce(Force):
         pressureDragCoefficient = 0
         for part in parts:
             part_type = str(part.part_type)
-            if part_type == RocketParts.NOSE:
+            if part_type == 'RocketParts.NOSE':
                 if current_state.nose.nose_type == NoseType.CONICAL:
                     bodynoseAngle = degrees(atan(current_state.nose.base_radius / current_state.nose.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
                     pressureDragCoefficient += noseDrag
 
                 else:
-                    pass
+                    pass #Em voo subsônico o arrasto de pressão tende a zero para formas de ogiva, parábola e elipse
 
-            elif part_type == RocketParts.TRANSITION:
+            elif part_type == 'RocketParts.TRANSITION':
                 topDiameter = current_state.transitions.top_diameter
                 bottomDiameter = current_state.transitions.bottom_diameter
                 height = current_state.transitions.height
@@ -85,10 +85,10 @@ class DragForce(Force):
                     shoulderDrag = nose_pressure_drag(bodyshoulderAngle) #coletar
                     pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
-            elif part_type == RocketParts.CYLINDRICAL_BODY:
+            elif part_type == 'RocketParts.CYLINDRICAL_BODY':
                 stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (current_state.cilyndrical_bodies.diameter / 2) ** 2
 
-            elif part_type == RocketParts.FIN:
+            elif part_type == 'RocketParts.FIN':
                 leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(current_state.fin.root_chord - current_state.fin.tip_chord) / current_state.fin.span))) ** 2
                 trailingEdgeDrag = base_drag_coefficient(mach)
                 finDrag = leadingEdgeDrag + trailingEdgeDrag 
@@ -112,8 +112,8 @@ class DragForce(Force):
         velocity = current_state.velocity.magnitude()
         referenceArea = pi * current_state.nose.base_radius ** 2 
         
-        self.__drag_coefficient = 0.75
-        # self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
+        #self.__drag_coefficient = 0.75
+        self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
 
         #self.__drag_coefficient = 0.5  #provisório
 
