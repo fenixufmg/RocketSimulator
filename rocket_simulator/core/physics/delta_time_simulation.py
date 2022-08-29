@@ -28,6 +28,8 @@ class DeltaTimeSimulation:
         self.cp: Vector = rocket.cp
         self.tip: Vector = rocket.delimitation_points[0]
         self.base: Vector = rocket.delimitation_points[1]
+
+        self.tip_to_cg = self.cg - self.tip
         self.rocket_height = rocket.rocket_height
         self.position: Vector = rocket.total_displacement
         self.velocity: Vector = rocket.velocity
