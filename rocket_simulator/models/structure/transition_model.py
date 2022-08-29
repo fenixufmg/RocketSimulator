@@ -89,7 +89,7 @@ class TransitionModel(AbstractModel):
 
     def calculateCp(self) -> Vector: # Reference from donwloaded files
         if self.top_diameter != self.bottom_diameter:
-            Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)^2))
+            Cp = self.getTipToBaseDistance() * (1/3)*(1 + (1-self.top_diameter/self.bottom_diameter)/(1-(self.top_diameter/self.bottom_diameter)**2))
             return self.toGroundCoordinates(Cp)
         else:
             Cp = self.getTipToBaseDistance()*0.5

@@ -26,22 +26,60 @@ class PitchDampingMoment(Force):
         parts = current_state.parts
         attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(current_state.looking_direction, current_state.velocity))
         Cdamp = 0 #Soma dos coeficientes de momento
+        averageRadius = 0 #Raio médio do foguete
+        '''
+        for part in range(len(parts)):
+            if str(parts[part].part_type) == 'RocketParts.NOSE':
+                averageRadius += current_state.nose.base_radius
+                print(averageRadius)
+            
+            elif str(parts[part].part_type) == 'RocketParts.TRANSITION':
+                topDiameter = current_state.transitions.top_diameter
+                bottomDiameter = current_state.transitions.bottom_diameter
+                if topDiameter > bottomDiameter:
+                    averageRadius += current_state.transitions.top_diameter / 2
+
+                else:
+                    averageRadius += current_state.transitions.bottom_diameter / 2
+
+            elif str(parts[part].part_type) == 'RocketParts.CYLINDRICAL_BODY':
+                averageRadius += current_state.cilyndrical_bodies.diameter / 2 #ERRO: ESTÁ PEGANDO APENAS DO PRIMEIRO CILINDRO
+                print(averageRadius)
+            
+            else:
+                pass
+        '''
+
         for part in parts:
             type = str(part.part_type)
             if type == 'RocketParts.NOSE':
-                Abase = referenceArea #Área da base do corpo
-                Atop = 0 #Área do topo do corpo
+                averageRadius += current_state.nose.base_radius
+                print(averageRadius)
                 
             elif type == 'RocketParts.TRANSITION':
-                pass
+                topDiameter = current_state.transitions.top_diameter
+                bottomDiameter = current_state.transitions.bottom_diameter
+                if topDiameter > bottomDiameter:
+                    averageRadius += current_state.transitions.top_diameter / 2
+
+                else:
+                    averageRadius += current_state.transitions.bottom_diameter / 2
+
+            elif type == 'RocketParts.CYLINDRICAL_BODY':
+                averageRadius += current_state.cilyndrical_bodies.diameter / 2 #ERRO: ESTÁ PEGANDO APENAS DO PRIMEIRO CILINDRO
+                print(averageRadius)
             
             elif type == 'RocketParts.FIN':
                 pass
+
             else:
                 pass
+            
+        if 'RocketParts.FIN' in parts:
+            averageRadius = averageRadius / (len(parts) - 1)
+        else:
+            averageRadius = averageRadius / len(parts)
 
+        print(parts)
+        print(averageRadius)
         pitchForce = 0
-
-        self.setX(pitchForce.x())
-        self.setY(pitchForce.y())
-        self.setZ(pitchForce.z())

@@ -15,6 +15,7 @@ from rb_test.angular_velocity_test import angularVelocityTest
 from core.physics.forces.drag_force import DragForce
 from core.physics.forces.thrust_test import ThrustTest
 from core.physics.forces.normal_force import NormalForce
+from core.physics.forces.pitch_damping_moment import PitchDampingMoment
 
 from core.physics.forces.weight_force import WeightForce
 from rb_test.acceleration_test import accelerationTest
@@ -28,12 +29,17 @@ rocket = RocketModel()
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(4, 0.5, NoseType.CONICAL, 1, 0.2, acrylic, 0)  
 cylinder1 = CylindricalBodyModel(5, 4, 0.5, acrylic, 1)
+transition = TransitionModel(5, 8, 4, 0.5, 4, acrylic, 2)
+cylinder2 = CylindricalBodyModel(5, 8, 0.5, acrylic, 3)
+
 # motor = MotorModel(0.5, 2, 0.25, acrylic, 2)
 fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
 
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
-rocket.addPart(fins)
+rocket.addPart(cylinder2)
+
+#rocket.addPart(fins)
 # cg -> cp = 2.666
 # mass = 15.89
 # rotation = Vector(0, 0.5 ,0)
@@ -48,8 +54,10 @@ normalForce = NormalForce()
 #ambient = EarthAmbient(0, WindDirection.N)
 ambient = AirlessEarthAmbient()
 
+pitch = PitchDampingMoment()
+
 #trajectoryTest(rocket, ambient, 1, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[thrust_test, normalForce, rotation_force], step=1, debug=False)
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[thrust_test, normalForce], step=0.2, debug=False)
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[thrust_test, normalForce, pitch], step=0.2, debug=False)
 #trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
