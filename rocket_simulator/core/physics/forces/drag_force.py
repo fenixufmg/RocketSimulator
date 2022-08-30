@@ -10,6 +10,7 @@ from utils.nose_type import NoseType
 from ...aerodynamic.boattail_pressure_drag import boattail_pressure_drag_coeficent
 from utils.constants import Constants
 from models.structure.nose_model import NoseModel
+from models.structure.fin_model import FinModel
 from core.aerodynamic.reynolds_number import reynolds_number
 from core.aerodynamic.mach_number import mach_number
 from core.aerodynamic.mean_aerodynamic_chord import mean_aerodynamic_chord_length
@@ -38,7 +39,7 @@ class DragForce(Force):
             if part_type == RocketParts.FIN:
                 meanChord = mean_aerodynamic_chord_length('trapezoidal', current_state.fin.root_chord, current_state.fin.tip_chord)
                 finMaxThickness = current_state.fin.max_thickness
-                finsWetArea = current_state.fin.wet_area
+                finsWetArea = FinModel.calculateWetArea(self)
             else:
                 meanChord = 0
                 finMaxThickness = 0

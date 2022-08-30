@@ -23,11 +23,14 @@ class PitchDampingMoment(Force):
 
     def calculate(self, current_state: DeltaTimeSimulation):
         air_density = 1.2 #Ampliar
-        referenceArea = pi * current_state.nose.base_radius ** 2
+        parts = current_state.parts
+        if 'RocketParts.NOSE' in str(parts):
+            referenceArea = pi * current_state.nose.base_radius ** 2
+        else:
+            referenceArea = pi * current_state.cilyndrical_bodies.radius ** 2
         referenceDiameter = current_state.nose.base_diameter
         rocketLength = current_state.rocket_height.magnitude()
         velocity = current_state.velocity.magnitude()
-        parts = current_state.parts
         attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(current_state.looking_direction, current_state.velocity))
         Cdamp = 0 #Soma dos coeficientes de momento
         averageRadius = 0 #Raio médio do foguete
@@ -57,8 +60,9 @@ class PitchDampingMoment(Force):
                 angularVelocity = angular_velocity(velocity, attack_angle)
                 cg_cg_distance = current_state.fin.cg - current_state.cg
                 tip_base_distance = current_state.base - current_state.tip
-                cg_fin_distance = Vector.projectVector(cg_cg_distance, tip_base_distance)
-                cg_fin_distance = cg_fin_distance.magnitude()
+                tip_base_distance = tip_base_distance.unitVector()
+                cg_fin_distance  = Vector.projectVector(cg_cg_distance, tip_base_distance )
+                cg_fin_distance =  cg_fin_distance.magnitude()
                 Cdamp += pitch_damping_moment_coefficient(numberFins, finArea, referenceArea, referenceDiameter, angularVelocity, velocity, cg_fin_distance)
 
             else:
