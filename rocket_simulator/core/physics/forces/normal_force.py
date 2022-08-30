@@ -52,6 +52,7 @@ class NormalForce(Force):
             
             else:
                 pass
+            
         print(CNan_sum) 
     
         magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)

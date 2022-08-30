@@ -45,7 +45,7 @@ class DragForce(Force):
                 finsWetArea = 0
 
         #rocketSurfaceArea = current_state.wet_area
-        rocketSurfaceArea = 29.2286324862
+        rocketSurfaceArea = 29.2286324862 #Modificar para Wetted area
         reynoldsNumber = reynolds_number(velocity, rocketLength, Constants.KINEMATIC_VISCOSITY.value)
         mach = mach_number(velocity, 340)
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength, current_state.nose.base_diameter)

@@ -42,4 +42,7 @@ def normal_force_coefficient_derivative(CNa1: float, D: float, N: int, Ntot: int
         
         elif Ntot > 8:
             return CNanF * 0.750
+    
+    else:
+        pass
 

@@ -9,7 +9,7 @@
 def pitch_damping_moment_coefficient(N: float, Afin: float, Aref: float, d: float, w: float, v: float, E: float) -> float:
     """
     Args:
-        N: Normal force coeffcient
+        N: Number of fins
         Afin: Area of one side of a fin
         Aref: Reference area
         d: Reference length(The rocket diameter)
@@ -19,4 +19,4 @@ def pitch_damping_moment_coefficient(N: float, Afin: float, Aref: float, d: floa
     Returns:
         Cdamp: Pitch damping moment coefficient
     """
-    return 0.6 * (N * Afin * pow(E, 3) * pow(w, 2)) / Aref * d * pow(v, 2)
+    return 0.6 * (N * Afin * pow(E, 3) * pow(w, 2)) / (Aref * d * pow(v, 2))

@@ -13,9 +13,13 @@ def stag_pressure_drag_coeficient(mach_number: float) -> float:
     """
     #only sub-sonic
     if (mach_number < 1):
-        division = 1 + (pow(mach_number, 2) / 4) + (pow((mach_number), 4) / 40) 
+        division = 1 + (pow(mach_number, 2) / 4) + (pow((mach_number), 4) / 40)
+        
+        return 0.85 * division ## division is the pressure / estag_pressure
     
-    ## division is the pressure / estag_pressure
+    else: 
+        print('ERRO:O veículo está SUPERSÔNICO. Impossível de calcular')
+    
 
-    return 0.85 * division
+    
 
