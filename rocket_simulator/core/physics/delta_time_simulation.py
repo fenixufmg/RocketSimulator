@@ -49,6 +49,45 @@ class DeltaTimeSimulation:
         self.parachute = rocket.getPart(RocketParts.PARACHUTE)
         self.nose = rocket.getPart(RocketParts.NOSE)
         self.cilyndrical_bodies = rocket.getPart(RocketParts.CYLINDRICAL_BODY)
+
         self.transitions = rocket.getPart(RocketParts.TRANSITION)
         self.fin = rocket.getPart(RocketParts.FIN)
         self.motor = rocket.getPart(RocketParts.MOTOR)
+
+        self.maximum_diameter_cilyndrical_body = self.__getMaximumDiameterCylindricalBody()
+        self.maximum_top_diameter_transition = self.__getMaximumTopDiameterTransition()
+        self.maximum_bottom_diameter_transition = self.__getMaximumBottomDiameterTransition()
+
+    def __getMaximumDiameterCylindricalBody(self):
+        maximum_diameter = 0
+        result = None
+
+        for body in self.cilyndrical_bodies:
+            if body.diameter > maximum_diameter:
+                maximum_diameter = body.diameter
+                result = body
+
+        return result
+
+    def __getMaximumTopDiameterTransition(self):
+        maximum_diameter = 0
+        result = None
+
+        for body in self.transitions:
+            if body.top_diameter > maximum_diameter:
+                maximum_diameter = body.top_diameter
+                result = body
+
+        return result
+
+    def __getMaximumBottomDiameterTransition(self):
+        maximum_diameter = 0
+        result = None
+
+        for body in self.transitions:
+            if body.bottom_diameter > maximum_diameter:
+                maximum_diameter = body.bottom_diameter
+                result = body
+
+        return result
+

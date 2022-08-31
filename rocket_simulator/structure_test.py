@@ -87,18 +87,19 @@ rocket.addPart(parachute)  # fazer torque de excentricidade
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
 # rocket.addPart(transition)
-# rocket.addPart(cylinder2)
+rocket.addPart(cylinder2)
 # rocket.addPart(fins)
 # rocket.addPart(motor)
 rotation = Vector(0, 0.1, 0)
 rocket.rotate(rotation)
 
 ambient = EarthAmbient(0.7, WindDirection.NO)
+print(rocket.getPart(RocketParts.CYLINDRICAL_BODY))
 # ambient = EarthAmbient(0, WindDirection.N)
 # ambient = AirlessEarthAmbient()
 # print("updating")
 # rocket.updateState()
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=True)
+# trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=True)
 # velocityTest(rocket, ambient, 10, axis=Vector(0,0,1))
 
 # velocidade terminal paraquedas = -3.08

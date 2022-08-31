@@ -282,9 +282,17 @@ class RocketModel(AbstractModel):  # não está movendo as peças
             raise ValueError("Part instance doesnt exist")
 
     def getPart(self, part_type: RocketParts):
+        parts = []
         for part in self.__getAvailableParts():
             if part.part_type == part_type:
+                if part_type == RocketParts.CYLINDRICAL_BODY or part_type == RocketParts.TRANSITION:
+                    parts.append(part)
+                    continue
+
                 return part
+
+        if len(parts) != 0:
+            return parts
 
         # print(f"Part type {part_type.value} doesnt exist")
 

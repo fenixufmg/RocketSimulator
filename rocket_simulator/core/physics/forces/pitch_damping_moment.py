@@ -24,18 +24,25 @@ class PitchDampingMoment(Force):
     def calculate(self, current_state: DeltaTimeSimulation):
         air_density = 1.2 #Ampliar
         parts = current_state.parts
+
         if 'RocketParts.NOSE' in parts:
             referenceArea = pi * current_state.nose.base_radius ** 2
             referenceDiameter = current_state.nose.base_diameter
         else:
-            referenceArea = pi * (current_state.cilyndrical_bodies.diameter / 2) ** 2
-            referenceDiameter = current_state.cilyndrical_bodies.diameter
+            referenceArea = pi * (current_state.maximum_diameter_cilyndrical_body.diameter / 2) ** 2
+            referenceDiameter = current_state.maximum_diameter_cilyndrical_body.diameter
         rocketLength = current_state.rocket_height.magnitude()
         velocity = current_state.velocity.magnitude()
         attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(current_state.looking_direction, current_state.velocity))
         angularVelocity = angular_velocity(velocity, attack_angle)
         Cdamp = 0 #Soma dos coeficientes de momento
         averageRadius = 0 #Raio médio do foguete
+
+        if velocity == 0:
+            self.setX(0)
+            self.setY(0)
+            self.setZ(0)
+            return
 
         for part in parts:
             type = str(part.part_type)
@@ -44,16 +51,16 @@ class PitchDampingMoment(Force):
                 print(averageRadius)
                 
             elif type == 'RocketParts.TRANSITION':
-                topDiameter = current_state.transitions.top_diameter
-                bottomDiameter = current_state.transitions.bottom_diameter
+                topDiameter = part.top_diameter
+                bottomDiameter = part.bottom_diameter
                 if topDiameter > bottomDiameter:
                     averageRadius += current_state.transitions.top_diameter / 2
 
                 else:
-                    averageRadius += current_state.transitions.bottom_diameter / 2
+                    averageRadius += part.bottom_diameter / 2
 
             elif type == 'RocketParts.CYLINDRICAL_BODY':
-                averageRadius += current_state.cilyndrical_bodies.diameter / 2 #ERRO: ESTÁ PEGANDO APENAS DO PRIMEIRO CILINDRO
+                averageRadius += part.diameter / 2 #ERRO: ESTÁ PEGANDO APENAS DO PRIMEIRO CILINDRO
                 print(averageRadius)
             
             elif type == 'RocketParts.FIN':
@@ -74,10 +81,11 @@ class PitchDampingMoment(Force):
         else:
             averageRadius = averageRadius / len(parts)
 
+        
         Cdamp += 0.55 * rocketLength ** 4 * averageRadius * angularVelocity ** 2 / (referenceArea * referenceDiameter * velocity ** 2)
         
         magnitude = damping_force(Cdamp, air_density, velocity, referenceArea, referenceDiameter, current_state.tip_to_cg.magnitude())
-        dampingForce = NormalForce.unitVector() * -1 * magnitude
+        dampingForce = NormalForce.unitVector() * -1 * magnitude # não tem como fazer desse jeito (a direção), achar outro vetor pra pegar a direçao
 
         self.setX(dampingForce.x())
         self.setY(dampingForce.y())
