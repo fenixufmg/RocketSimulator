@@ -18,5 +18,5 @@ def body_normal_force_coefficient_derivative(Abase: float, Atop: float, Aref: fl
     Returns:
         CNaB: normal force coefficient derivative of the body
     """
-
+    
     return (2 / Aref) * (Abase - Atop) * sin(radians(alpha)) / alpha
