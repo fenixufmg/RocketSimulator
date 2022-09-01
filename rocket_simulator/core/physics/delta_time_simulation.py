@@ -62,6 +62,9 @@ class DeltaTimeSimulation:
         maximum_diameter = 0
         result = None
 
+        if self.cilyndrical_bodies is None:
+            return
+
         for body in self.cilyndrical_bodies:
             if body.diameter > maximum_diameter:
                 maximum_diameter = body.diameter
@@ -73,6 +76,9 @@ class DeltaTimeSimulation:
         maximum_diameter = 0
         result = None
 
+        if self.transitions is None:
+            return
+
         for body in self.transitions:
             if body.top_diameter > maximum_diameter:
                 maximum_diameter = body.top_diameter
@@ -83,6 +89,9 @@ class DeltaTimeSimulation:
     def __getMaximumBottomDiameterTransition(self):
         maximum_diameter = 0
         result = None
+
+        if self.transitions is None:
+            return
 
         for body in self.transitions:
             if body.bottom_diameter > maximum_diameter:

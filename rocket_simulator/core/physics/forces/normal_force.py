@@ -1,3 +1,4 @@
+from utils.rocket_parts import RocketParts
 from utils.utils import Utils
 import imp
 
@@ -21,61 +22,60 @@ class NormalForce(Force):
     def calculate(self, current_state: DeltaTimeSimulation):
         air_density = 1.2 #Ampliar
         attack_angle = Utils.radiansToDegrees(Vector.angleBetweenVectors(current_state.looking_direction, current_state.velocity))
-        velocity = current_state.velocity.magnitudeRelativeTo(current_state.velocity)
+        velocity = current_state.velocity.magnitude()
         reference_area = pi * current_state.nose.base_radius ** 2 
         mach = mach_number(velocity, 340)
         parts = current_state.parts
         CNan_sum = 0 #Soma dos coeficientes normais
         for part in parts:
-            type = str(part.part_type)
-            if type == 'RocketParts.NOSE':
+            if part.part_type == RocketParts.NOSE:
                 Abase = reference_area #Área da base do corpo
                 Atop = 0 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
                 
-            elif type == 'RocketParts.TRANSITION':
+            elif part.part_type == RocketParts.TRANSITION:
                 Abase = pi * (part.bottom_diameter ** 2) / 4 #Área da base do corpo
                 Atop = pi * (part.top_diameter ** 2) / 4 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
             
-            elif type == 'RocketParts.FIN':
+            elif part.part_type == RocketParts.FIN:
                 CNa1 = single_fin_normal_force_coefficient(part.span, reference_area, mach, part.wet_area, part.sweep_angle) #Criar código para transversal_area
                 CNanF = normal_force_coefficient_derivative(CNa1, 0, part.nb_fins, part.nb_fins)
                 CNaTb = final_normal_force_coefficient_derivative(CNanF, part.span, part.distance_from_center)
                 CNan_sum += CNaTb
+
+
             
-            else:
-                pass
-            
-        print(CNan_sum) 
+        print(f"Normal force CNan_sum: {CNan_sum}") 
+        print(f"Rocket velocity: {current_state.velocity.magnitude()}")
     
         magnitude = normal_force(CNan_sum, air_density, velocity, reference_area, attack_angle)
 
-        normalForceX = Vector.projectVector(current_state.velocity, Vector(1, 0, 0))
-        normalForceY = Vector.projectVector(current_state.velocity, Vector(0, 1, 0))
-        normalForceZ = Vector.projectVector(current_state.velocity, Vector(0, 0, 1))
+        normalForceX = Vector.projectVector(current_state.velocity, Vector(1, 0, 0)).unitVector()
+        normalForceY = Vector.projectVector(current_state.velocity, Vector(0, 1, 0)).unitVector()
+        normalForceZ = Vector.projectVector(current_state.velocity, Vector(0, 0, 1)).unitVector()
 
-        if normalForceX.toList()[0] > 0:
-            normalForceX = normalForceX.unitVector()
-        else:
-            normalForceX = normalForceX.unitVector() * (-1)
+        # if normalForceX.toList()[0] > 0: # não precisa
+        #     normalForceX = normalForceX.unitVector()
+        # else:
+        #     normalForceX = normalForceX.unitVector() * (-1)
 
-        if normalForceY.toList()[1] > 0:
-            normalForceY = normalForceY.unitVector()
-        else:
-            normalForceY = normalForceY.unitVector() * (-1)
+        # if normalForceY.toList()[1] > 0:
+        #     normalForceY = normalForceY.unitVector()
+        # else:
+        #     normalForceY = normalForceY.unitVector() * (-1)
 
-        if normalForceZ.toList()[2] > 0:
-            normalForceZ = normalForceZ.unitVector()
-        else:
-            normalForceZ = normalForceZ.unitVector() * (-1)
+        # if normalForceZ.toList()[2] > 0:
+        #     normalForceZ = normalForceZ.unitVector()
+        # else:
+        #     normalForceZ = normalForceZ.unitVector() * (-1)
             
         normalForce = normalForceX + normalForceY + normalForceZ
         normalForce = normalForce.unitVector() * magnitude
 
-        print(normalForce)
+        print(f"Normal force: {normalForce}")
         self.setX(normalForce.x())
         self.setY(normalForce.y())
         self.setZ(normalForce.z())

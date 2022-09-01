@@ -41,7 +41,7 @@ class Simulation:
         self.__resultant_torque:ResultantTorque = ResultantTorque(self.__forces)
 
     def __setupForces(self, ambient: AbstractAmbient, additional_forces: List[Force]):
-        thrust = ImpulseTestForce(400) # provisório
+        thrust = ImpulseTestForce(700) # provisório
         # thrust = None
         # try:
         #     thrust = self.__rocket.getPart(RocketParts.MOTOR).thrust

@@ -1,3 +1,4 @@
+from utils.rocket_parts import RocketParts
 from utils.utils import Utils
 import imp
 
@@ -25,7 +26,7 @@ class PitchDampingMoment(Force):
         air_density = 1.2 #Ampliar
         parts = current_state.parts
 
-        if 'RocketParts.NOSE' in parts:
+        if RocketParts.NOSE in parts:
             referenceArea = pi * current_state.nose.base_radius ** 2
             referenceDiameter = current_state.nose.base_diameter
         else:
@@ -45,12 +46,11 @@ class PitchDampingMoment(Force):
             return
 
         for part in parts:
-            type = str(part.part_type)
-            if type == 'RocketParts.NOSE':
+            if part.part_type == RocketParts.NOSE:
                 averageRadius += current_state.nose.base_radius
-                print(averageRadius)
+                # print(averageRadius)
                 
-            elif type == 'RocketParts.TRANSITION':
+            elif part.part_type == RocketParts.TRANSITION:
                 topDiameter = part.top_diameter
                 bottomDiameter = part.bottom_diameter
                 if topDiameter > bottomDiameter:
@@ -59,11 +59,11 @@ class PitchDampingMoment(Force):
                 else:
                     averageRadius += part.bottom_diameter / 2
 
-            elif type == 'RocketParts.CYLINDRICAL_BODY':
+            elif part.part_type == RocketParts.CYLINDRICAL_BODY:
                 averageRadius += part.diameter / 2 #ERRO: ESTÁ PEGANDO APENAS DO PRIMEIRO CILINDRO
-                print(averageRadius)
+                # print(averageRadius)
             
-            elif type == 'RocketParts.FIN':
+            elif part.part_type == RocketParts.FIN:
                 finArea = FinModel.calculateWetArea(self)
                 numberFins = current_state.fin.nb_fins
                 cg_cg_distance = current_state.fin.cg - current_state.cg
@@ -76,7 +76,7 @@ class PitchDampingMoment(Force):
             else:
                 pass
             
-        if 'RocketParts.FIN' in parts:
+        if RocketParts.FIN in parts:
             averageRadius = averageRadius / (len(parts) - 1)
         else:
             averageRadius = averageRadius / len(parts)

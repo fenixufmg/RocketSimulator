@@ -24,7 +24,7 @@ def skin_friction_drag(reynolds_number: float, critical_reynolds_number: float,
         cf = 0.032 * (material_roughness / rocket_length) ** 0.2
     
     else:
-        print('ERRO:O veículo está SUPERSÔNICO. Impossível de calcular')
+        print(f"ERRO:O veículo está SUPERSÔNICO,  reynolds_number: {reynolds_number}. Impossível de calcular")
         cf = 0
 
     #adjust skin friction drag coefficient according to the mach number

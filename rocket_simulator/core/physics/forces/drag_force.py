@@ -35,8 +35,7 @@ class DragForce(Force):
         referenceArea = pi * current_state.nose.base_radius ** 2 
         parts = current_state.parts
         for part in parts:
-            part_type = str(part.part_type)
-            if part_type == RocketParts.FIN:
+            if part.part_type == RocketParts.FIN:
                 meanChord = mean_aerodynamic_chord_length('trapezoidal', part.root_chord, part.tip_chord)
                 finMaxThickness = part.max_thickness
                 finsWetArea = FinModel.calculateWetArea(self)
@@ -65,7 +64,7 @@ class DragForce(Force):
         pressureDragCoefficient = 0
         for part in parts:
             part_type = str(part.part_type)
-            if part_type == 'RocketParts.NOSE':
+            if part_type == RocketParts.NOSE:
                 if current_state.nose.nose_type == NoseType.CONICAL:
                     bodynoseAngle = degrees(atan(part.base_radius / part.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
@@ -74,7 +73,7 @@ class DragForce(Force):
                 else:
                     pass 
 
-            elif part_type == 'RocketParts.TRANSITION':
+            elif part_type == RocketParts.TRANSITION:
                 topDiameter = part.top_diameter
                 bottomDiameter = part.bottom_diameter
                 height = part.height
@@ -86,10 +85,10 @@ class DragForce(Force):
                     shoulderDrag = nose_pressure_drag(bodyshoulderAngle) 
                     pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
-            elif part_type == 'RocketParts.CYLINDRICAL_BODY':
+            elif part_type == RocketParts.CYLINDRICAL_BODY:
                 stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (part.diameter / 2) ** 2
 
-            elif part_type == 'RocketParts.FIN':
+            elif part_type == RocketParts.FIN:
                 leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(part.root_chord - part.tip_chord) / part.span))) ** 2
                 trailingEdgeDrag = base_drag_coefficient(mach)
                 finDrag = leadingEdgeDrag + trailingEdgeDrag 
@@ -120,9 +119,9 @@ class DragForce(Force):
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
 
-        print(current_state.velocity.magnitude())
-        print(self.__drag_coefficient)
-        print(dragForce.magnitude())
+        # print(current_state.velocity.magnitude())
+        # print(self.__drag_coefficient)
+        # print(dragForce.magnitude())
 
         self.setX(dragForce.x())
         self.setY(dragForce.y())
