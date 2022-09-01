@@ -12,12 +12,7 @@ from core.aerodynamic.fin_normal_force_coefficient_derivative import normal_forc
 from core.aerodynamic.single_fin_normal_force_coefficient import single_fin_normal_force_coefficient
 from core.aerodynamic.normal_force import normal_force
 from core.aerodynamic.mach_number import mach_number
-from utils.constants import Constants
-from models.structure.rocket_model import RocketModel
-from models.structure.nose_model import NoseModel, NoseType
-from models.structure.fin_model import FinModel
-from models.structure.transition_model import TransitionModel
-from math import pi, sin, radians
+from math import pi
 
 class NormalForce(Force):
     def __init__(self):
@@ -40,15 +35,15 @@ class NormalForce(Force):
                 CNan_sum += CNan
                 
             elif type == 'RocketParts.TRANSITION':
-                Abase = pi * (current_state.transitions.bottom_diameter ** 2) / 4 #Área da base do corpo
-                Atop = pi * (current_state.transitions.top_diameter ** 2) / 4 #Área do topo do corpo
+                Abase = pi * (part.bottom_diameter ** 2) / 4 #Área da base do corpo
+                Atop = pi * (part.top_diameter ** 2) / 4 #Área do topo do corpo
                 CNan = body_normal_force_coefficient_derivative(Abase, Atop, reference_area, attack_angle) #Coeficiente de força normal derivado
                 CNan_sum += CNan
             
             elif type == 'RocketParts.FIN':
-                CNa1 = single_fin_normal_force_coefficient(current_state.fin.span, reference_area, mach, current_state.fin.wet_area, current_state.fin.sweep_angle) #Criar código para transversal_area
-                CNanF = normal_force_coefficient_derivative(CNa1, 0, current_state.fin.nb_fins, current_state.fin.nb_fins)
-                CNaTb = final_normal_force_coefficient_derivative(CNanF, current_state.fin.span, current_state.fin.distance_from_center)
+                CNa1 = single_fin_normal_force_coefficient(part.span, reference_area, mach, part.wet_area, part.sweep_angle) #Criar código para transversal_area
+                CNanF = normal_force_coefficient_derivative(CNa1, 0, part.nb_fins, part.nb_fins)
+                CNaTb = final_normal_force_coefficient_derivative(CNanF, part.span, part.distance_from_center)
                 CNan_sum += CNaTb
             
             else:

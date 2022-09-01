@@ -18,7 +18,7 @@ def stag_pressure_drag_coeficient(mach_number: float) -> float:
         return 0.85 * division ## division is the pressure / estag_pressure
     
     else: 
-        print('ERRO:O veículo está SUPERSÔNICO. Impossível de calcular')
+        raise ValueError(f"ERROR: impossible to calculate because the vehicle is supersonic.")
     
 
     
