@@ -48,7 +48,7 @@ rocket.rotate(rotation)
 
 
 thrust_test = ImpulseTestForce(100)
-rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
+#rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
 normalForce = NormalForce()
 
 ambient = EarthAmbient(0, WindDirection.N)
