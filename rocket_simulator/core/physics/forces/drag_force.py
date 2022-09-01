@@ -37,8 +37,8 @@ class DragForce(Force):
         for part in parts:
             part_type = str(part.part_type)
             if part_type == RocketParts.FIN:
-                meanChord = mean_aerodynamic_chord_length('trapezoidal', current_state.fin.root_chord, current_state.fin.tip_chord)
-                finMaxThickness = current_state.fin.max_thickness
+                meanChord = mean_aerodynamic_chord_length('trapezoidal', part.root_chord, part.tip_chord)
+                finMaxThickness = part.max_thickness
                 finsWetArea = FinModel.calculateWetArea(self)
             else:
                 meanChord = 0
@@ -67,34 +67,34 @@ class DragForce(Force):
             part_type = str(part.part_type)
             if part_type == 'RocketParts.NOSE':
                 if current_state.nose.nose_type == NoseType.CONICAL:
-                    bodynoseAngle = degrees(atan(current_state.nose.base_radius / current_state.nose.height))
+                    bodynoseAngle = degrees(atan(part.base_radius / part.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
                     pressureDragCoefficient += noseDrag
 
                 else:
-                    pass #Em voo subsônico o arrasto de pressão tende a zero para formas de ogiva, parábola e elipse
+                    pass 
 
             elif part_type == 'RocketParts.TRANSITION':
-                topDiameter = current_state.transitions.top_diameter
-                bottomDiameter = current_state.transitions.bottom_diameter
-                height = current_state.transitions.height
+                topDiameter = part.top_diameter
+                bottomDiameter = part.bottom_diameter
+                height = part.height
                 if bottomDiameter < topDiameter:
                     boatttailDrag = boattail_pressure_drag_coeficent(topDiameter, bottomDiameter, height, baseDrag, (pi * topDiameter ** 2) / 4, (pi * bottomDiameter ** 2) / 4) 
                     pressureDragCoefficient += boatttailDrag * abs((pi * topDiameter ** 2) / 4 - (pi * bottomDiameter ** 2) / 4) / referenceArea
                 else:
-                    bodyshoulderAngle = degrees(atan(abs((current_state.transitions.bottom_diameter/2) - (current_state.transitions.top_diameter/2))/current_state.transitions.height))
-                    shoulderDrag = nose_pressure_drag(bodyshoulderAngle) #coletar
+                    bodyshoulderAngle = degrees(atan(abs((part.bottom_diameter/2) - (part.top_diameter/2))/part.height))
+                    shoulderDrag = nose_pressure_drag(bodyshoulderAngle) 
                     pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
             elif part_type == 'RocketParts.CYLINDRICAL_BODY':
-                stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (current_state.cilyndrical_bodies.diameter / 2) ** 2
+                stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (part.diameter / 2) ** 2
 
             elif part_type == 'RocketParts.FIN':
-                leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(current_state.fin.root_chord - current_state.fin.tip_chord) / current_state.fin.span))) ** 2
+                leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(part.root_chord - part.tip_chord) / part.span))) ** 2
                 trailingEdgeDrag = base_drag_coefficient(mach)
                 finDrag = leadingEdgeDrag + trailingEdgeDrag 
-                pressureDragCoefficient += finDrag * current_state.fin.nb_fins * current_state.fin.max_thickness * current_state.fin.span / referenceArea
-                baseDrag *= (pi * current_state.fin.distance_from_center ** 2) / referenceArea
+                pressureDragCoefficient += finDrag * part.nb_fins * part.max_thickness * part.span / referenceArea
+                baseDrag *= (pi * part.distance_from_center ** 2) / referenceArea
 
             else:
                 pass
@@ -113,10 +113,7 @@ class DragForce(Force):
         velocity = current_state.velocity.magnitude()
         referenceArea = pi * current_state.nose.base_radius ** 2 
         
-        #self.__drag_coefficient = 0.75
         self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
-
-        #self.__drag_coefficient = 0.5  #provisório
 
         magnitude = self.__calculateDrag(referenceArea, self.__drag_coefficient, velocity)
 

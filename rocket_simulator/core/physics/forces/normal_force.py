@@ -16,6 +16,7 @@ from utils.constants import Constants
 from models.structure.rocket_model import RocketModel
 from models.structure.nose_model import NoseModel, NoseType
 from models.structure.fin_model import FinModel
+from models.structure.transition_model import TransitionModel
 from math import pi, sin, radians
 
 class NormalForce(Force):
@@ -59,6 +60,7 @@ class NormalForce(Force):
 
         normalForceX = Vector.projectVector(current_state.velocity, Vector(1, 0, 0))
         normalForceY = Vector.projectVector(current_state.velocity, Vector(0, 1, 0))
+        normalForceZ = Vector.projectVector(current_state.velocity, Vector(0, 0, 1))
 
         if normalForceX.toList()[0] > 0:
             normalForceX = normalForceX.unitVector()
@@ -69,8 +71,13 @@ class NormalForce(Force):
             normalForceY = normalForceY.unitVector()
         else:
             normalForceY = normalForceY.unitVector() * (-1)
+
+        if normalForceZ.toList()[2] > 0:
+            normalForceZ = normalForceZ.unitVector()
+        else:
+            normalForceZ = normalForceZ.unitVector() * (-1)
             
-        normalForce = normalForceX + normalForceY
+        normalForce = normalForceX + normalForceY + normalForceZ
         normalForce = normalForce.unitVector() * magnitude
 
         print(normalForce)

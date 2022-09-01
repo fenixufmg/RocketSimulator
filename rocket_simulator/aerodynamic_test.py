@@ -51,17 +51,17 @@ thrust_test = ImpulseTestForce(100)
 rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
 normalForce = NormalForce()
 
-#ambient = EarthAmbient(0, WindDirection.N)
-ambient = AirlessEarthAmbient()
+ambient = EarthAmbient(0, WindDirection.N)
+#ambient = AirlessEarthAmbient()
 
 pitch = PitchDampingMoment()
 
 #trajectoryTest(rocket, ambient, 1, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[thrust_test, normalForce, rotation_force], step=1, debug=False)
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[pitch], step=0.2, debug=False)
+trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
 #trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
-# angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
+#angularVelocityTest(rocket,[translation_force, rotation_force, weight], 40, axis=Vector(1,0,0))
 
 # ambient = EarthAmbient(rocket)
 # simulations = ambient.simulate(30)
