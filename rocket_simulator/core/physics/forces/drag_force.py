@@ -31,21 +31,23 @@ class DragForce(Force):
 
     def __calculateSkinDragCoefficient(self,  current_state: DeltaTimeSimulation) -> float: # coef. arrasto de pele
         rocketLength = current_state.rocket_height.magnitude()
-        velocity = current_state.velocity.magnitude()
+        velocity = 47.78280931761668
         referenceArea = pi * current_state.nose.base_radius ** 2 
         parts = current_state.parts
+        print(parts)
         for part in parts:
             if part.part_type == RocketParts.FIN:
                 meanChord = mean_aerodynamic_chord_length('trapezoidal', part.root_chord, part.tip_chord)
                 finMaxThickness = part.max_thickness
                 finsWetArea = FinModel.calculateWetArea(self)
+            
             else:
                 meanChord = 0
                 finMaxThickness = 0
                 finsWetArea = 0
 
         #rocketSurfaceArea = current_state.wet_area
-        rocketSurfaceArea = 29.2286324862 #Modificar para Wetted area
+        rocketSurfaceArea = 75.39822369 #<-- cilindro1; Modificar para Wetted area
         reynoldsNumber = reynolds_number(velocity, rocketLength, Constants.KINEMATIC_VISCOSITY.value)
         mach = mach_number(velocity, 340)
         rocketFinenessRatio = rocket_fineness_ratio(rocketLength, current_state.nose.base_diameter)
@@ -55,7 +57,7 @@ class DragForce(Force):
         return skinDragCoefficient
 
     def __calculatePressureDragCoefficient(self, current_state: DeltaTimeSimulation) -> float:
-        velocity = current_state.velocity.magnitude()
+        velocity = 47.78280931761668
         referenceArea = pi * current_state.nose.base_radius ** 2
         mach = mach_number(velocity, 340)
         baseDrag = base_drag_coefficient(mach)   
@@ -63,17 +65,17 @@ class DragForce(Force):
         parts = current_state.parts
         pressureDragCoefficient = 0
         for part in parts:
-            part_type = str(part.part_type)
-            if part_type == RocketParts.NOSE:
+            if part.part_type == RocketParts.NOSE:
                 if current_state.nose.nose_type == NoseType.CONICAL:
                     bodynoseAngle = degrees(atan(part.base_radius / part.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
                     pressureDragCoefficient += noseDrag
+                    print(noseDrag)
 
                 else:
-                    pass 
+                    pass
 
-            elif part_type == RocketParts.TRANSITION:
+            elif part.part_type == RocketParts.TRANSITION:
                 topDiameter = part.top_diameter
                 bottomDiameter = part.bottom_diameter
                 height = part.height
@@ -85,10 +87,10 @@ class DragForce(Force):
                     shoulderDrag = nose_pressure_drag(bodyshoulderAngle) 
                     pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
-            elif part_type == RocketParts.CYLINDRICAL_BODY:
+            elif part.part_type == RocketParts.CYLINDRICAL_BODY:
                 stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (part.diameter / 2) ** 2
 
-            elif part_type == RocketParts.FIN:
+            elif part.part_type == RocketParts.FIN:
                 leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(part.root_chord - part.tip_chord) / part.span))) ** 2
                 trailingEdgeDrag = base_drag_coefficient(mach)
                 finDrag = leadingEdgeDrag + trailingEdgeDrag 
@@ -103,13 +105,13 @@ class DragForce(Force):
 
     def __calculateDragCoefficient(self, current_state: DeltaTimeSimulation) -> float: # coef. arrasto final usado no calculo do arrasto
         return self.__calculateSkinDragCoefficient(current_state) + self.__calculatePressureDragCoefficient(current_state)
-
+        #return self.__calculatePressureDragCoefficient(current_state)
     def __calculateDrag(self, transversal_section_area:float, drag_coefficient:float, velocity:float):
         air_density = Constants.AIR_DENSITY.value
         return ((1/2)*air_density*velocity**2*transversal_section_area*drag_coefficient)
 
     def calculate(self, current_state: DeltaTimeSimulation):
-        velocity = current_state.velocity.magnitude()
+        velocity = 47.78280931761668
         referenceArea = pi * current_state.nose.base_radius ** 2 
         
         self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
@@ -119,8 +121,9 @@ class DragForce(Force):
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
 
-        # print(current_state.velocity.magnitude())
-        # print(self.__drag_coefficient)
+        print(47.78280931761668)
+        print(f'Cd = {self.__drag_coefficient}')
+        print(f'pressão: {self.__calculatePressureDragCoefficient}')
         # print(dragForce.magnitude())
 
         self.setX(dragForce.x())

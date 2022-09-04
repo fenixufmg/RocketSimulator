@@ -35,16 +35,16 @@ cylinder2 = CylindricalBodyModel(5, 8, 0.5, acrylic, 3)
 # motor = MotorModel(0.5, 2, 0.25, acrylic, 2)
 fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
 
-rocket.addPart(nose)
+#rocket.addPart(nose)
 rocket.addPart(cylinder1)
-# rocket.addPart(transition)
+#rocket.addPart(transition)
 #rocket.addPart(cylinder2)
 #rocket.addPart(fins)
 # cg -> cp = 2.666
 # mass = 15.89
 # rotation = Vector(0, 0.5 ,0)
 rotation = Vector(0, 0.2, 0) #Consertar
-rocket.rotate(rotation)
+#rocket.rotate(rotation)
 
 
 thrust_test = ImpulseTestForce(100)
@@ -56,8 +56,8 @@ ambient = EarthAmbient(0, WindDirection.N)
 
 pitch = PitchDampingMoment()
 
-#trajectoryTest(rocket, ambient, 1, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[thrust_test, normalForce, rotation_force], step=1, debug=False)
-trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[normalForce], step=0.2, debug=True)
+trajectoryTest(rocket, ambient, 1, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=1, debug=False)
+#trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[normalForce], step=0.2, debug=True)
 #trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, additional_forces=[], step=0.2, debug=False)
 # velocityTest(rocket, [thrust_test, weight, dragForce], 30, axis=Vector(1,0,0))
 # accelerationTest(rocket ,[thrust_test, weight, dragForce], 50, axis=Vector(1,0,0))
