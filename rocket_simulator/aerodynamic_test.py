@@ -33,10 +33,10 @@ transition = TransitionModel(5, 8, 4, 0.5, 4, acrylic, 2)
 cylinder2 = CylindricalBodyModel(5, 8, 0.5, acrylic, 3)
 
 # motor = MotorModel(0.5, 2, 0.25, acrylic, 2)
-fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 2, 4, acrylic, 3)
+fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 4, 4, acrylic, 3)
 
-#rocket.addPart(nose)
-rocket.addPart(cylinder1)
+rocket.addPart(nose)
+#rocket.addPart(cylinder1)
 #rocket.addPart(transition)
 #rocket.addPart(cylinder2)
 #rocket.addPart(fins)

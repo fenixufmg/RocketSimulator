@@ -29,6 +29,11 @@ class DragForce(Force):
         super().__init__(0, 0, 0, ApplicationPoint.CP, None)
         self.__drag_coefficient = None
 
+    def __referenceArea(self, current_state: DeltaTimeSimulation) -> float:
+        parts = current_state.parts
+        #pegar como área de referência a área duperior do primeiro componente
+        return
+
     def __calculateSkinDragCoefficient(self,  current_state: DeltaTimeSimulation) -> float: # coef. arrasto de pele
         rocketLength = current_state.rocket_height.magnitude()
         velocity = 47.78280931761668
@@ -88,7 +93,8 @@ class DragForce(Force):
                     pressureDragCoefficient += shoulderDrag * abs((pi * bottomDiameter ** 2) / 4 - (pi * topDiameter ** 2) / 4) / referenceArea
 
             elif part.part_type == RocketParts.CYLINDRICAL_BODY:
-                stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (part.diameter / 2) ** 2
+                if len(parts) == 1:
+                    stagnationDrag = stag_pressure_drag_coeficient(mach) * pi * (part.diameter / 2) ** 2
 
             elif part.part_type == RocketParts.FIN:
                 leadingEdgeDrag = fin_drag_coeficient(mach) * cos(degrees(atan(abs(part.root_chord - part.tip_chord) / part.span))) ** 2
@@ -121,9 +127,8 @@ class DragForce(Force):
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
 
-        print(47.78280931761668)
+        print('Velocity = 47.78280931761668 m/s')
         print(f'Cd = {self.__drag_coefficient}')
-        print(f'pressão: {self.__calculatePressureDragCoefficient}')
         # print(dragForce.magnitude())
 
         self.setX(dragForce.x())
