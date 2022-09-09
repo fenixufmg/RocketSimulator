@@ -83,7 +83,7 @@ class Simulation:
             raise ValueError(f"Ejection criteria: {parachute.ejection_criteria} not supported")
 
     def __correctParachuteOrientation(self, current_state):
-        """" Utilizado para setar a orientação do foguete para (0,0,1) quando o paraquedas for inflado.
+        """ Utilizado para setar a orientação do foguete para (0,0,1) quando o paraquedas for inflado.
 
         Args:
             current_state (DeltaTimeSimulation): estado atual da simulação.
