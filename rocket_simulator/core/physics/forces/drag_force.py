@@ -62,9 +62,8 @@ class DragForce(Force):
         return skinDragCoefficient
 
     def __calculatePressureDragCoefficient(self, current_state: DeltaTimeSimulation) -> float:
-        velocity = 47.78280931761668
         referenceArea = pi * current_state.nose.base_radius ** 2
-        mach = mach_number(velocity, 340)
+        mach = mach_number(current_state.velocity.magnitude(), 340)
         baseDrag = base_drag_coefficient(mach)   
         stagnationDrag = 0 
         parts = current_state.parts
@@ -117,18 +116,15 @@ class DragForce(Force):
         return ((1/2)*air_density*velocity**2*transversal_section_area*drag_coefficient)
 
     def calculate(self, current_state: DeltaTimeSimulation):
-        velocity = 47.78280931761668
-        referenceArea = pi * current_state.nose.base_radius ** 2 
+        referenceArea = pi * current_state.nose.base_radius ** 2
         
         self.__drag_coefficient = self.__calculateDragCoefficient(current_state)
 
-        magnitude = self.__calculateDrag(referenceArea, self.__drag_coefficient, velocity)
+        magnitude = self.__calculateDrag(referenceArea, self.__drag_coefficient, current_state.velocity.magnitude())
 
         dragForce = current_state.velocity * -1
         dragForce = dragForce.unitVector() * magnitude
 
-        print('Velocity = 47.78280931761668 m/s')
-        print(f'Cd = {self.__drag_coefficient}')
         # print(dragForce.magnitude())
 
         self.setX(dragForce.x())

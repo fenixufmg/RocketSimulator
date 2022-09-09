@@ -16,7 +16,7 @@ class MotorModel(AbstractModel):
         self.material = material
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
-        self.thrust = ImpulseTestForce(200) # provisório
+        self.thrust = ImpulseTestForce(400) # provisório
 
         super().__init__(RocketParts.MOTOR, position_order, 0, self.drag_coefficient, self.transversal_area)
         self.__verify(diameter, thickness)

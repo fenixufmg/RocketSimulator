@@ -63,7 +63,7 @@ class RigidBody:
             raise ValueError("Top delimitation point and bottom are inverted")
 
     def __isOnGround(self) -> bool:
-        """Verifica se o corpo está no chão
+        """Verifica se o corpo está no chão.
 
         Returns:
             (bool): True se está no chão
@@ -73,13 +73,13 @@ class RigidBody:
         return False
 
     def centerOnOrigin(self):
-        """Centraliza o cg do corpo na origem (0,0,0).
+        """Centraliza o corpo na origem (0,0,0), cg terá coordenadas (0,0,0).
         """
         displacement = Vector(-self.cg.x(), - self.cg.y(), -self.cg.z())
         self.move(displacement)
 
     def move(self, displacement: Vector):
-        """" Move todos os pontos que representam um corpo com base em um deslocamento se o corpo não estiver no chão
+        """" Move todos os pontos que representam um corpo com base em um deslocamento.
 
         Args:
             displacement (Vector): Vetor deslocamento
@@ -92,11 +92,12 @@ class RigidBody:
             self.delimitation_points[index] += displacement
 
     def rotate(self, angular_displacement: Vector, axis_displacement: Vector = Vector(0, 0, 0)):
-        """Rotaciona o corpo.
+        """Rotaciona todos os pontos do corpo (menos cg) e o sistema de coordenadas. Se axis_displacement for definido
+        o centro de rotação não será o cg.
 
         Args:
             angular_displacement (Vector): Vetor que representa a rotação.
-            axis_displacement (Vector): Vetor que desloca o eixo de rotação padrão (cg).
+            axis_displacement (Vector): Vetor que DESLOCA o eixo de rotação padrão (cg).
         """
         initial_position = self.cg
         self.centerOnOrigin()
@@ -147,10 +148,12 @@ class RigidBody:
         if self.is_on_ground is True:
             return
 
-        self.moment_of_inertia = self.moment_of_inertia_function(self.getCpCgDistance().magnitude()) # momento de inercia no cp
+        self.moment_of_inertia = self.moment_of_inertia_function(
+            self.getCpCgDistance().magnitude())  # momento de inercia no cp
         self.total_angular_acceleration = torque * (1 / self.moment_of_inertia)
 
-        angular_displacement = self.angular_velocity * duration + (self.total_angular_acceleration * duration ** 2) * 0.5
+        angular_displacement = self.angular_velocity * duration + (
+                    self.total_angular_acceleration * duration ** 2) * 0.5
         self.angular_velocity += self.total_angular_acceleration * duration
 
         # rotaciona os pontos
@@ -164,9 +167,6 @@ class RigidBody:
              Vector: Orientação do corpo.
         """
         return self.cordinate_system.getLookingDirection()
-
-    def setLookingDirection(self, looking_direction: Vector):
-        self.cordinate_system.setLookingDirection(looking_direction)
 
     def getCpCgDistance(self) -> Vector:
         """Retorna o vetor que representa a distância entre o CP e o CG (apontando para o CG), 
@@ -223,6 +223,15 @@ class RigidBody:
     # ========================= getters ========================= #
 
     # ========================= setters ========================= #
+    def setLookingDirection(self, looking_direction: Vector):
+        """Seta a direção do foguete para a de um vetor dado.
+
+        Args:
+            looking_direction (Vector): Nova direção do foguete.
+
+        """
+        self.cordinate_system.setLookingDirection(looking_direction)
+
     def setCp(self, cp: Vector) -> None:
         """Iguala o Cp ao novo valor do parâmetro.
 
