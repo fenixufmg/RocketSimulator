@@ -8,6 +8,41 @@ from utils.rocket_parts import RocketParts
 class AbstractModel(ABC, RigidBody):
     def __init__(self, part_type: RocketParts, position_order: int, shape_coefficient:float, 
                 drag_coefficient:float, transversal_area:float) -> None:
+        """Classe abstrata que representa oque todas as peças tem que ter e tudo que elas devem fazer (no geral).
+        Todas as peças são representadas no espaço como o conjunto de 4 vetores (pontos): Cg, Cp, delimitação superior
+        e delimitação inferior. Os ultimos dois são os pontos extremos da parte, servem para se saber onde cada
+        componente começa e termina.
+
+        Args:
+            part_type (RocketParts): Categoria da classe (nariz, motor, aleta, etc...).
+
+            position_order (int): Número que representa a posição relativa da peça, o menor número será a primeira peça
+            (de cima para baixo) e o maior será a última (que está na base do foguete).
+
+            shape_coefficient (float): Coeficiente usado nos cálculos aerodinâmicos.
+
+            drag_coefficient (float): Coeficiente de arrasto, no momento todos os coeficientes de arrasto de todas as
+            peças estão sendo calculados em drag_force.py, mudar para que cada peça consiga calcular separadamente
+            seu próprio coeficiente.
+
+            transversal_area (float): área transversal no instante T-0 (antes do lançamento).
+
+        Fields:
+            part_type (RocketParts): Categoria da classe (nariz, motor, aleta, etc...).
+
+            position_order (int): Número que representa a posição relativa da peça, o menor número será a primeira peça
+            (de cima para baixo) e o maior será a última (que está na base do foguete).
+
+            shape_coefficient (float): Coeficiente usado nos cálculos aerodinâmicos.
+
+            drag_coefficient (float): Coeficiente de arrasto, no momento todos os coeficientes de arrasto de todas as
+            peças estão sendo calculados em drag_force.py, mudar para que cada peça consiga calcular separadamente
+            seu próprio coeficiente.
+
+            transversal_area (float): área transversal no instante T-0 (antes do lançamento).
+
+            delimitation_points (List[Vector]): Pontos de delimitação superior e inferior (nessa ordem).
+        """
         # rocket specific
         self.part_type = part_type
         self.position_order = position_order

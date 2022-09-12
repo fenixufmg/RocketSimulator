@@ -335,7 +335,14 @@ class RocketModel(AbstractModel):
 
     def addPart(self, part: AbstractModel):  # adiciona instâncias
         """Adiciona novas peças ao foguete. Adiciona peças por INSTÂNCIA, ou seja, se duas instâncias diferentes de uma
-         com características iguais e
+         peça com características iguais forem dadas ao método as DUAS serão adicionadas apesar de terem as mesmas
+         características. Esse comportamento pode ser mudado caso seja melhor.
+
+         Args:
+             part(AbstractModel): Parte (instância) a ser adicionada.
+
+        Raises:
+            ValueError: Parte já existe.
         """
         if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
             # adiciona na lista
@@ -350,10 +357,20 @@ class RocketModel(AbstractModel):
             raise ValueError(f"Cant have two parts of type {part.part_type}")
 
         self.parts[part.part_type] = part  # adiciona parte única
-        self.__movePartsToPositions()
-        self.updateState()
+        self.__movePartsToPositions() # reordena no espaço
+        self.updateState() # atualiza o estado físico
 
     def removePart(self, part: AbstractModel):  # remove instâncias
+        """Remove peças do foguete. Remove peças por INSTÂNCIA, ou seja, peça só será removida se sua instância for
+        dada ao método.
+
+
+         Args:
+             part(AbstractModel): Parte (instância) a ser removida.
+
+        Raises:
+            ValueError: Parte não existe.
+        """
         if part.part_type == RocketParts.CYLINDRICAL_BODY or part.part_type == RocketParts.TRANSITION:  #
             # remove da lista
             part_list = self.parts[part.part_type]
@@ -374,11 +391,20 @@ class RocketModel(AbstractModel):
             raise ValueError("Part instance doesnt exist")
 
     def getPart(self, part_type: RocketParts):
-        parts = []
+        """Retorna uma lista com todas as partes do tipo especificado, ou uma única parte se só existir uma. Esse
+        comportamento não é boa prática, mudar para sempre retornar uma lista quando possível.
+
+        Args:
+            part_type(RocketParts): Tipo das partes a serem retornadas.
+
+        Returns:
+            List[AbstractModel]: Partes do tipo especificado.
+        """
+        parts = [] # lista 1D
         for part in self.__getAvailableParts():
             if part.part_type == part_type:
                 if part_type == RocketParts.CYLINDRICAL_BODY or part_type == RocketParts.TRANSITION:
-                    parts.append(part)
+                    parts.append(part) # reduz a dimensão para uma lista 1D
                     continue
 
                 return part
@@ -389,15 +415,31 @@ class RocketModel(AbstractModel):
         # print(f"Part type {part_type.value} doesnt exist")
 
     def getParts(self) -> List[AbstractModel]:
+        """Retorna uma lista com todas as partes diponíveis.
+
+        Returns:
+            List[AbstractModel]: Todas as partes disponíveis.
+        """
         return self.__getAvailableParts()
 
     def move(self, displacement: Vector):
-        super().move(displacement)
+        """Move o foguete (a classe RocketModel) e suas peças.
 
-        for part in self.__getAvailableParts():
+        Args:
+            displacement(Vector): Vetor deslocamento e NÃO a posição final.
+        """
+        super().move(displacement) # move foguete
+
+        for part in self.__getAvailableParts(): # move peças
             part.move(displacement)
 
     def rotate(self, angular_displacement: Vector, axis_displacement: Vector = Vector(0, 0, 0)):
+        """Rotaciona o foguete (a classe RocketModel) e suas peças.
+
+        Args:
+            angular_displacement(Vector): Vetor deslocamento angular.
+            axis_displacement(Vector): Vetor que desloca o eixo de rotação padrão (em torno do cg).
+        """
         super().rotate(angular_displacement)
 
         for part in self.__getAvailableParts():
