@@ -41,7 +41,8 @@ class AbstractModel(ABC, RigidBody):
 
             transversal_area (float): área transversal no instante T-0 (antes do lançamento).
 
-            delimitation_points (List[Vector]): Pontos de delimitação superior e inferior (nessa ordem).
+            wet_area (float): área molhada da peça.
+
         """
         # rocket specific
         self.part_type = part_type
@@ -63,44 +64,98 @@ class AbstractModel(ABC, RigidBody):
     
     @abstractmethod
     def calculateVolume(self) -> float:
+        """Calcula o volume da peça. Não muda durante o voo.
+
+        Returns:
+            (float): Volume da peça.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def calculateMass(self) -> float:
+        """Calcula a massa da peça. Muda durante o voo.
+
+        Returns:
+            (float): Massa da peça.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def calculateMomentOfInertia(self, distance_to_cg:float) -> float:
+        """Calcula o momento de inércia a uma certa distância do cg. Forma de calcular não muda durante o voo.
+
+        Returns:
+            (float): Momento de inércia.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def calculateCg(self) -> Vector:
+        """Calcula a posição do cg. Posição em relação ao foguete pode variar durante o voo.
+
+        Returns:
+            (Vector): Posição do cg.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def calculateCp(self) -> Vector: # http://ftp.demec.ufpr.br/foguete/bibliografia/TIR-33%20Calculating%20the%20Center%20of%20Pressure%20of%20a%20Model%20Rocket.pdf
+        """Calcula a posição do cp. Posição em relação ao foguete pode variar durante o voo.
+
+        Returns:
+            (vector): Posição do cp.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def createDelimitationPoints(self) -> List[Vector]:
+        """Cria os pontos de delimitação. Posição em relação ao foguete não muda durante o voo.
+
+        Returns:
+            (List[Vector]): Pontos de delimitação.
+        """
         raise NotImplementedError("Function not implemented")
 
     @abstractmethod
     def calculateWetArea(self) -> float:
+        """Calcula a área molhada. Não muda durante o voo.
+
+        Returns:
+            (float): Área molhada.
+        """
         raise NotImplementedError("Function not implemented")
 
     def updateState(self) -> None:
-        self.volume = self.calculateVolume()
-        self.wet_area = self.calculateWetArea()
-        self.mass = self.calculateMass()
-        self.moment_of_inertia = self.calculateMomentOfInertia
-        self.cg = self.calculateCg()
-        self.cp = self.calculateCp()
+        """Atualiza o estado da peça com base nas características que ela tem no momento, algumas "atualizações" podem
+        não ser necessárias, pois os valores não mudam durante o voo.
+
+        """
+        self.volume = self.calculateVolume()  # potencialmente desnecessario
+        self.wet_area = self.calculateWetArea()  # potencialmente desnecessario
+        self.mass = self.calculateMass()  # necessario para algumas peças como o motor que mudam de massa durante o voo.
+        self.moment_of_inertia = self.calculateMomentOfInertia # potencialmente desnecessario
+        self.cg = self.calculateCg()  # necessário pois a massa muda
+        self.cp = self.calculateCp()  # incerto.
 
     def toGroundCoordinates(self, local_coordinates:Vector) -> Vector:
+        """Transforma as coordenadas relativas ao corpo (origem na delimitação superior e positivo na direção da
+        delimitação inferior) para as coordenadas relativas ao solo. Esse método é sempre chamado no final dos cálculos
+        de cg e cp, menos em rocket_model.py, pois lá as coordenadas das peças já estão em relação ao solo.
+
+        Args:
+            local_coordinates (Vector): Coordenadas relativas ao corpo.
+
+        Returns:
+            (vector): Coordenadas relativas ao solo.
+        """
         return self.getTip() + local_coordinates
 
-    def getPosition(self):
+    def getPosition(self) -> List[List]:
+        """Retorna uma lista 2D com as coordenadas das limitações superiores e inferiores.
+
+        Returns:
+            (List[List]): Lista 2D com as delimitações.
+        """
         position = [self.delimitation_points[0].toList(), self.cg.toList(), self.delimitation_points[1].toList()]
         return position
 

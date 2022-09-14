@@ -7,7 +7,21 @@ from models.structure.abstract_model import AbstractModel
 
 
 class CylindricalBodyModel(AbstractModel):
-    def __init__(self, height, diameter, thickness, material: MaterialModel, position_order: int):
+    def __init__(self, height:float, diameter:float, thickness:float, material: MaterialModel, position_order: int):
+        """Peça que representa um corpo cilindrico.
+
+        Args:
+            height (float): Altura do cilindro.
+            diameter (float): Diametro do cilindro.
+            thickness (float): Espessura do cilindro.
+            material (MaterialModel): Material do cilindro.
+
+        Fields:
+            height (float): Altura do cilindro.
+            diameter (float): Diametro do cilindro.
+            thickness (float): Espessura do cilindro.
+            material (MaterialModel): Material do cilindro.
+        """
         self.height = height
         self.diameter = diameter  # Outer diameter
         self.thickness = thickness
@@ -19,13 +33,28 @@ class CylindricalBodyModel(AbstractModel):
         self.__verify(diameter, thickness)
 
     def __verify(self, diameter, thickness):
+        """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+
+        Raises:
+            ValueError: Algum campo é incoerente.
+        """
         if thickness >= diameter / 2:
             raise ValueError("Value of thickness is bigger than half of outer diameter")
 
     def __calculateDragCoefficient(self) -> float: # fazer
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         pass
     
     def __calculateTransversalArea(self) -> float: # fazer
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         pass
 
     def calculateVolume(self) -> float:
@@ -42,7 +71,7 @@ class CylindricalBodyModel(AbstractModel):
         Ixx = 1/12*mass*(3*( (self.diameter**2)/4 +((self.diameter-2*self.thickness)**2)/4 )+self.height**2)
         return Ixx + self.mass * distance_to_cg**2
 
-    def calculateCg(self) -> Vector:  # Feito amigo
+    def calculateCg(self) -> Vector:
         # Primeiro pega o vetor de altura da peça, a sua direção varia com a orientação do foguete, mas o módulo é
         # constante. getTipToBaseDistance() retorna o vetor que sai da ponta superior e vai até à ponta inferior
         height = self.getTipToBaseDistance()
