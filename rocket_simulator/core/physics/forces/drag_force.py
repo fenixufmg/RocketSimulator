@@ -39,7 +39,7 @@ class DragForce(Force):
         velocity = 47.78280931761668
         referenceArea = pi * current_state.nose.base_radius ** 2 
         parts = current_state.parts
-        print(parts)
+        # print(parts)
         for part in parts:
             if part.part_type == RocketParts.FIN:
                 meanChord = mean_aerodynamic_chord_length('trapezoidal', part.root_chord, part.tip_chord)
@@ -74,7 +74,7 @@ class DragForce(Force):
                     bodynoseAngle = degrees(atan(part.base_radius / part.height))
                     noseDrag = nose_pressure_drag(bodynoseAngle) 
                     pressureDragCoefficient += noseDrag
-                    print(noseDrag)
+                    # print(noseDrag)
 
                 else:
                     pass

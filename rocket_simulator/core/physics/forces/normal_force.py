@@ -90,7 +90,7 @@ class NormalForce(Force):
         normalForce = normalForceX + normalForceY + normalForceZ
         normalForce = normalForce.unitVector() * magnitude
 
-        print(f"    Normal force: {normalForce}")
+        # print(f"    Normal force: {normalForce}")
         self.setX(normalForce.x())
         self.setY(normalForce.y())
         self.setZ(normalForce.z())

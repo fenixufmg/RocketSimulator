@@ -2,6 +2,8 @@ import enum
 
 
 class WindDirection(enum.Enum): # angles in radians
+    """ Enum que tem os valores para a transformação de direções cardeais em radianos, com o norte sendo o angulo 0.
+    """
     N = 0
     NE = 0.785
 

@@ -27,7 +27,7 @@ class MotorModel(AbstractModel):
         self.transversal_area = self.__calculateTransversalArea()
 
         # self.thrust = Thrust(propellant_model)
-        self.thrust = ImpulseTestForce(400) # provisório até implementar o thrust
+        self.thrust = ImpulseTestForce(700) # provisório até implementar o thrust
 
 
         super().__init__(RocketParts.MOTOR, position_order, 0, self.drag_coefficient, self.transversal_area)

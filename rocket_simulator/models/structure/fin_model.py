@@ -37,7 +37,7 @@ class FinModel(AbstractModel):
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
         self.height = 0
-        self.fin_rotation_vectors = [Vector(distance_from_cylinder_center, 0, 0) for i in range(nb_fins)]
+        self.fin_rotation_vectors = [Vector(distance_from_cylinder_center, 0, 0) for i in range(nb_fins)]  # vetores que representam as rotações das aletas individualmente
         
         super().__init__(RocketParts.FIN, position_order, self.__calculateShapeCoefficient() , self.drag_coefficient, self.transversal_area)
         self.__verify()

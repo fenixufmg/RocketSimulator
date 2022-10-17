@@ -15,10 +15,23 @@ from random import randint
 
 
 class EjectionCriteria(enum.Enum):
+    """ Enum que categoriza onde a ejeção deve ser "triggada".
+    """
     APOGEE = 1
 
 class ParachuteModel(AbstractModel):
     def __init__(self, ejection_criteria:EjectionCriteria, parachute_type: ParachuteType, cable_type:CableType, diameter:float, coupled_part:AbstractModel, inflation_randomness_factor: float = 1):
+        """ Classe que representa o paraquedas.
+
+        Args:
+            ejection_criteria (EjectionCriteria): Critério para a ejeção do paraquedas.
+            parachute_type (ParachuteType): Tipo geométrico do paraquedas.
+            cable_type (CableType): Tipo (material) do cabo.
+            diameter (float): Diametro do paraquedas.
+            coupled_part (AbstractModel): Parte no qual o paraquedas está acoplado.
+            inflation_randomness_factor (float): Fator que controla a aleatoriedade do inflamento, maior = mais aleatorio
+            0 = sem aleatoriedade.
+        """
         self.ejection_criteria = ejection_criteria
         self.height = 0
         self.parachute_type = parachute_type
@@ -43,7 +56,11 @@ class ParachuteModel(AbstractModel):
         """
         pass
 
-    def eject(self): # concertar para ajustar o fator randomico de acordo com DELTA_TIME
+    def eject(self): # consertar para ajustar o fator randomico de acordo com DELTA_TIME para ter a mesma (chance de vitoria / segundo).
+        """ Ejeta o paraquedas e tenta inflar-lo com base em um processo aleatório que é modulado por
+         self.inflation_randomness_factor.
+
+        """
         if self.inflated is True:
             return
 
@@ -56,6 +73,8 @@ class ParachuteModel(AbstractModel):
             self.calculateMaximumInflationForce()
     
     def calculateMaximumInflationForce(self):
+        """ Calcula a força de inflação exercicda sobre o cabo do paraquedas.
+        """
         pass
         # self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
 
@@ -84,31 +103,17 @@ class ParachuteModel(AbstractModel):
         """
         return ((self.diameter/2)**2)*5.099
 
-    def calculateMass(self):
+    def calculateMass(self):  # Desprezível
         return 0
 
-    def calculateMomentOfInertia(self, distance_to_cg:float):
+    def calculateMomentOfInertia(self, distance_to_cg:float):  # Desprezível
         return 0
 
-    def calculateVolume(self):
+    def calculateVolume(self):  # Desprezível
         return 0
 
     def calculateWetArea(self):
         return self.__calculateTransversalArea()
-
-    # def calculateVolume(self) -> float: # possivelmente errado
-    #     inner_diameter = self.diameter - 2 * self.thickness
-    #     volume = pi * self.height * ((self.diameter / 2) ^ 2 - (inner_diameter / 2) ^ 2)
-    #     return volume
-
-    # def calculateMass(self) -> float: # possivelmente errado
-    #     mass = self.material.density * self.calculateVolume
-    #     return mass
-
-    # def calculateMomentOfInertia(self, distance_to_cg: float) -> float: # possivelmente errado
-    #     mass = self.calculateMass
-    #     Ixx = 1/12*mass*(3*( (self.diameter^2)/4 +((self.diameter-2*self.thickness)^2)/4 )+self.height^2)
-    #     return Ixx
 
     def calculateCg(self) -> Vector: # possivelmente errado
         return self.toGroundCoordinates(Vector(0, 0, 0))

@@ -11,18 +11,6 @@ class DeltaTimeSimulation:
         Args:
             rocket (RocketModel): Foguete do qual serão retiradas as informações.
             time (int): Instante de tempo.
-
-        Fields:
-            cg (Vector): Centro de gravidade do corpo
-            cp (Vector): Centro de pressão do corpo
-            tip (Vector): Ponta do corpo
-            base (Vector): Base do corpo
-            velocity (Vector): Velocidade do corpo
-            acceleration (Vector): Aceleração do corpo
-            angular_velocity (Vector): Velocidade angular do corpo
-            mass (float): Massa do corpo
-            looking_direction (Vector): Vetor que representa a orientação do corpo
-            time (float): Instante de tempo
         """
         self.cg: Vector = rocket.cg
         self.cp: Vector = rocket.cp
@@ -58,7 +46,7 @@ class DeltaTimeSimulation:
         self.maximum_top_diameter_transition = self.__getMaximumTopDiameterTransition()
         self.maximum_bottom_diameter_transition = self.__getMaximumBottomDiameterTransition()
 
-    def __getMaximumDiameterCylindricalBody(self):
+    def __getMaximumDiameterCylindricalBody(self):  # Provisorio, mudar para outra classe para organização
         maximum_diameter = 0
         result = None
 
@@ -72,7 +60,7 @@ class DeltaTimeSimulation:
 
         return result
 
-    def __getMaximumTopDiameterTransition(self):
+    def __getMaximumTopDiameterTransition(self):  # Provisorio, mudar para outra classe para organização
         maximum_diameter = 0
         result = None
 
@@ -86,7 +74,7 @@ class DeltaTimeSimulation:
 
         return result
 
-    def __getMaximumBottomDiameterTransition(self):
+    def __getMaximumBottomDiameterTransition(self):  # Provisorio, mudar para outra classe para organização
         maximum_diameter = 0
         result = None
 

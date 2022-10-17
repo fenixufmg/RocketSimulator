@@ -20,7 +20,7 @@ class WindForce(Force):
         direction = Vector.rotateAroundAxis(direction, Vector(0, 0, 1), self.wind_direction)
 
         wind_force = direction * magnitude
-        print(f"Wind force {wind_force}")
+        # print(f"Wind force {wind_force}")
 
         self.setX(wind_force.x())
         self.setY(wind_force.y())

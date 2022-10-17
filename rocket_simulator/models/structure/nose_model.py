@@ -19,16 +19,16 @@ class NoseModel(AbstractModel):
             base_diameter (float): Diãmetro da base.
             thickness (float): Espessura.
             nose_type (NoseType): Tipo do nariz.
-            thinness_factor (float): fator de 'magreza' do nariz
-            cylinder_height
+            thinness_factor (float): fator de 'magreza' do nariz.
+            cylinder_height (float): Altura do cilindro do nariz.
 
         """
         self.base_diameter = base_diameter
         self.base_radius = base_diameter / 2
         self.thinness_factor = thinness_factor
 
-        self.cylinder_height = cylinder_height
-        self.height = cylinder_height + thinness_factor*self.base_radius**2
+        self.cylinder_height = cylinder_height # altura da parte cilindrica do nariz.
+        self.height = cylinder_height + thinness_factor*self.base_radius**2  # altura da parte parabolica do nariz
         self.paraboloid_height = self.height - self.cylinder_height
 
         self.thickness = thickness # implementar nariz oco

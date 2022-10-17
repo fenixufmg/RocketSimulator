@@ -15,6 +15,7 @@ def __mapColors(values):
     values_len = len(values)
     colors = [0 for number in range(len(values)*3)]
     for index, value in enumerate(values):
+        # bagunça generalizada, procurar por documentação da função axis.quiver() caso queira mudar.
         arrow_index = values_len + index*2
 
         colors[index] = value
@@ -84,10 +85,11 @@ def trajectoryTest(rocket:RocketModel, ambient: AbstractAmbient, simulation_time
     ax.set_zlim(0, limit)
     norm, cmap, vector_colors = __mapColors(velocities)
     point_colors = cmap(norm(velocities))
-    # ============ configurações do gráficos ============ #
 
     ax.scatter(x,y,z, c=point_colors)
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
     if has_arrows:
         ax.quiver(x,y,z, x_magnitudes, y_magnitudes, z_magnitudes, color=vector_colors, cmap=cmap, norm=norm)
+    # ============ configurações do gráficos ============ #
+
     plt.show()

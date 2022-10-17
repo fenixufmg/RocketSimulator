@@ -9,6 +9,16 @@ from typing import List
 
 class TransitionModel(AbstractModel):
     def __init__(self, height, bottom_diameter, top_diameter, thickness, nose_diameter, material: MaterialModel, position_order: int):
+        """ Classe que representa uma transição (peça).
+
+        Args:
+            height (float): Altura da transição.
+            bottom_diameter (float): Diametro inferior da transição.
+            top_diameter (float): Diametro superior da transição.
+            thickness (float): Espessura da transição.
+            nose_diameter (float): Diâmetro do nariz do foguete, idealmente esse parametro não existiria.
+
+        """
         self.height = height
         self.bottom_diameter = bottom_diameter
         self.top_diameter = top_diameter

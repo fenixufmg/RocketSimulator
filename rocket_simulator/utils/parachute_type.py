@@ -2,6 +2,8 @@ import enum
 
 
 class ParachuteType(enum.Enum):
+    """ Tipo geométrico do paraquedas.
+    """
     ANNULAR = "annular"
     BICONICAL = "biconical"
     CONICAL = "conical"

@@ -10,12 +10,18 @@ from simulation.abstract_ambient import AbstractAmbient
 
 class EarthAmbient(AbstractAmbient):
     def __init__(self, wind_velocity:float, wind_direction:WindDirection) -> None:
+        """ Representa o ambiente da terra.
+
+        Args:
+            wind_velocity (float): Velocidade do vento.
+            wind_direction (WindDirection): Direção cardeal do vento.
+        """
         self.wind_direction:float = wind_direction.value 
         self.wind_velocity = wind_velocity
 
         weight = WeightForce(CelestialBody.EARTH)
         drag_force = DragForce()
         wind_force = WindForce(wind_velocity, wind_direction)
-        normal_force = NormalForce()
-        forces = [weight, wind_force, drag_force]
+        normal_force = NormalForce()  # FORÇA NORMAL NÃO ESTÁ 100% TESTADA
+        forces = [weight, wind_force, drag_force]  # FORÇA NORMAL NÃO ESTÁ 100% TESTADA
         super().__init__(forces)
