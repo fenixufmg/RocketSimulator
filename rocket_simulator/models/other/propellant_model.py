@@ -4,6 +4,8 @@ from models.structure.abstract_model import AbstractModel
 
 class PropellantModel(AbstractModel):
     def __init__(self, name): # ???? definir parametros
+        """ Classe que representa o propelente utilizado.
+        """
         self.__name = name.lower().strip()
         self.__ratio = None
         self.__density = None
@@ -24,3 +26,6 @@ class PropellantModel(AbstractModel):
         self.__a = propellant_file["a"]
         self.__n = propellant_file["n"]
         self.__k = propellant_file["k"]
+
+    def interpolateThrust(self, time:float):
+        pass

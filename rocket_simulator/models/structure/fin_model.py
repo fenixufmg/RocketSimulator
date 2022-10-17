@@ -11,6 +11,20 @@ class FinModel(AbstractModel):
     def __init__(self, root_chord:float, tip_chord:float, span:float, max_thickness:float, sweep_angle:float, 
     distance_to_base:float, distance_from_cylinder_center:float, nb_fins:int, material: MaterialModel,
                  position_order: int):
+
+        """ Peça que representa as aletas.
+
+        Args:
+            root_chord (float): Tamanho da root chord.
+            tip_chord (float): Tamanho da root chord.
+            span (float): Tamanho do span.
+            max_thickness (float): Espessura maxima.
+            sweep_angle (float): Sweep angle.
+            distance_to_base (float): Distância até a base do foguete.
+            distance_from_cylinder_center (float): Distância desde o centro do foguete.
+            nb_fins (int): Número de aletas.
+        """
+
         self.root_chord = root_chord
         self.tip_chord = tip_chord
         self.span = span
@@ -28,8 +42,13 @@ class FinModel(AbstractModel):
         super().__init__(RocketParts.FIN, position_order, self.__calculateShapeCoefficient() , self.drag_coefficient, self.transversal_area)
         self.__verify()
 
-    def __verify(self): 
+    def __verify(self):
         if self.max_thickness<0:
+            """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+    
+            Raises:
+                ValueError: Algum campo é incoerente.
+            """
             raise ValueError("Impossible negative fin values")
         elif self.sweep_angle<0 or self.sweep_angle>pi/2:
             raise ValueError("Invalid sweep angle for fins")
@@ -37,9 +56,19 @@ class FinModel(AbstractModel):
             pass
 
     def __calculateDragCoefficient(self) -> float: # fazer
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         pass
-    
+
     def __calculateTransversalArea(self) -> float: # fazer
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         pass
 
     def __calculateShapeCoefficient(self):

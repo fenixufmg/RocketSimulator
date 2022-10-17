@@ -4,12 +4,16 @@ import os
 
 class MaterialModel:
     def __init__(self, name:str):
+        """ Classe que representa de que material o foguete é feito.
+        """
         self.name = name.lower().strip() # arrumar para usar enums
         self.density = None
         self.yield_strength = None
         self.__initialize()
 
     def __initialize(self):
+        """ Pega os dados do arquivo json com o nome do material.
+        """
         materials_folder = Paths.MATERIALS.value
 
         material_file = f"{materials_folder}/{self.name}.json"

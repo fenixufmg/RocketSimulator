@@ -12,7 +12,7 @@ from rb_test.trajectory_test import trajectoryTest
 from rb_test.velocity_test import velocityTest
 from rb_test.angular_velocity_test import angularVelocityTest
 from core.physics.forces.drag_force import DragForce
-from core.physics.forces.thrust_test import ThrustTest
+from core.physics.forces.thrust import ThrustTest
 from core.physics.forces.normal_force import NormalForceTest
 
 from core.physics.forces.weight_force import WeightForce

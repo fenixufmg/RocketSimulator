@@ -22,6 +22,11 @@ class TransitionModel(AbstractModel):
         self.__verify()
 
     def __verify(self):
+        """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+
+            Raises:
+                ValueError: Algum campo é incoerente.
+        """
         if self.bottom_diameter < self.top_diameter:  # bottom part is thinner
             if self.thickness >= self.bottom_diameter / 2:
                 raise ValueError("Value of thickness is bigger than half of bottom outer diameter")
@@ -30,9 +35,19 @@ class TransitionModel(AbstractModel):
                 raise ValueError("Value of thickness is bigger than half of top outer diameter")
 
     def __calculateDragCoefficient(self) -> float: # fazer
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         pass
 
     def __calculateTransversalArea(self) -> float: # fazer
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         pass
 
     def __calculateShapeCoefficient(self) -> float:

@@ -13,6 +13,16 @@ from utils.constants import Constants
 
 class NoseModel(AbstractModel):
     def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, cylinder_height:float, material:MaterialModel, position_order: int):
+        """ Classe que representa o nariz do foguete.
+
+        Args:
+            base_diameter (float): Diãmetro da base.
+            thickness (float): Espessura.
+            nose_type (NoseType): Tipo do nariz.
+            thinness_factor (float): fator de 'magreza' do nariz
+            cylinder_height
+
+        """
         self.base_diameter = base_diameter
         self.base_radius = base_diameter / 2
         self.thinness_factor = thinness_factor
@@ -31,6 +41,11 @@ class NoseModel(AbstractModel):
         self.__verify()
 
     def __verify(self):
+        """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+
+            Raises:
+                ValueError: Algum campo é incoerente.
+        """
         if self.base_diameter <= 0:
             raise ValueError("Base diameter <= 0 not allowed")
         if self.thickness <= 0:
@@ -41,9 +56,19 @@ class NoseModel(AbstractModel):
             raise ValueError("Thinness factor <= 0 not allowed")
 
     def __calculateDragCoefficient(self) -> float: # fazer
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         pass
-    
+
     def __calculateTransversalArea(self) -> float: # fazer
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         pass
 
     def calculateVolume(self) -> float: # https://www.grc.nasa.gov/www/k-12/airplane/volume.html

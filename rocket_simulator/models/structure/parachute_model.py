@@ -36,6 +36,11 @@ class ParachuteModel(AbstractModel):
         self.__verify(diameter)
 
     def __verify(self, diameter:float): # fazer
+        """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+
+            Raises:
+                ValueError: Algum campo é incoerente.
+        """
         pass
 
     def eject(self): # concertar para ajustar o fator randomico de acordo com DELTA_TIME
@@ -55,6 +60,11 @@ class ParachuteModel(AbstractModel):
         # self.inflation_force = maximum_force(parachute_drag_force:float, opening_shock:float)
 
     def __calculateDragCoefficient(self):
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         drag_coefficient = None
         parachute_folder = Paths.PARACHUTES.value
 
@@ -67,6 +77,11 @@ class ParachuteModel(AbstractModel):
         return drag_coefficient
 
     def __calculateTransversalArea(self) -> float:
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         return ((self.diameter/2)**2)*5.099
 
     def calculateMass(self):

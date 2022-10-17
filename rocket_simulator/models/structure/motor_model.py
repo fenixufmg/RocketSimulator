@@ -1,6 +1,7 @@
 from typing import List
 
 from core.physics.forces.impulse_test_force import ImpulseTestForce
+from core.physics.forces.thrust import Thrust
 from utils.rocket_parts import RocketParts
 from math import pi
 from core.physics.vector import Vector
@@ -10,25 +11,51 @@ from models.structure.abstract_model import AbstractModel
 
 class MotorModel(AbstractModel):
     def __init__(self, height, diameter, thickness, material: MaterialModel, position_order: int):
+        # adicionar propellant model aos parametros
+        """ Peça que representa o motor do foguete. E responsável por dar o empuxo.
+
+        Args:
+            height (float): Altura do motor.
+            diameter (float): Diametro do motor.
+            thickness (float): Espessura do motor.
+        """
         self.height = height
         self.diameter = diameter  # Outer diameter
         self.thickness = thickness
         self.material = material
         self.drag_coefficient = self.__calculateDragCoefficient()
         self.transversal_area = self.__calculateTransversalArea()
-        self.thrust = ImpulseTestForce(400) # provisório
+
+        # self.thrust = Thrust(propellant_model)
+        self.thrust = ImpulseTestForce(400) # provisório até implementar o thrust
+
 
         super().__init__(RocketParts.MOTOR, position_order, 0, self.drag_coefficient, self.transversal_area)
         self.__verify(diameter, thickness)
 
     def __verify(self, diameter, thickness):
+        """Verifica se os campos indicados pelo usuário são possíveis (incompleto).
+
+            Raises:
+                ValueError: Algum campo é incoerente.
+        """
         if thickness >= diameter / 2:
             raise ValueError("Value of thickness is bigger than half of outer diameter")
 
     def __calculateDragCoefficient(self) -> float: # fazer
+        """Calcula o coeficiente de arrasto.
+
+        Returns:
+            (float): Coeficiente de arrasto.
+        """
         pass
 
     def __calculateTransversalArea(self) -> float: # fazer
+        """Calcula a área transversal no instante T-0.
+
+        Returns:
+            (float): Área transversal.
+        """
         pass
 
     def calculateVolume(self) -> float:

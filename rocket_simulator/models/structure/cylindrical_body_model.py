@@ -14,13 +14,6 @@ class CylindricalBodyModel(AbstractModel):
             height (float): Altura do cilindro.
             diameter (float): Diametro do cilindro.
             thickness (float): Espessura do cilindro.
-            material (MaterialModel): Material do cilindro.
-
-        Fields:
-            height (float): Altura do cilindro.
-            diameter (float): Diametro do cilindro.
-            thickness (float): Espessura do cilindro.
-            material (MaterialModel): Material do cilindro.
         """
         self.height = height
         self.diameter = diameter  # Outer diameter
