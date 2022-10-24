@@ -18,20 +18,20 @@ rocket = RocketModel()
 
 acrylic = MaterialModel("acrylic")
 nose = NoseModel(4, 0.5, NoseType.CONICAL, 1, 0.2, acrylic, 0)
-parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 5, nose, inflation_randomness_factor=0)
+parachute = ParachuteModel(EjectionCriteria.APOGEE, ParachuteType.HEMISPHERICAL, CableType.POLYESTER, 8, nose, inflation_randomness_factor=0)
 cylinder1 = CylindricalBodyModel(5, 4, 0.5, acrylic, 1)
 transition = TransitionModel(5, 8, 4, 0.5, 4, acrylic, 2)
 cylinder2 = CylindricalBodyModel(5, 8, 0.5, acrylic, 3)
 
 motor = MotorModel(0.5, 2, 0.25, acrylic, 2)
-fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 4, 4, acrylic, 3)
+# fins = FinModel(1, 0.5, 1.5, 0.05, 0.3925, 0, 4, 4, acrylic, 3)
 
 rocket.addPart(nose)
 rocket.addPart(cylinder1)
 #rocket.addPart(transition)
 #rocket.addPart(cylinder2)
 # rocket.addPart(fins)
-rocket.addPart(parachute)
+# rocket.addPart(parachute)
 rocket.addPart(motor)
 
 rotation = Vector(0, 0.2, 0)

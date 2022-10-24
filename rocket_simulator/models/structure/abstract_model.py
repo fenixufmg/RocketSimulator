@@ -136,6 +136,7 @@ class AbstractModel(ABC, RigidBody):
         self.moment_of_inertia = self.calculateMomentOfInertia # potencialmente desnecessario
         self.cg = self.calculateCg()  # necessário pois a massa muda
         self.cp = self.calculateCp()  # incerto.
+        # self.delimitation_points = self.createDelimitationPoints() ## BUG
 
     def toGroundCoordinates(self, local_coordinates:Vector) -> Vector:
         """Transforma as coordenadas relativas ao corpo (origem na delimitação superior e positivo na direção da

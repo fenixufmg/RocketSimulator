@@ -83,15 +83,15 @@ motor = MotorModel(0.5, 2, 0.25, acrylic, 4)
 fins = FinModel(1, 0.1, 1.5, 1, 0.3925, 0, 2, 4, acrylic, 5)
 
 rocket = RocketModel()
-rocket.addPart(parachute)  # fazer torque de excentricidade
+# rocket.addPart(parachute)  # fazer torque de excentricidade
 rocket.addPart(nose)
-rocket.addPart(cylinder1)
+# rocket.addPart(cylinder1)
 # rocket.addPart(transition)
-rocket.addPart(cylinder2)
+# rocket.addPart(cylinder2)
 # rocket.addPart(fins)
 rocket.addPart(motor)
 rotation = Vector(0, 0.1, 0)
-rocket.rotate(rotation)
+# rocket.rotate(rotation)
 
 ambient = EarthAmbient(0.3, WindDirection.NO)
 # ambient = EarthAmbient(0, WindDirection.N)
