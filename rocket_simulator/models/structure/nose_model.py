@@ -13,7 +13,16 @@ from utils.constants import Constants
 
 class NoseModel(AbstractModel):
     def __init__(self, base_diameter:float, thickness:float, nose_type:NoseType, thinness_factor:float, cylinder_height:float, material:MaterialModel, position_order: int):
-        """ Classe que representa o nariz do foguete.
+        """ Classe que representa o nariz do foguete que é constituido de uma parte conica e uma cilindrica.
+
+            A equação da parte parabólica é: -k(x² + y²) + h_t, onde k é o fator de afinamento e h_t é a altura total
+        (parte conica + cilindrica). Fazendo a integral dupla usando coordenadas polares temos que o volume é:
+        pi(r²h_T - kr⁴/2). Transformando a primeira equação em coordenadas polares temos que a altura total é:
+        h_cilindro + kr².
+
+        Essa equação para representar a parte parabólica não é capaz de representar todos os tipos de nariz de foguete,
+        mudar para existirem outras equações no futuro. A apostila do openrocket lista todas essas equações junto
+        com suas formas.
 
         Args:
             base_diameter (float): Diãmetro da base.

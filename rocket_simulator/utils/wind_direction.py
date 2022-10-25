@@ -13,5 +13,5 @@ class WindDirection(enum.Enum): # angles in radians
     S = 3.14
     SO = 3.925
 
-    O = 4.71
-    NO = 5.495
+    W = 4.71
+    NW = 5.495

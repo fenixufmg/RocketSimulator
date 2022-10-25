@@ -31,7 +31,7 @@ rocket.addPart(cylinder1)
 #rocket.addPart(transition)
 #rocket.addPart(cylinder2)
 # rocket.addPart(fins)
-# rocket.addPart(parachute)
+rocket.addPart(parachute)
 rocket.addPart(motor)
 
 rotation = Vector(0, 0.2, 0)
@@ -41,7 +41,7 @@ rocket.rotate(rotation)
 #rotation_force = RotationTestForce(0, 50, 0, ApplicationPoint.CP)
 # normalForce = NormalForce()
 
-ambient = EarthAmbient(0, WindDirection.N)
+ambient = EarthAmbient(0.5, WindDirection.W)
 # ambient = AirlessEarthAmbient()
 
 # pitch = PitchDampingMoment()
