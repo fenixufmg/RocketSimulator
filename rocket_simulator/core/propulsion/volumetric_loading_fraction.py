@@ -5,7 +5,7 @@
 """ 
 
 def volumetric_loading_fraction(Vg:float, Vc:float)->float:
-  '''volumetric_loading_fraction
+  '''This function calculates the volumetric load fraction. 
     Args:
         Vg: propellant's volume
         Vc: combustion chamber volume
