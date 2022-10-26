@@ -7,7 +7,7 @@ import math
 from math import pi
 
 def propellant_volume(D:float, d:float, L:float, N:int)->float:
-  '''propellant_volume 
+  '''calculates de volume of the rocket's propellant
     Args:
         D: external diameter (users' input)
         d: internal diameter (users' input)
