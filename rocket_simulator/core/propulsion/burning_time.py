@@ -16,7 +16,7 @@ def burning_time(D, d, r):
     Args:
         D (num): external diameter of the grain.
         d (num): internal diameter of the grain.
-        r (num): burn rate of the proppelant.
+        r (num): burning rate of the proppelant.
 
     Returns:
         num(tb): A real number that indicates the burning time.
