@@ -4,7 +4,6 @@
  * @email lerytripgo@gmail.com
  * @create date 2022-02-23 16:51:48
  * @modify date 2022-02-23 16:51:48
- * @desc [description]
  */
 """
 import math
