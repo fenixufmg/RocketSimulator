@@ -5,9 +5,10 @@
 """ 
 
 def chamber_pressure(Ab:float, rop:float, a:float, A_:float, k:float, R:float, T0:float, n:float)->float:
-  '''chamber_pressure
+  
+  '''This function calculates chamber pressure. Its dependence on time is based on the burn area of the propellant grain (consideration to be used in a derivative in another function).
     Args:
-        Ab: burn area of the propellant grain
+        Ab: burning area of the propellant grain
         rop: popellant's density
         a: burn rate coefficient (determined by the propellant chosen)
         A_: throat area
