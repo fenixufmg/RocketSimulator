@@ -11,7 +11,7 @@ import math
 
 def area_of_flow(d, Vl):
     """
-    This function calculates the area of flow for the combustion products.
+    This function calculates the area of flow for the combustion products based on the volumetric load. 
 
     Args:
         d (num): internal diameter of the grain.
