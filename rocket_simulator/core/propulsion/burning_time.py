@@ -9,7 +9,7 @@
  """
 import math
 
-def burn_time(D, d, r):
+def burning_time(D, d, r):
     """
     The function returns the burn time of the grain.
 
@@ -19,7 +19,7 @@ def burn_time(D, d, r):
         r (num): burn rate of the proppelant.
 
     Returns:
-        num(tb): A real number that indicates the burn time.
+        num(tb): A real number that indicates the burning time.
     """
     Tb=(D-d)/(2*r)
     return Tb
