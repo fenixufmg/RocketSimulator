@@ -7,7 +7,7 @@
 from math import pi
 
 def combustion_chamber_volume(Dc:float, Lc:float)->float:
-  '''combustion_chamber_volume
+  '''This function calculates the combustion chamber volume, to be used on the calculation of the volumetric load fraction. 
     Args:
         Dc: combustion chamber diameter 
         Lc: combustion chamber lenght
