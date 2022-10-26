@@ -11,7 +11,7 @@ import math
 
 def burning_time(D, d, r):
     """
-    The function returns the burn time of the grain.
+    The function returns the burning time of the grain.
 
     Args:
         D (num): external diameter of the grain.
