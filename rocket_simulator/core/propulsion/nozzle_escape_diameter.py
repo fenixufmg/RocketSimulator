@@ -7,8 +7,9 @@ from math import sqrt
 """ 
 
 def nozzle_escape_diameter(d_:float, k:float, Pe:float, Po:float)->float:
-   '''nozzle_escape_diameter
+   '''This function calculates the nozzle escape (exit) diameter. It's based on its relation with the throat diameter. 
    consider Pe = local atmospheric pressure
+   If Pe is different from atmospheric pressure, it must be calculated. 
     Args:
         d_: medium throat diameter
         k: isentropic exponent (depends on user's propellant choice)
