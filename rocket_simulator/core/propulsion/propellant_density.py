@@ -5,7 +5,7 @@
 """ 
 
 def propellant_density(mg:float, Vg:float)->float:
-  '''propellant_density
+  '''This fuction calculates propellant's specif mass (density) based on a tubular geometry (may be changed by changing volume calculations).
     Args:
         mg: propellant's mass (users' input) 
         Vg: volume = previously calculated
