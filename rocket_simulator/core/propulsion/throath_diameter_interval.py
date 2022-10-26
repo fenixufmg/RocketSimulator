@@ -6,7 +6,8 @@
 from math import pi
 
 def throath_diameter_interval(Ap:float)->float:
-  '''throath_diameter_interval
+  '''This function calculates the minimum and maximum throat diameters, as well as the avarage diameter, and returns only the avarage diameter. It's based on Robert Nakka's documentation. 
+     The chosen interval is based on studies of the erosive propellant's burning. 
     Args:
         Ap: area of combustion products flow
         
