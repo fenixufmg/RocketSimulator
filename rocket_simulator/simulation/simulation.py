@@ -32,8 +32,8 @@ class Simulation:
             __DELTA_TIME (float): Tamanho do intervalo de tempo entre duas simulações, quanto menor mais próximo da realidade.
             __rocket (RocketModel) : Foguete.
             __forces (List[Force]): Lista que contem as forças que serão usadas ao longo de toda a simulação.
-            __resultant_force (ResultantForce): Força resultante que atua no cg.
-            __resultant_torque (ResultantTorque): Torque resultante em torno do cg.
+            __resultant_force (ResultantForce): Força resultante que atua no CG.
+            __resultant_torque (ResultantTorque): Torque resultante em torno do CG.
         """
         self.__DELTA_TIME = 0.1
         self.__rocket = rocket
@@ -50,14 +50,14 @@ class Simulation:
             additional_forces (List[Force]): Lista que contem as forças ADICIONAIS que serão usadas ao longo de toda a simulação.
 
         Raises:
-             ValueError: Foguete não tem motor, logo não tem empuxo.
+             ValueError: Foguete não tem motor, logo, não tem empuxo.
 
         """
         thrust = None
         try:
             thrust = self.__rocket.getPart(RocketParts.MOTOR).thrust
         except AttributeError:
-            raise ValueError("Rocket doesn't have motor")
+            raise ValueError("Rocket doesn't have a motor")
 
         parachute_drag_force = ParachuteDrag()
         self.__forces = [*additional_forces, thrust, *ambient.forces, parachute_drag_force]
