@@ -2,8 +2,8 @@ from core.physics.vector import Vector
 
 class BodyCoordinateSystem():
     def __init__(self):
-        """Classe que representa o sistema de coordenadas do foguete (sistema local). Seu eixo Z está sempre na
-        direção e sentido da orientação do foguete.
+        """Class that represents rocket's coordinate system (local system). Its Z axis is always in 
+        the direction and way of rocket's orientation.
 
         Fields:
         __x_axis (Vector): Eixo x.
@@ -15,18 +15,18 @@ class BodyCoordinateSystem():
         self.__z_axis = Vector(0,0,1)
 
     def getLookingDirection(self) -> Vector:
-        """Retorna o eixo Z (orientação do foguete).
+        """Returns Z axis (rocket's orientation).
 
         Returns:
-            Vector: Orientação do foguete.
+            Vector: Rocket's orientation.
         """
         return self.__z_axis # já é unitario
 
     def setLookingDirection(self, looking_direction:Vector):
-        """Retorna o eixo Z (orientação do foguete).
+        """Returns Z axis (rocket's orientation).
 
         Returns:
-            Vector: Orientação do foguete.
+            Vector: Rocket's orientation.
         """
         angle = Vector.angleBetweenVectors(self.__z_axis, looking_direction)
         axis = Vector.crossProduct(self.__z_axis, looking_direction)
@@ -36,7 +36,7 @@ class BodyCoordinateSystem():
         self.__z_axis = Vector.rotateAroundAxis(self.__z_axis, axis, angle)
 
     def rotate(self, angular_displacement:Vector) -> None:
-        """Rotaciona o sistema de coordenadas dado um deslocamento angular.
+        """Rotates the coordinate system based on a gives angular shift. 
 
         Args:
              angular_displacement (Vector): Deslocamento angular.
