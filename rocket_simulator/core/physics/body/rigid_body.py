@@ -7,7 +7,7 @@ from core.physics.body.body_coordinate_system import BodyCoordinateSystem
 class RigidBody:
     def __init__(self, delimitation_points: list, mass: float, volume: float, moment_of_inertia_function, cg: Vector,
                  cp: Vector):
-        """Classse que representa um corpo rígido, seu estado é alterável. O corpo é entendido como o conjunto de pontos
+        """Classe que representa um corpo rígido, seu estado é alterável. O corpo é entendido como o conjunto de pontos
         que o representa, que no caso são o CG, CP, o ponto de limitação superior e o ponto de limitação inferior
 
         Args:
