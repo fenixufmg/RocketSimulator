@@ -7,7 +7,7 @@
 from math import pi 
 
 def burning_area(d: float) -> float:
-  '''This function calculates the burning area of the propellant grain. 
+  '''This function calculates the burning area of the propellant grain. To be corrected including an iterative loop based on time.
     Args:
         d: intern diameter (user's input) 
     Returns:
