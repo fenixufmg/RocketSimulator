@@ -4,7 +4,7 @@ from models.structure.abstract_model import AbstractModel
 
 class PropellantModel(AbstractModel):
     def __init__(self, name): # ???? definir parametros
-        """ Classe que representa o propelente utilizado.
+        """ Class that represents the propellant used.
         """
         self.__name = name.lower().strip()
         self.__ratio = None
