@@ -1,15 +1,18 @@
 import sys
 from PyQt5.QtWidgets import *
+from PyQt5.uic import loadUi
 
 from modules.design.design_page import DesignPage
 from modules.engine.engine_page import EnginePage
 from modules.recovery.recovery_page import RecoveryPage
 from modules.simulation.simulation_page import SimulationPage
 from modules.analysis.analysis_page import AnalysisPage
+from qt_material import *
+
 
 class AppLayout(QWidget):
-
     def __init__(self) -> None:
+        apply_stylesheet(qApp, theme='dark_teal.xml')
         super(AppLayout, self).__init__()
         self.__initUI()
         return
@@ -59,8 +62,8 @@ class AppLayout(QWidget):
 		
 def main():
     app = QApplication(sys.argv)
-    view = AppLayout()
-    view.show()
+    ui = AppLayout()
+    ui.show()
     sys.exit(app.exec_())
 	
 if __name__ == '__main__':
