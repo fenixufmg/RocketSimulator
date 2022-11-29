@@ -78,8 +78,8 @@ def trajectoryTest(rocket:RocketModel, ambient: AbstractAmbient, simulation_time
 
     # ============ configurações do gráficos ============ #
     fig = plt.figure(figsize=(8,5))
-    # ax = fig.add_subplot(projection='3d')
-    ax = fig.gca(projection='3d')
+    ax = fig.add_subplot(projection='3d')
+    # ax = fig.gca(projection='3d')
     ax.set_xlim(0, limit)
     ax.set_ylim(-limit/2, limit/2)
     ax.set_zlim(0, limit)
