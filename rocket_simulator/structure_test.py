@@ -105,4 +105,3 @@ trajectoryTest(rocket, ambient, 10, arrow_scale=1, has_arrows=True, limit=20, ad
 
 # physicsTest()
 # geometryTest()
-
